@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ТРАНСКОМ — Помощник МОП</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#1a73e8;--blue-d:#1557b0;--blue-l:#e8f0fe;--green:#0d9488;--green-l:#ccfbf1;--orange:#ea580c;--orange-l:#fff7ed;--red:#dc2626;--red-l:#fef2f2;--purple:#7c3aed;--purple-l:#f3e8ff;--g50:#f9fafb;--g100:#f3f4f6;--g200:#e5e7eb;--g300:#d1d5db;--g500:#6b7280;--g700:#374151;--g900:#111827;--sh:0 1px 3px rgba(0,0,0,.1);--sh-lg:0 10px 15px -3px rgba(0,0,0,.1)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--g100);color:var(--g900);line-height:1.55;font-size:14px}
+.hdr{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--sh-lg)}
+.hdr h1{font-size:18px;font-weight:700;letter-spacing:.8px}
+.hdr-sub{font-size:12px;opacity:.8}
+.tb{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:18px;font-size:12px;font-weight:600;cursor:pointer;border:2px solid rgba(255,255,255,.3);transition:.2s}
+.tb:hover{transform:scale(1.05)}
+.tb.storm{background:#dc2626;border-color:#dc2626}
+.tb.after{background:var(--green);border-color:var(--green)}
+.nav{display:flex;background:#fff;border-bottom:1px solid var(--g200);overflow-x:auto;position:sticky;top:52px;z-index:99;-webkit-overflow-scrolling:touch}
+.nav-i{padding:10px 16px;font-size:13px;font-weight:500;color:var(--g500);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:.2s;display:flex;align-items:center;gap:5px}
+.nav-i:hover{color:var(--blue);background:var(--blue-l)}
+.nav-i.act{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+.main{max-width:960px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:12px;box-shadow:var(--sh);margin-bottom:14px;overflow:hidden}
+.card-h{padding:14px 18px;font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--g100)}
+.card-b{padding:16px 18px}
+.step{border:2px solid var(--g200);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:.3s}
+.step.act{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,115,232,.15)}
+.step.done{border-color:var(--green);opacity:.7}
+.step-hd{padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:.2s}
+.step-hd:hover{background:var(--g50)}
+.step-n{width:30px;height:30px;border-radius:50%;background:var(--g200);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.step.act .step-n{background:var(--blue);color:#fff}
+.step.done .step-n{background:var(--green);color:#fff}
+.step-t{font-weight:600;font-size:14px;flex:1}
+.step-tag{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600}
+.step-c{padding:0 16px 16px 56px;display:none}
+.step.act .step-c{display:block}
+.sp{border-radius:10px;padding:12px 14px;margin-bottom:8px;font-size:13px;line-height:1.6;border-left:4px solid var(--blue);background:var(--blue-l);position:relative}
+.sp.tip{background:var(--orange-l);border-left-color:var(--orange)}
+.sp.warn{background:var(--red-l);border-left-color:var(--red)}
+.sp.ok{background:var(--green-l);border-left-color:var(--green)}
+.sp.purp{background:var(--purple-l);border-left-color:var(--purple)}
+.sp-l{font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:3px;letter-spacing:.4px}
+.sp .sp-l{color:var(--blue)}
+.sp.tip .sp-l{color:var(--orange)}
+.sp.warn .sp-l{color:var(--red)}
+.sp.ok .sp-l{color:var(--green)}
+.sp.purp .sp-l{color:var(--purple)}
+.cp{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.05);border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;color:var(--g500);transition:.2s}
+.cp:hover{background:rgba(0,0,0,.1)}
+.obj{border:1px solid var(--g200);border-radius:10px;margin-bottom:8px;overflow:hidden}
+.obj-q{padding:10px 14px;font-weight:600;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:.2s}
+.obj-q:hover{background:var(--g50)}
+.obj-q .ar{transition:.3s;font-size:11px;margin-left:auto}
+.obj.op .obj-q .ar{transform:rotate(180deg)}
+.obj-a{padding:0 14px;max-height:0;overflow:hidden;transition:.3s}
+.obj.op .obj-a{padding:0 14px 14px;max-height:800px}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cf label{display:block;font-size:12px;font-weight:600;color:var(--g700);margin-bottom:3px}
+.cf select,.cf input{width:100%;padding:9px 11px;border:2px solid var(--g200);border-radius:8px;font-size:13px;transition:.2s}
+.cf select:focus,.cf input:focus{border-color:var(--blue);outline:none}
+.cr{margin-top:14px;padding:14px;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;border-radius:10px;text-align:center}
+.cr-a{font-size:26px;font-weight:800;margin:6px 0}
+.cr-d{font-size:12px;opacity:.85}
+.cr-b{margin-top:10px;background:rgba(255,255,255,.1);border-radius:8px;padding:10px;text-align:left}
+.cr-r{display:flex;justify-content:space-between;font-size:12px;padding:2px 0}
+.pt{width:100%;border-collapse:collapse;font-size:13px}
+.pt th{background:var(--g100);padding:8px 10px;text-align:left;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.3px;color:var(--g500)}
+.pt td{padding:8px 10px;border-bottom:1px solid var(--g100)}
+.pt tr:hover td{background:var(--blue-l)}
+.ph{font-weight:700;color:var(--blue)}
+.btn{padding:8px 16px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:5px}
+.btn-p{background:var(--blue);color:#fff}
+.btn-p:hover{background:var(--blue-d)}
+.btn-s{background:var(--green);color:#fff}
+.btn-o{background:#fff;border:2px solid var(--g200);color:var(--g700)}
+.btn-o:hover{border-color:var(--blue);color:var(--blue)}
+.sbtns{display:flex;gap:6px;margin-top:12px}
+.tc{display:none}.tc.act{display:block}
+.chi{padding:10px 14px;border-bottom:1px solid var(--g100);font-size:13px}
+.chi:last-child{border-bottom:none}
+.chl{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--g500);margin-bottom:2px}
+.chk{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:13px}
+.chk input[type=checkbox]{margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:var(--blue)}
+.chk.checked{opacity:.5;text-decoration:line-through}
+.sb{position:relative;margin-bottom:14px}
+.sb input{width:100%;padding:10px 14px 10px 36px;border:2px solid var(--g200);border-radius:10px;font-size:13px}
+.sb input:focus{border-color:var(--blue);outline:none}
+.sb-i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--g500);font-size:14px}
+.hidden{display:none!important}
+.qa{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:14px}
+.qc{background:#fff;border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:.2s;border:2px solid var(--g200)}
+.qc:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:var(--sh-lg)}
+.qc-ic{font-size:22px;margin-bottom:4px}
+.qc-lb{font-size:11px;font-weight:600;color:var(--g700)}
+.bonus-card{border:2px solid var(--purple);border-radius:10px;padding:12px;margin-bottom:8px;background:var(--purple-l)}
+.bonus-card h4{color:var(--purple);font-size:13px;margin-bottom:4px}
+.bonus-card p{font-size:12px;color:var(--g700)}
+.scenario-tab{display:flex;gap:6px;margin-bottom:14px}
+.sc-btn{padding:8px 16px;border:2px solid var(--g200);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#fff;transition:.2s}
+.sc-btn.act{border-color:var(--blue);background:var(--blue-l);color:var(--blue)}
+.sc-btn:hover{border-color:var(--blue)}
+@media(max-width:640px){.cg{grid-template-columns:1fr}.qa{grid-template-columns:repeat(2,1fr)}.hdr{padding:10px 14px}.hdr h1{font-size:15px}.main{padding:10px}.nav-i{padding:8px 12px;font-size:12px}}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}.fi{animation:fi .3s ease}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+<div><h1>ТРАНСКОМ</h1><div class="hdr-sub">Помощник МОП — Вывоз снега</div></div>
+<div style="display:flex;gap:6px">
+<div class="tb storm" id="b-st" onclick="setT('storm')">&#9928; Снегопад</div>
+<div class="tb" id="b-af" onclick="setT('after')">&#10052; После</div>
+</div>
+</div>
+
+<div class="nav" id="nav">
+<div class="nav-i act" data-tab="script" onclick="tab('script')">&#128222; Новый клиент</div>
+<div class="nav-i" data-tab="callback" onclick="tab('callback')">&#128257; Прозвон базы</div>
+<div class="nav-i" data-tab="calc" onclick="tab('calc')">&#128178; Калькулятор</div>
+<div class="nav-i" data-tab="obj" onclick="tab('obj')">&#128165; Возражения</div>
+<div class="nav-i" data-tab="prices" onclick="tab('prices')">&#128203; Прайс</div>
+<div class="nav-i" data-tab="cheat" onclick="tab('cheat')">&#9889; Шпаргалка</div>
+</div>
+
+<div class="main">
+
+<!-- ===== НОВЫЙ КЛИЕНТ ===== -->
+<div class="tc act" id="tab-script">
+<div class="qa">
+<div class="qc" onclick="tab('calc')"><div class="qc-ic">&#128178;</div><div class="qc-lb">Калькулятор</div></div>
+<div class="qc" onclick="tab('obj')"><div class="qc-ic">&#128165;</div><div class="qc-lb">Возражения</div></div>
+<div class="qc" onclick="tab('callback')"><div class="qc-ic">&#128257;</div><div class="qc-lb">Прозвон базы</div></div>
+<div class="qc" onclick="tab('cheat')"><div class="qc-ic">&#9889;</div><div class="qc-lb">Шпаргалка</div></div>
+</div>
+<div id="new-steps"></div>
+</div>
+
+<!-- ===== ПРОЗВОН БАЗЫ ===== -->
+<div class="tc" id="tab-callback">
+<div class="card" style="margin-bottom:14px">
+<div class="card-h">&#128257; Когда прозваниваем</div>
+<div class="card-b" style="padding:0">
+<div class="chi"><span style="color:var(--red)">&#128308;</span> <strong>Прогноз снегопада</strong> — за 1–2 дня. Высший приоритет!</div>
+<div class="chi"><span style="color:var(--red)">&#128308;</span> <strong>После сильного снегопада</strong> — в тот же / следующий день</div>
+<div class="chi"><span style="color:var(--orange)">&#128992;</span> <strong>Начало сезона</strong> (ноябрь) — плановый обзвон</div>
+<div class="chi"><span style="color:var(--orange)">&#128992;</span> <strong>Нет контакта 2+ недели</strong> зимой</div>
+<div class="chi"><span style="color:var(--green)">&#128994;</span> <strong>Конец месяца / перед праздниками</strong></div>
+</div>
+</div>
+<div id="cb-steps"></div>
+</div>
+
+<!-- ===== КАЛЬКУЛЯТОР ===== -->
+<div class="tc" id="tab-calc">
+<div class="card">
+<div class="card-h">&#128178; Быстрый расчёт для клиента</div>
+<div class="card-b">
+<div class="cg">
+<div class="cf"><label>Самосвал</label><select id="c-t" onchange="calc()"><option value="25">25 м³ (большой)</option><option value="15">15 м³ (малый)</option></select></div>
+<div class="cf"><label>Оплата</label><select id="c-p" onchange="calc()"><option value="bn">Б/Н с НДС</option><option value="cash">Наличные</option><option value="ip">На ИП (без НДС)</option></select></div>
+<div class="cf"><label>Рейсов</label><input type="number" id="c-r" value="1" min="1" max="100" oninput="calc()"></div>
+<div class="cf"><label>Погрузка</label><select id="c-l" onchange="calc()"><option value="no">Нет</option><option value="yes">Да</option></select></div>
+</div>
+<div class="cf" style="margin-top:12px"><label>Площадь территории (м²) — необязательно</label><input type="number" id="c-area" placeholder="например 1000" oninput="calcArea()"></div>
+<div class="cf" style="margin-top:8px"><label>Высота снега (см) — необязательно</label><input type="number" id="c-snow" placeholder="например 40" oninput="calcArea()"></div>
+<div id="area-hint" class="sp ok" style="display:none;margin-top:10px"><div class="sp-l">Подсказка по объёму</div><span id="area-text"></span></div>
+<div class="cr" id="cr">
+<div style="font-size:12px;opacity:.8">Стоимость для клиента</div>
+<div class="cr-a" id="ct">—</div>
+<div class="cr-d" id="cd"></div>
+<div class="cr-b" id="cb"></div>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="card-h">&#128666; Мощности</div>
+<div class="card-b">
+<table class="pt">
+<tr><td><strong>Макс. за ночь</strong></td><td>до 20 самосвалов (25 м³) = до 500 м³</td></tr>
+<tr><td><strong>25 м³</strong></td><td>Кузов 20 м³, грузим с горкой. Открытые площадки, парковки</td></tr>
+<tr><td><strong>15 м³</strong></td><td>Кузов 12 м³, грузим с горкой. Центр, дворы, узкие проезды</td></tr>
+<tr><td><strong>Погрузчик</strong></td><td>Экскаватор-погрузчик, смена 7+1 ч</td></tr>
+<tr><td><strong>Мини-погрузчик</strong></td><td>Для узких мест, смена 8 ч</td></tr>
+</table>
+</div>
+</div>
+<div class="card">
+<div class="card-h">&#128176; Порядок оплаты</div>
+<div class="card-b" style="padding:0">
+<div class="chi"><div class="chl">Новый клиент</div>Первый вывоз — по предоплате. Если объём превышает предоплату — закрываем по факту. Далее — постоплата.</div>
+<div class="chi"><div class="chl">Постоянный клиент</div>Работаем по постоплате.</div>
+<div class="chi"><div class="chl">Документы</div>Договор + Акт выполненных работ + Счёт-фактура</div>
+</div>
+</div>
+</div>
+
+<!-- ===== ВОЗРАЖЕНИЯ ===== -->
+<div class="tc" id="tab-obj">
+<div class="sb"><span class="sb-i">&#128269;</span><input type="text" placeholder="Найти возражение..." id="osrch" oninput="fobj()"></div>
+<div id="obj-c"></div>
+</div>
+
+<!-- ===== ПРАЙС ===== -->
+<div class="tc" id="tab-prices">
+<div class="card">
+<div class="card-h">&#9928; Тариф 1: ВО ВРЕМЯ СНЕГОПАДА</div>
+<div class="card-b">
+<div class="sp warn"><div class="sp-l">Важно</div>Цены НЕ снижаем. Скидки не даём. Техника загружена на 100%.</div>
+<h4 style="margin:12px 0 6px">Самосвал 25 м³</h4>
+<table class="pt"><thead><tr><th>Услуга</th><th>Б/Н с НДС</th><th>Наличные</th><th>На ИП</th></tr></thead><tbody>
+<tr><td>Вывоз (25 м³)</td><td class="ph">15 000 ₽</td><td>12 500 ₽</td><td>13 950 ₽</td></tr>
+<tr><td>Цена за м³</td><td>600 ₽</td><td>500 ₽</td><td>558 ₽</td></tr>
+<tr><td>Погрузчик (смена)</td><td>28 000–30 000 ₽</td><td>27 000 ₽</td><td>26 000–27 900 ₽</td></tr>
+</tbody></table>
+<h4 style="margin:16px 0 6px">Самосвал 15 м³</h4>
+<table class="pt"><thead><tr><th>Услуга</th><th>Б/Н с НДС</th><th>Наличные</th><th>На ИП</th></tr></thead><tbody>
+<tr><td>Вывоз (15 м³)</td><td class="ph">12 750 ₽</td><td>10 500 ₽</td><td>11 860 ₽</td></tr>
+<tr><td>Цена за м³</td><td>850 ₽</td><td>700 ₽</td><td>~790 ₽</td></tr>
+<tr><td>Мини-погрузчик (смена)</td><td>38 000 ₽</td><td>34 000 ₽</td><td>35 340 ₽</td></tr>
+</tbody></table>
+</div>
+</div>
+<div class="card">
+<div class="card-h">&#10052; Тариф 2: ПОСЛЕ СНЕГОПАДА</div>
+<div class="card-b">
+<div class="sp ok"><div class="sp-l">Можно давать скидку</div>Спрос снижается, перевозчики освобождаются.</div>
+<h4 style="margin:12px 0 6px">Самосвал 25 м³</h4>
+<table class="pt"><thead><tr><th>Услуга</th><th>Б/Н с НДС</th><th>Наличные</th><th>На ИП</th></tr></thead><tbody>
+<tr><td>Вывоз (25 м³)</td><td class="ph">13 750–14 500 ₽</td><td>11 500–12 000 ₽</td><td>12 790–13 485 ₽</td></tr>
+<tr><td>Цена за м³</td><td>550–580 ₽</td><td>460–480 ₽</td><td>512–540 ₽</td></tr>
+<tr><td>Погрузчик</td><td>26 000–28 000 ₽</td><td>25 000–26 000 ₽</td><td>24 180–26 040 ₽</td></tr>
+</tbody></table>
+<h4 style="margin:16px 0 6px">Самосвал 15 м³</h4>
+<table class="pt"><thead><tr><th>Услуга</th><th>Б/Н с НДС</th><th>Наличные</th><th>На ИП</th></tr></thead><tbody>
+<tr><td>Вывоз (15 м³)</td><td class="ph">11 250–12 000 ₽</td><td>9 500–10 000 ₽</td><td>10 463–11 160 ₽</td></tr>
+<tr><td>Цена за м³</td><td>750–800 ₽</td><td>633–667 ₽</td><td>697–744 ₽</td></tr>
+<tr><td>Мини-погрузчик</td><td>34 000–36 000 ₽</td><td>30 000–32 000 ₽</td><td>31 620–33 480 ₽</td></tr>
+</tbody></table>
+</div>
+</div>
+<div class="card">
+<div class="card-h">&#128230; Скидки за объём</div>
+<div class="card-b">
+<table class="pt"><thead><tr><th>Объём</th><th>Снегопад</th><th>После</th><th></th></tr></thead><tbody>
+<tr><td>до 100 м³</td><td>Стандарт</td><td>Стандарт</td><td>—</td></tr>
+<tr><td>100–250 м³</td><td>Стандарт</td><td>−5%</td><td>Только после</td></tr>
+<tr><td>250–350 м³</td><td>Стандарт</td><td>−5–7%</td><td>Согласовать</td></tr>
+<tr><td>от 350 м³</td><td>Индивид.</td><td class="ph">−10%</td><td>Согласовать</td></tr>
+</tbody></table>
+<div class="sp warn" style="margin-top:10px"><div class="sp-l">Помни</div>При снегопаде скидки за объём НЕ предоставляем!</div>
+</div>
+</div>
+<div class="card">
+<div class="card-h">&#128179; Скидка при оплате наличными</div>
+<div class="card-b">
+<table class="pt"><thead><tr><th>Что</th><th>По безналу</th><th>За наличные</th></tr></thead><tbody>
+<tr><td>Вывоз</td><td>Полная цена</td><td class="ph">−10% от стоимости за м³</td></tr>
+<tr><td>Погрузка</td><td>Полная цена</td><td class="ph">−2 000 ₽ от смены</td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+<!-- ===== ШПАРГАЛКА ===== -->
+<div class="tc" id="tab-cheat">
+<div class="card">
+<div class="card-h">&#127908; Мини-презентация (выучи наизусть!)</div>
+<div class="card-b">
+<div class="sp purp">
+<button class="cp" onclick="cpy(this)">Копировать</button>
+<div class="sp-l">Блок доверия — говори ДО цены</div>
+&#10004; «Мы работаем по договору с <strong>Мосводоканалом</strong> — вывозим на официальные снегоплавильные пункты. Талоны утилизации предоставляем.»<br><br>
+&#10004; «Среди клиентов — <strong>Мосгордума</strong> и крупные госучреждения.»<br><br>
+&#10004; «В сильные снегопады не подводим — у нас <strong>большой парк</strong> привлечённых самосвалов, техника в работе по всей Москве.»<br><br>
+&#10004; «Много <strong>постоянных клиентов</strong> — работают не первый сезон.»
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="card-h">&#9889; Ключевые фразы</div>
+<div class="card-b" style="padding:0">
+<div class="chi"><div class="chl">Приветствие</div>«Добрый день! Компания Транском, [Имя]. Вывоз снега по Москве и области. Сейчас быстро всё посчитаю — разрешите пару вопросов?»</div>
+<div class="chi"><div class="chl">Перехват «сколько стоит?»</div>«Цена зависит от объёма и техники. Чтобы назвать точно — у вас территория открытая или есть узкие проезды?»</div>
+<div class="chi"><div class="chl">В снегопад</div>«Сейчас вся техника задействована, цены сезонные. Все компании работают по таким ценам.»</div>
+<div class="chi"><div class="chl">После снегопада</div>«Сейчас есть окно по технике — можем предложить хорошие условия.»</div>
+<div class="chi"><div class="chl">Расчёт вслух</div>«Площадь [X] м², снег [Y] см — это [Z] кубов, [N] рейсов. Ориентир — [сумма].»</div>
+<div class="chi"><div class="chl">Отправка КП</div>«Скину КП и сразу счёт — если устроит, оплатите без ожидания.»</div>
+<div class="chi"><div class="chl">Фиксация дата</div>«Перезвоню вам сегодня в [время]. Заявки за сутки, но лучше зафиксировать — в снегопад технику разбирают.»</div>
+<div class="chi"><div class="chl">Если не готов</div>«Скину расчёт одним сообщением в WhatsApp — это не презентация, просто итог в две строки. Хорошо?»</div>
+<div class="chi"><div class="chl">Предварительный график</div>«Поставлю вас в предварительный график, без обязательств. Если передумаете — просто скажете.»</div>
+</div>
+</div>
+
+<div class="card">
+<div class="card-h">&#128142; Реферальная программа</div>
+<div class="card-b">
+<div class="sp ok">
+<button class="cp" onclick="cpy(this)">Копировать</button>
+<div class="sp-l">Спрашиваем у КАЖДОГО клиента (даже если не купил)</div>
+«Кому из знакомых, коллег, управляющих нужен вывоз снега? Если порекомендуете и человек закажет — <strong>следующий рейс для вас бесплатно</strong>, одна машина в подарок.»
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="card-h">&#127775; Бонус-приёмы для догрева</div>
+<div class="card-b" style="padding:0">
+<div class="chi"><div class="chl">Сниженная цена</div>«В прошлый раз было 600, сейчас 550 — условия стали выгоднее.»</div>
+<div class="chi"><div class="chl">Фото с объекта</div>«После вывоза пришлём фото чистой территории — для вашего отчёта.»</div>
+<div class="chi"><div class="chl">Прогноз погоды</div>«Слежу за прогнозом — если большой снегопад, сам позвоню заранее.»</div>
+<div class="chi"><div class="chl">Быстрый отклик</div>«Сохраните прямой номер — отвечу в WhatsApp за 15 мин, даже в выходной.»</div>
+<div class="chi"><div class="chl">Без лишних объяснений</div>«Данные по объекту сохранены — просто скажите "приезжайте", всё посчитано.»</div>
+<div class="chi"><div class="chl">Пробный вывоз</div>«Давайте начнём с одной машины — посмотрите, как работаем. Понравится — продолжим.»</div>
+</div>
+</div>
+
+<div class="card">
+<div class="card-h">&#128179; Формы оплаты</div>
+<div class="card-b" style="padding:0">
+<div class="chi"><div class="chl">Б/Н с НДС</div>Юрлица на ОСНО, бюджет, крупные заказчики. Полный пакет документов.</div>
+<div class="chi"><div class="chl">Наличные</div>Минимальная цена. Небольшие заказы, частные клиенты.</div>
+<div class="chi"><div class="chl">На ИП (без НДС)</div>Клиенты на УСН, ИП. Упрощённый документооборот.</div>
+</div>
+</div>
+
+<div class="card">
+<div class="card-h">&#128203; Формула расчёта объёма</div>
+<div class="card-b">
+<div class="sp">
+<div class="sp-l">Формула</div>
+<strong>Площадь (м²) × Высота снега (м) = Объём (м³)</strong><br>
+Объём ÷ 25 (или 15) = количество рейсов<br><br>
+<em>Пример: парковка 1000 м², снег 40 см → 1000 × 0.4 = 400 м³ → 16 рейсов (25 м³)</em>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+// ===== PRICES =====
+const P={storm:{25:{bn:15000,cash:12500,ip:13950,lbn:29000,lcash:27000,lip:26950},15:{bn:12750,cash:10500,ip:11860,lbn:38000,lcash:34000,lip:35340}},after:{25:{bn:14125,cash:11750,ip:13138,lbn:27000,lcash:25500,lip:25110},15:{bn:11625,cash:9750,ip:10812,lbn:35000,lcash:31000,lip:32550}}};
+let tariff='storm',curStep=0,cbStep=0;
+
+// ===== NEW CLIENT STEPS =====
+const NS=[
+{title:'Приветствие + перехват инициативы',tag:'10 сек',tc:'#10b981',content:`
+<div class="sp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Говори</div>
+Добрый день, <strong>[Имя клиента]</strong>! Меня зовут <strong>[Имя]</strong>, компания «Транском» — вывоз снега по Москве и области. Понял вашу задачу — сейчас быстро всё посчитаю. Разрешите, задам пару вопросов, чтобы назвать точную цену?</div>
+<div class="sp tip"><div class="sp-l">Цель</div>Не дать клиенту сразу спросить «сколько стоит?» — перехватить инициативу вопросами.</div>
+<div class="sp ok"><div class="sp-l">Сразу отправь</div>Презентацию компании (PDF/WhatsApp) — в первые минуты контакта!</div>
+`},
+{title:'Квалификация + занесение в CRM',tag:'30–40 сек',tc:'#f59e0b',content:`
+<div class="sp"><div class="sp-l">Вопросы — задавай быстро, по-деловому</div>
+<div id="qual-checks">
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>«Как к вам обращаться?»</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>«Какой адрес объекта?»</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>«Что за территория — парковка, двор, проезд, промзона?»</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>«Примерная площадь? Или на глаз — сколько метров?»</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>«Высота снега — по колено, по пояс, выше?»</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>«Проезды широкие — большой самосвал заедет? Или узко?»</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>«Когда нужно вывезти — срочно или планово?»</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>«Оплата по безналу или наличными?»</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>«WhatsApp или почта для расчёта?»</span></div>
+</div>
+</div>
+<div class="sp warn"><div class="sp-l">Критично!</div>&#9757; Клиент попадает в ПланФикс <strong>ДО озвучивания цены</strong> — имя, телефон, адрес, площадь, объём, формат техники, сроки, оплата.</div>
+`},
+{title:'Мини-презентация (ДО цены!)',tag:'30–40 сек',tc:'#7c3aed',content:`
+<div class="sp purp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Говори — блок доверия</div>
+«Пока считаю — коротко о нас.<br><br>
+Мы работаем по <strong>договору с Мосводоканалом</strong> — вывозим на официальные снегоплавильные пункты. Талоны утилизации предоставляем.<br><br>
+Среди клиентов — <strong>Мосгордума</strong> и крупные госучреждения.<br><br>
+В сильные снегопады не подводим — <strong>большой парк</strong> привлечённых самосвалов, техника в работе по всей Москве. Когда у других подрядчиков машины заняты — мы приезжаем и вывозим.<br><br>
+Много <strong>постоянных клиентов</strong> — работают не первый сезон.»</div>
+<div class="sp tip"><div class="sp-l">Когда говорить</div>На этапе 2 (пока собираем информацию) или после — главное, <strong>ДО цены!</strong></div>
+`},
+{title:'Быстрый расчёт вслух',tag:'20 сек',tc:'#ea580c',content:`
+<div class="sp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Считай при клиенте — это создаёт доверие</div>
+«Так, смотрите: площадь <strong>[X]</strong> м², снег примерно <strong>[Y]</strong> см — это получается около <strong>[Z]</strong> кубов. Это <strong>[N]</strong> рейсов большого/малого самосвала. По стоимости ориентир — в районе <strong>[сумма]</strong>.»<br><br>
+«Детальный расчёт скину на WhatsApp — там техника, объёмы, цена, всё разложено. Удобно?»</div>
+<div class="sp tip"><div class="sp-l">Если клиент говорит «не надо КП, просто цену»</div>
+«Понял, без проблем. Ориентир — [сумма] за вывоз плюс [сумма] за погрузку. Но я всё равно скину короткий расчёт одним сообщением в WhatsApp — чтобы цифры были под рукой. Это не презентация, просто итог в две строки.»</div>
+<div style="margin-top:8px"><button class="btn btn-p" onclick="tab('calc')">&#128178; Открыть калькулятор</button></div>
+`},
+{title:'КП + счёт + следующий шаг',tag:'20 сек',tc:'#1a73e8',content:`
+<div class="sp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Говори</div>
+«<strong>[Имя]</strong>, посчитал ваш объект. Получается <strong>[X]</strong> кубов, <strong>[N]</strong> рейсов. Стоимость — <strong>[сумма]</strong>. Сейчас отправлю КП и сразу счёт — если всё устроит, сможете оплатить без ожидания.»</div>
+<div class="sp ok"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Фиксируй следующий шаг!</div>
+«Предлагаю так: вы смотрите КП, если всё устраивает — подтверждаете, и я ставлю вас в график на <strong>[дата]</strong>. Заявки принимаем за сутки, но лучше зафиксировать заранее — в снегопад технику разбирают быстро. Перезвоню вам сегодня в <strong>[время]</strong>, хорошо?»</div>
+<div class="sp warn"><div class="sp-l">Не «подумайте и позвоните»!</div>Конкретное время перезвона + привязка к дате вывоза. Попроси карточку компании (реквизиты).</div>
+`},
+{title:'Закрытие возражений',tag:'важно',tc:'#dc2626',content:`
+<div class="sp tip"><div class="sp-l">Формула</div>Не спорь. <strong>Согласись → Аргументируй → Предложи</strong></div>
+<div class="sp"><div class="sp-l">«Дорого / у других дешевле»</div>
+«Понимаю. А у них свой договор со снегоплавильным пунктом? Талоны дают? Если снег в поле — это штраф для вас. У нас всё официально. А по цене — если наличными, даём скидку: −10% на вывоз и −2000 на погрузку.»</div>
+<div class="sp"><div class="sp-l">«Надо подумать»</div>
+«Конечно. Единственное — сезон, технику расписывают быстро. Поставлю вас в предварительный график, без обязательств. Передумаете — просто скажете. Место за вами.»</div>
+<div class="sp"><div class="sp-l">«Пришлите КП, мы сами позвоним»</div>
+«Обязательно. Но давайте я сам наберу завтра в [время] — вдруг вопросы по расчёту, сразу поясню.»</div>
+<div style="margin-top:8px"><button class="btn btn-o" onclick="tab('obj')">&#128165; Все возражения →</button></div>
+`},
+{title:'Закрытие сделки',tag:'финал',tc:'#10b981',content:`
+<div class="sp ok"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Клиент подтвердил</div>
+«Всё, <strong>[Имя]</strong>, вы в графике на <strong>[дата]</strong>. Техника будет в <strong>[время]</strong>. Если будут изменения — сразу свяжусь.»</div>
+<div class="sp warn"><div class="sp-l">Чеклист закрытия</div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>Счёт отправлен (вместе с КП)</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>Оплата получена / подтверждена</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>Дата и время вывоза согласованы</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>Заявка передана логисту</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>Клиенту сообщено точное время</span></div>
+</div>
+`},
+{title:'После вывоза: ОС + реферал + регулярка',tag:'допродажа',tc:'#7c3aed',content:`
+<div class="sp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Звонок в тот же день / на следующий</div>
+«<strong>[Имя]</strong>, добрый день! Территорию вывезли — всё в порядке? Всё устроило?»</div>
+<div class="sp ok"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Реферал (ВСЕГДА!)</div>
+«Кому из знакомых — управляющих, соседей, коллег — нужен вывоз? Если порекомендуете и человек закажет — <strong>следующий рейс бесплатно</strong>, одна машина в подарок.»</div>
+<div class="sp purp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Допродажа — регулярное обслуживание</div>
+«Можем поставить на регулярный вывоз — после каждого снегопада приезжаем по заявке, без предоплаты. Не нужно каждый раз искать подрядчика. Интересно?»</div>
+<div class="sp tip"><div class="sp-l">Не забудь</div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>Зафиксировал результат в ПланФиксе</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>Реферал: спросил ✓ / контакт получен ✓</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>Предложил регулярку</span></div>
+</div>
+`}
+];
+
+// ===== CALLBACK STEPS =====
+const CS=[
+{title:'Открываем разговор',tag:'старт',tc:'#1a73e8',content:`
+<div class="sp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Говори</div>
+«<strong>[Имя клиента]</strong>, добрый день! Это <strong>[Имя]</strong> из «Транском». Вы к нам обращались по вывозу снега — как у вас сейчас с этим ситуация? Вопрос ещё актуален?»</div>
+<div class="sp tip"><div class="sp-l">Слушай ответ — три варианта</div>
+<strong>&#128994; «Да, нужно / думаем»</strong> → следующий шаг<br>
+<strong>&#128992; «Уже не нужно / растаял»</strong> → шаг 3 (Греем)<br>
+<strong>&#128308; «Заказали у других»</strong> → шаг 4 (Резерв)</div>
+`},
+{title:'Клиенту нужно — продаём',tag:'&#128994; нужно',tc:'#10b981',content:`
+<div class="sp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Говори — новая цена!</div>
+«Отлично, что актуально. С тех пор, как общались, у нас изменились условия — сейчас <strong>550 рублей за куб</strong> вместо 600. Давайте пересчитаю ваш объём по новой цене?»</div>
+<div class="sp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Если раньше не купил из-за цены</div>
+«Помню, в прошлый раз цена не совсем устроила. Сейчас <strong>ощутимо дешевле</strong> — давайте посчитаю, посмотрите разницу.»</div>
+<div class="sp purp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Блок надёжности</div>
+«Мы работаем по договору с Мосводоканалом, на официальные снегоплавильные пункты. Среди клиентов — Мосгордума. В снегопады не подводим — большой парк техники.»</div>
+<div class="sp ok"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Закрепиться</div>
+«Могу закрепить за вами технику на сезон. Когда нужно — просто пишете, мы уже знаем объект, выезжаем без лишних вопросов.»</div>
+<div class="sp warn"><div class="sp-l">Чеклист</div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>Уточнил/обновил объём, дату, формат, оплату</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>Посчитал стоимость, озвучил</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>Отправил КП + счёт</span></div>
+<div class="chk"><input type="checkbox" onchange="chkToggle(this)"><span>Передал логисту</span></div>
+</div>
+`},
+{title:'Сейчас не нужно — греем',tag:'&#128992; не нужно',tc:'#f59e0b',content:`
+<div class="sp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Не дави!</div>
+«Понял, сейчас не горит. Но зима длинная — если ситуация изменится: цена сейчас <strong>550 за куб</strong>, это ниже, чем обычно. Заявку принимаем за сутки, выезжаем на следующий день.»</div>
+<div class="sp ok"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Оставь зацепку</div>
+«Продублирую КП и счёт с актуальными ценами — если понадобится срочно, всё будет под рукой.»</div>
+<div class="sp tip"><div class="sp-l">Действие</div>Отправь КП + счёт на WhatsApp / почту. Поставь перезвон перед ближайшим снегопадом или через 7–10 дней.</div>
+`},
+{title:'Заказал у других — не сжигай мост',tag:'&#128308; конкурент',tc:'#dc2626',content:`
+<div class="sp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Стань запасным вариантом</div>
+«Понял, без проблем. Если подведут или понадобится подстраховка — имейте нас в виду. Сейчас <strong>550 за куб</strong>, техника в работе каждый день, выезжаем на следующий день. Просто наберите.»</div>
+<div class="sp tip"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Мягко посей сомнение (если уместно)</div>
+«Кстати, уточните — вывозят на <strong>официальный снегоплавильный пункт</strong>? Талоны дают? Если снег в поле — это штраф для вас. У нас договор с Мосводоканалом, всё легально.»</div>
+<div class="sp warn"><div class="sp-l">В ПланФикс</div>«Заказал у конкурента» + название (если сказал). Перезвон через 2–3 недели: «Как прошло? Устроило?»</div>
+`},
+{title:'Реферал — спрашиваем ВСЕГДА',tag:'всегда!',tc:'#7c3aed',content:`
+<div class="sp purp"><button class="cp" onclick="cpy(this)">Копировать</button><div class="sp-l">Спрашиваем у КАЖДОГО — даже у тех, кто заказал у других</div>
+«И последний вопрос — может, кому-то из знакомых нужен вывоз? Управляющие компании, склады, бизнес-центры? Если порекомендуете и человек закажет — <strong>один рейс бесплатно</strong> при вашем заказе.»</div>
+<div class="sp tip"><div class="sp-l">Если дал контакт</div>Записать, отметить источник в CRM. Позвонить рефералу <strong>сегодня</strong>.</div>
+`},
+{title:'Бонус-приёмы',tag:'зацепи!',tc:'#ea580c',content:`
+<div class="sp tip"><div class="sp-l">Выбери 1–2 приёма по ситуации — не все сразу</div></div>
+<div class="bonus-card"><h4>&#128178; Сниженная цена</h4><p>«В прошлый раз было 600, сейчас 550 — условия стали выгоднее.»</p></div>
+<div class="bonus-card"><h4>&#128247; Фото с объекта</h4><p>«После вывоза пришлём фото чистой территории — для отчёта или руководства.»</p></div>
+<div class="bonus-card"><h4>&#127782;&#65039; Прогноз погоды</h4><p>«Слежу за прогнозом — если большой снегопад, сам позвоню заранее.»</p></div>
+<div class="bonus-card"><h4>&#9889; Быстрый отклик</h4><p>«Мой прямой номер — отвечу в WhatsApp за 15 мин, даже в выходной.»</p></div>
+<div class="bonus-card"><h4>&#128640; Без лишних объяснений</h4><p>«Данные по объекту сохранены — скажите "приезжайте", всё посчитано.»</p></div>
+<div class="bonus-card"><h4>&#128666; Пробный вывоз</h4><p>«Начнём с одной машины — посмотрите, как работаем.»</p></div>
+`},
+{title:'Фиксация в ПланФиксе',tag:'CRM',tc:'#1a73e8',content:`
+<div class="sp warn"><div class="sp-l">Правило</div>После КАЖДОГО звонка — запись + подзадача с датой. Ни один лид без следующего шага!</div>
+<table class="pt" style="margin-top:8px"><thead><tr><th>Результат</th><th>Подзадача</th></tr></thead><tbody>
+<tr><td>&#128994; Заказал</td><td>Перезвонить после вывоза → ОС + реферал</td></tr>
+<tr><td>&#128992; Думает, взял КП</td><td>Через 1–2 дня: «Посмотрели расчёт?»</td></tr>
+<tr><td>&#128992; Не нужно, отправили КП</td><td>Перед снегопадом или через 7–10 дней</td></tr>
+<tr><td>&#128308; У конкурента</td><td>Через 2–3 недели: «Как прошло?»</td></tr>
+<tr><td>&#128142; Дал реферала</td><td>Позвонить рефералу СЕГОДНЯ</td></tr>
+<tr><td>&#128247; Не дозвонился</td><td>Завтра, другое время. После 3 попыток — WhatsApp</td></tr>
+</tbody></table>
+`}
+];
+
+// ===== OBJECTIONS =====
+const OBJ=[
+{q:'«Дорого / у других дешевле»',tags:'цена дорого конкуренты дешевле',a:`
+<div class="sp"><div class="sp-l">Ответ</div>«Понимаю. А у них договор со снегоплавильным пунктом? Талоны дают? Если снег просто в поле — это <strong>штраф для вас</strong> как заказчика. У нас всё официально, договор с Мосводоканалом, документы.»</div>
+<div class="sp ok"><div class="sp-l">Усилить</div>«А по цене — если наличными, даём скидку: <strong>−10% на вывоз</strong> и <strong>−2000 ₽</strong> на погрузку. Плюс при объёме от 100 кубов — доп. условия.»</div>`},
+{q:'«У нас уже есть подрядчик»',tags:'подрядчик есть работаем свой',a:`
+<div class="sp"><div class="sp-l">Ответ</div>«Отлично, значит знаете тему. Мы часто работаем <strong>как резерв</strong> — в пиковые дни основной подрядчик не справляется. Многие клиенты держат нас на подхвате.»</div>
+<div class="sp tip"><div class="sp-l">Мягко посеять сомнение</div>«Кстати, уточните — вывозят на официальный пункт? Талоны дают? У нас договор с Мосводоканалом.»</div>`},
+{q:'«Надо подумать»',tags:'подумать думаем не сейчас',a:`
+<div class="sp"><div class="sp-l">Ответ</div>«Конечно. Единственное — сезон, технику расписывают быстро. Поставлю вас в <strong>предварительный график, без обязательств</strong>. Передумаете — просто скажете. Место за вами.»</div>`},
+{q:'«Пришлите КП, мы сами позвоним»',tags:'кп коммерческое предложение почту',a:`
+<div class="sp"><div class="sp-l">Ответ</div>«Обязательно. Но давайте я сам наберу завтра в <strong>[время]</strong> — вдруг вопросы по расчёту, сразу поясню.»</div>
+<div class="sp tip"><div class="sp-l">Важно</div>Уточни детали для персонального расчёта. Поставь перезвон в CRM! Отправь КП + счёт вместе.</div>`},
+{q:'«Сейчас не актуально / не сезон»',tags:'не актуально позже сезон',a:`
+<div class="sp"><div class="sp-l">Ответ</div>«Конечно. Продублирую КП с актуальными ценами — если понадобится срочно, всё под рукой. Цена сейчас <strong>550 за куб</strong>, это ниже чем обычно.»</div>
+<div class="sp tip"><div class="sp-l">Зацепка</div>«В снегопад цены у всех выше и техника нарасхват. Зафиксировать условия заранее — выгоднее.»</div>`},
+{q:'«А есть скидка?»',tags:'скидка скинуть дешевле',a:`
+<div class="sp" id="obj-disc"><div class="sp-l">Ответ (зависит от тарифа)</div><div id="obj-disc-t"></div></div>`},
+{q:'«Куда вывозите снег?»',tags:'куда вывозите полигон плавильный',a:`
+<div class="sp"><div class="sp-l">Ответ</div>«На <strong>лицензированные снегоплавильные пункты</strong>, по договору с Мосводоканалом. Талоны утилизации предоставляем. Всё полностью легально.»</div>`},
+{q:'«Документы? НДС?»',tags:'документы ндс акт счёт бухгалтерия',a:`
+<div class="sp"><div class="sp-l">Ответ</div>«Полный пакет: <strong>договор, акт, счёт-фактура с НДС</strong>. Также работаем с ИП без НДС и наличными.»</div>`},
+{q:'«Можно ночью / в выходные?»',tags:'ночью выходные время когда',a:`
+<div class="sp"><div class="sp-l">Ответ</div>«Да, основная работа <strong>в ночное время</strong> — чтобы не мешать бизнесу. К утру территория чистая. Работаем и в выходные.»</div>`},
+{q:'«Почему маленький самосвал дороже?»',tags:'маленький дороже малый 15',a:`
+<div class="sp"><div class="sp-l">Ответ</div>«Мини-погрузчик и малый самосвал делают больше рейсов при том же объёме. Техника для узких проездов — специализированная. Но это <strong>единственный вариант</strong>, если крупная техника к вам не заедет.»</div>`},
+{q:'«Можно срочно, не за сутки?»',tags:'срочно быстро сегодня сейчас',a:`
+<div class="sp"><div class="sp-l">Ответ</div>«Стараемся идти навстречу. Если техника свободна — <strong>выедем в тот же день</strong>. Позвоните — уточним наличие.»</div>`},
+{q:'«А если снег идёт каждый день?»',tags:'каждый день регулярно постоянно',a:`
+<div class="sp"><div class="sp-l">Ответ</div>«Работаем на <strong>регулярной основе</strong> — по графику или по заявке. С постоянными клиентами — по постоплате, без предоплаты каждый раз.»</div>`},
+{q:'«У нас свой трактор, не нужен вывоз»',tags:'свой трактор сами',a:`
+<div class="sp"><div class="sp-l">Ответ</div>«Свой трактор — удобно для уборки. Но куда снег после? Многие копят во дворе до весны — а это подтопления и претензии. Мы забираем по мере накопления. Одна машина — 25 кубов — и двор чистый.»</div>`}
+];
+
+// ===== RENDER =====
+function renderSteps(arr,containerId,stepVar){
+const c=document.getElementById(containerId);
+const cur=stepVar==='cb'?cbStep:curStep;
+c.innerHTML=arr.map((s,i)=>`
+<div class="step ${i===cur?'act':''} ${i<cur?'done':''}" id="${stepVar}-${i}">
+<div class="step-hd" onclick="goStep('${stepVar}',${i})">
+<div class="step-n">${i<cur?'&#10003;':i+1}</div>
+<div class="step-t">${s.title}</div>
+<span class="step-tag" style="background:${s.tc}15;color:${s.tc}">${s.tag}</span>
+</div>
+<div class="step-c">${s.content}
+<div class="sbtns">
+${i>0?`<button class="btn btn-o" onclick="goStep('${stepVar}',${i-1})">&#8592; Назад</button>`:''}
+${i<arr.length-1?`<button class="btn btn-p" onclick="goStep('${stepVar}',${i+1})">Далее &#8594;</button>`:`<button class="btn btn-s" onclick="goStep('${stepVar}',0)">&#128260; Сначала</button>`}
+</div>
+</div>
+</div>`).join('');
+}
+
+function goStep(v,n){
+if(v==='cb')cbStep=n;else curStep=n;
+renderSteps(v==='cb'?CS:NS,v==='cb'?'cb-steps':'new-steps',v);
+document.getElementById(v+'-'+n).scrollIntoView({behavior:'smooth',block:'nearest'});
+if(v!=='cb')updPrices();
+updDisc();
+}
+
+function renderObj(){
+const c=document.getElementById('obj-c');
+c.innerHTML=OBJ.map((o,i)=>`
+<div class="obj" id="ob-${i}" data-tags="${o.tags}">
+<div class="obj-q" onclick="tobj(${i})"><span>&#128172;</span> ${o.q}<span class="ar">&#9660;</span></div>
+<div class="obj-a">${o.a}</div>
+</div>`).join('');
+updDisc();
+}
+
+function tobj(i){document.getElementById('ob-'+i).classList.toggle('op')}
+function fobj(){
+const q=document.getElementById('osrch').value.toLowerCase();
+document.querySelectorAll('.obj').forEach(e=>{
+const t=e.dataset.tags||'';const x=e.textContent.toLowerCase();
+e.classList.toggle('hidden',q&&!x.includes(q)&&!t.includes(q));
+});
+}
+
+// ===== TARIFF =====
+function setT(t){
+tariff=t;
+document.getElementById('b-st').className='tb'+(t==='storm'?' storm':'');
+document.getElementById('b-af').className='tb'+(t==='after'?' after':'');
+calc();updPrices();updDisc();
+}
+function updPrices(){
+const p=P[tariff];
+// update script price references if they exist
+}
+function updDisc(){
+const e=document.getElementById('obj-disc-t');
+if(!e)return;
+e.innerHTML=tariff==='storm'
+?'«К сожалению, пиковая загрузка — цена фиксированная. Это стандарт рынка в снегопад.»'
+:'«При объёме от 100 кубов обсудим условия. От 350 кубов — спецтариф. Какой у вас объём?»<br><br>Наличные: −10% на вывоз, −2000 ₽ на погрузку.';
+}
+
+// ===== CALCULATOR =====
+function calc(){
+const tk=+document.getElementById('c-t').value;
+const py=document.getElementById('c-p').value;
+const rr=Math.max(1,+document.getElementById('c-r').value||1);
+const ld=document.getElementById('c-l').value==='yes';
+const p=P[tariff][tk];
+const tp=p[py],lp=p['l'+py];
+const tt=tp*rr,tl=ld?lp:0;
+const vol=tk*rr;
+let disc=0,dn='';
+if(tariff==='after'){
+if(vol>=350){disc=10;dn='−10% (согласовать)';}
+else if(vol>=250){disc=6;dn='−5–7% (согласовать)';}
+else if(vol>=100){disc=5;dn='−5%';}
+}
+const da=Math.round(tt*disc/100);
+const fin=tt+tl-da;
+document.getElementById('ct').textContent=fin.toLocaleString('ru')+' ₽';
+document.getElementById('cd').textContent=vol+' м³ = '+rr+' рейс(ов) × '+tk+' м³';
+let b=`<div class="cr-r"><span>Вывоз ${rr}×${tp.toLocaleString('ru')} ₽</span><span>${tt.toLocaleString('ru')} ₽</span></div>`;
+if(ld)b+=`<div class="cr-r"><span>${tk===15?'Мини-погрузчик':'Погрузчик'}</span><span>${lp.toLocaleString('ru')} ₽</span></div>`;
+if(disc>0)b+=`<div class="cr-r" style="color:#10b981"><span>${dn}</span><span>−${da.toLocaleString('ru')} ₽</span></div>`;
+b+=`<div class="cr-r" style="font-weight:700;border-top:1px solid rgba(255,255,255,.2);padding-top:5px;margin-top:3px"><span>ИТОГО</span><span>${fin.toLocaleString('ru')} ₽</span></div>`;
+document.getElementById('cb').innerHTML=b;
+}
+
+function calcArea(){
+const a=+document.getElementById('c-area').value;
+const s=+document.getElementById('c-snow').value;
+const h=document.getElementById('area-hint');
+const t=document.getElementById('area-text');
+if(a>0&&s>0){
+const vol=Math.round(a*(s/100));
+const r25=Math.ceil(vol/25);
+const r15=Math.ceil(vol/15);
+h.style.display='block';
+t.innerHTML=`<strong>${a} м² × ${s} см = ${vol} м³</strong><br>Большой (25 м³): <strong>${r25} рейсов</strong> | Малый (15 м³): <strong>${r15} рейсов</strong>`;
+document.getElementById('c-r').value=document.getElementById('c-t').value==='25'?r25:r15;
+calc();
+}else{h.style.display='none';}
+}
+
+// ===== TABS =====
+function tab(t){
+document.querySelectorAll('.tc').forEach(e=>e.classList.remove('act'));
+document.querySelectorAll('.nav-i').forEach(e=>e.classList.remove('act'));
+document.getElementById('tab-'+t).classList.add('act');
+const ni=document.querySelector(`.nav-i[data-tab="${t}"]`);
+if(ni)ni.classList.add('act');
+}
+
+// ===== UTILS =====
+function cpy(b){
+const s=b.parentElement;
+const t=s.innerText.replace('Копировать','').replace(/^[А-Яа-яЁё ]+\n/,'').trim();
+navigator.clipboard.writeText(t).then(()=>{b.textContent='✓';setTimeout(()=>b.textContent='Копировать',1500);});
+}
+function chkToggle(cb){cb.parentElement.classList.toggle('checked',cb.checked);}
+
+// ===== INIT =====
+renderSteps(NS,'new-steps','ns');
+renderSteps(CS,'cb-steps','cb');
+renderObj();
+calc();
+</script>
+</body>
+</html>
