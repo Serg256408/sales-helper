@@ -795,8 +795,22 @@ let pfLinkedTask=null;
 const PF_STORAGE_KEY='transkom_pf_settings';
 const PF_B3_LABELS=['Как работаем','Презентация','Призыв к действию','Счёт скинул'];
 
+const PF_DEFAULTS={
+  url:'transkom.planfix.ru',
+  token:'',
+  fields:['76888','76896','76890','76892'],
+  summaryField:'76894'
+};
 function getPfSettings(){
-  try{return JSON.parse(localStorage.getItem(PF_STORAGE_KEY)||'{}');}catch(e){return {};}
+  try{
+    const saved=JSON.parse(localStorage.getItem(PF_STORAGE_KEY)||'{}');
+    return {
+      url:saved.url||PF_DEFAULTS.url,
+      token:saved.token||PF_DEFAULTS.token,
+      fields:saved.fields&&saved.fields[0]?saved.fields:PF_DEFAULTS.fields,
+      summaryField:saved.summaryField||PF_DEFAULTS.summaryField
+    };
+  }catch(e){return {...PF_DEFAULTS};}
 }
 function savePfSettings(){
   const s={
@@ -959,7 +973,7 @@ async function saveCallToPlanfix(){
     const customData=[];
     for(let i=0;i<4;i++){
       if(s.fields&&s.fields[i]){
-        customData.push({field:{id:parseInt(s.fields[i])},value:b3state[i]?1:0});
+        customData.push({field:{id:parseInt(s.fields[i])},value:b3state[i]?'Да':'Нет'});
       }
     }
     // Summary text
@@ -1005,6 +1019,19 @@ function autoLinkFromUrl(){
 renderTree('start','tree-render',history);
 renderTree('cb_start','cbtree-render',cbHistory);
 renderObj();calc();loadPfSettings();autoLinkFromUrl();
+// First-run: remind to enter token
+(function(){
+  const s=getPfSettings();
+  if(!s.token){
+    setTimeout(()=>{
+      const bar=document.createElement('div');
+      bar.id='pf-token-remind';
+      bar.style.cssText='position:fixed;top:0;left:0;right:0;background:#fff3cd;color:#856404;padding:10px 16px;font-size:13px;text-align:center;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,.1)';
+      bar.innerHTML='Для работы с PlanFix введите API-токен → <b style="cursor:pointer;text-decoration:underline" onclick="tab(\'planfix\');document.getElementById(\'pf-token-remind\').remove()">Настройки PlanFix</b> <span style="float:right;cursor:pointer;font-size:16px" onclick="this.parentElement.remove()">✕</span>';
+      document.body.prepend(bar);
+    },800);
+  }
+})();
 </script>
 </body>
 </html>
