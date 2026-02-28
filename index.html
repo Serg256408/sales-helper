@@ -255,7 +255,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="card"><div class="card-h">&#128269; Привязка к сделке</div><div class="card-b">
 <div class="tip" style="margin-bottom:12px">Перед звонком найди сделку клиента — чекбоксы будут автоматически записываться в PlanFix.</div>
 <div class="cf" style="margin-bottom:10px"><label>Имя клиента / номер сделки</label>
-<div style="display:flex;gap:8px"><input type="text" id="pf-search" placeholder="Введите имя или номер..." onkeydown="if(event.key==='Enter')searchPfTask()"><button onclick="searchPfTask()" style="padding:10px 16px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Найти</button></div>
+<div style="display:flex;gap:8px"><input type="text" id="pf-search" placeholder="Номер задачи из PlanFix или название" onkeydown="if(event.key==='Enter')searchPfTask()"><button onclick="searchPfTask()" style="padding:10px 16px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Найти</button></div>
 </div>
 <div id="pf-results" style="display:none"></div>
 <div id="pf-linked" style="display:none;background:#f0fff0;border:2px solid #22c55e;border-radius:10px;padding:14px;margin-top:10px">
@@ -864,11 +864,15 @@ async function pfFetch(endpoint,method,body){
   const s=getPfSettings();
   const base=pfApiUrl();
   if(!base)throw new Error('PlanFix не настроен');
+  const m=method||'POST';
   const opts={
-    method:method||'POST',
-    headers:{'Authorization':'Bearer '+s.token,'Content-Type':'application/json','Accept':'application/json'},
+    method:m,
+    headers:{'Authorization':'Bearer '+s.token,'Accept':'application/json'},
   };
-  if(body)opts.body=JSON.stringify(body);
+  if(m==='POST'||m==='PUT'){
+    opts.headers['Content-Type']='application/json';
+    if(body)opts.body=JSON.stringify(body);
+  }
   const resp=await fetch(base+endpoint,opts);
   if(!resp.ok){
     let errText='';try{errText=await resp.text();}catch(e){}
@@ -893,23 +897,35 @@ async function searchPfTask(){
   const res=document.getElementById('pf-results');
   res.style.display='block';res.innerHTML='<div style="color:#999;font-size:13px">Ищу...</div>';
   try{
-    // If input is a number — search by task ID directly
+    // If input is a number — fetch task directly by ID
     if(/^\d+$/.test(q)){
       try{
         const task=await pfFetch('task/'+q,'GET');
         if(task&&task.id){renderPfResults([task]);return;}
-      }catch(e){}
+      }catch(e){
+        res.innerHTML='<div style="color:#ef4444;font-size:13px;padding:8px">Задача #'+q+' не найдена. '+e.message+'</div>';
+        return;
+      }
     }
-    // Search by task name (type:8 = task name, operator:equal = contains)
-    const data=await pfFetch('task/list','POST',{
-      offset:0,pageSize:10,
-      fields:'id,name,status,counterparty',
-      filters:[{type:8,operator:'equal',value:q}]
-    });
-    if(data.tasks&&data.tasks.length){
-      renderPfResults(data.tasks);
+    // Search by task name (type:8)
+    const body={offset:0,pageSize:10,filters:[{type:8,operator:'equal',value:q}]};
+    const data=await pfFetch('task/list','POST',body);
+    const tasks=data.tasks||data.result||[];
+    if(tasks.length){
+      renderPfResults(tasks);
     }else{
-      res.innerHTML='<div style="color:#999;font-size:13px;padding:8px">Ничего не найдено. Попробуйте другой запрос или номер задачи.</div>';
+      // Try search by counterparty (type:7)
+      try{
+        const data2=await pfFetch('contact/list','POST',{offset:0,pageSize:5,fields:'id,name',filters:[{type:3001,operator:'equal',value:q}]});
+        const contacts=data2.contacts||data2.result||[];
+        if(contacts.length){
+          const cid=contacts[0].id;
+          const data3=await pfFetch('task/list','POST',{offset:0,pageSize:10,filters:[{type:7,operator:'equal',value:cid}]});
+          const tasks3=data3.tasks||data3.result||[];
+          if(tasks3.length){renderPfResults(tasks3);return;}
+        }
+      }catch(e2){}
+      res.innerHTML='<div style="color:#999;font-size:13px;padding:8px">Ничего не найдено. Попробуйте номер задачи из PlanFix (число).</div>';
     }
   }catch(e){
     res.innerHTML='<div style="color:#ef4444;font-size:13px;padding:8px">Ошибка: '+e.message+'</div>';
