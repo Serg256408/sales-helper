@@ -893,26 +893,23 @@ async function searchPfTask(){
   const res=document.getElementById('pf-results');
   res.style.display='block';res.innerHTML='<div style="color:#999;font-size:13px">Ищу...</div>';
   try{
-    // Search by task title / contact name
+    // If input is a number — search by task ID directly
+    if(/^\d+$/.test(q)){
+      try{
+        const task=await pfFetch('task/'+q,'GET');
+        if(task&&task.id){renderPfResults([task]);return;}
+      }catch(e){}
+    }
+    // Search by task name (type:8 = task name, operator:equal = contains)
     const data=await pfFetch('task/list','POST',{
       offset:0,pageSize:10,
-      fields:'id,title,status,counterparty',
-      filters:[{type:1,operator:'equal',value:q,field:1}]
+      fields:'id,name,status,counterparty',
+      filters:[{type:8,operator:'equal',value:q}]
     });
-    if(!data.tasks||!data.tasks.length){
-      // Try broader search — by text content
-      const data2=await pfFetch('task/list','POST',{
-        offset:0,pageSize:10,
-        fields:'id,title,status,counterparty',
-        filters:[{type:3,operator:'equal',value:q}]
-      });
-      if(!data2.tasks||!data2.tasks.length){
-        res.innerHTML='<div style="color:#999;font-size:13px;padding:8px">Ничего не найдено. Попробуйте другой запрос.</div>';
-        return;
-      }
-      renderPfResults(data2.tasks);
-    }else{
+    if(data.tasks&&data.tasks.length){
       renderPfResults(data.tasks);
+    }else{
+      res.innerHTML='<div style="color:#999;font-size:13px;padding:8px">Ничего не найдено. Попробуйте другой запрос или номер задачи.</div>';
     }
   }catch(e){
     res.innerHTML='<div style="color:#ef4444;font-size:13px;padding:8px">Ошибка: '+e.message+'</div>';
@@ -923,7 +920,7 @@ function renderPfResults(tasks){
   const res=document.getElementById('pf-results');
   let h='';
   tasks.forEach(t=>{
-    const name=t.title||'Без названия';
+    const name=t.name||t.title||'Без названия';
     const cp=t.counterparty?(' — '+(t.counterparty.name||'')):'';
     const st=t.status?(' ['+t.status.name+']'):'';
     h+=`<div onclick="linkPfTask(${t.id},'${name.replace(/'/g,"\\'")}${cp.replace(/'/g,"\\'")}')" style="padding:10px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;font-size:13px;transition:.1s" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='#fff'">
