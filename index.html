@@ -6,15 +6,80 @@
 <title>ТРАНСКОМ — Помощник МОП</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#1a1a1a;line-height:1.55;font-size:14px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#1a1a1a;line-height:1.55;font-size:14px;transition:background .4s}
+
+/* ===== THEMED BACKGROUNDS ===== */
+body.mode-snow{background:linear-gradient(180deg,#e8f0fe 0%,#d6e6f7 40%,#eaf2fb 100%);background-attachment:fixed}
+body.mode-asphalt{background:linear-gradient(180deg,#e8e4e0 0%,#d9d3cc 40%,#ece8e4 100%);background-attachment:fixed}
 
 /* Header */
-.hdr{background:#1a1a1a;color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.hdr{background:#1a1a1a;color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;transition:background .4s}
+body.mode-snow .hdr{background:linear-gradient(135deg,#1a3a5c 0%,#1e4d7b 100%)}
+body.mode-asphalt .hdr{background:linear-gradient(135deg,#2c2c2c 0%,#3d3530 100%)}
 .hdr h1{font-size:18px;font-weight:700;letter-spacing:1px}
 .hdr-sub{font-size:11px;opacity:.6;margin-top:2px}
+
+/* Service mode toggle — BIG and visible */
+.svc-toggle{display:flex;gap:0;border-radius:24px;overflow:hidden;border:2px solid rgba(255,255,255,.25)}
+.svc-btn{padding:8px 22px;font-size:14px;font-weight:700;cursor:pointer;border:none;color:rgba(255,255,255,.6);background:transparent;transition:all .25s;letter-spacing:.5px;white-space:nowrap}
+.svc-btn:hover{color:#fff;background:rgba(255,255,255,.1)}
+.svc-btn.on-snow{background:linear-gradient(135deg,#4a9eda,#2d7fc4);color:#fff;box-shadow:0 2px 8px rgba(45,127,196,.4)}
+.svc-btn.on-asphalt{background:linear-gradient(135deg,#f5a623,#e8911a);color:#fff;box-shadow:0 2px 8px rgba(245,166,35,.4)}
+
+/* Tariff sub-toggle */
 .tb{padding:5px 14px;border-radius:18px;font-size:12px;font-weight:600;cursor:pointer;border:2px solid rgba(255,255,255,.2);color:#fff;transition:.2s;display:inline-block}
 .tb:hover{opacity:.8}
 .tb.on{background:#fff;color:#1a1a1a;border-color:#fff}
+
+/* Nav themed */
+body.mode-snow .nav{background:#f0f6ff;border-bottom-color:#c8ddf3}
+body.mode-snow .nav-i.act{border-bottom-color:#2d7fc4;color:#1a3a5c}
+body.mode-snow .nav-i:hover{background:#e4eefb}
+body.mode-asphalt .nav{background:#f5f1ed;border-bottom-color:#d4cdc6}
+body.mode-asphalt .nav-i.act{border-bottom-color:#e8911a;color:#3d3530}
+body.mode-asphalt .nav-i:hover{background:#eee8e2}
+
+/* Cards themed */
+body.mode-snow .card{box-shadow:0 2px 12px rgba(45,127,196,.08)}
+body.mode-asphalt .card{box-shadow:0 2px 12px rgba(60,50,40,.1)}
+body.mode-snow .tree-card{box-shadow:0 2px 16px rgba(45,127,196,.1)}
+body.mode-asphalt .tree-card{box-shadow:0 2px 16px rgba(60,50,40,.12)}
+
+/* Key block themed */
+body.mode-asphalt .key-block{background:#3d3530}
+body.mode-asphalt .key-label{color:#f5a623}
+body.mode-asphalt .key-text b{color:#f5a623}
+body.mode-snow .key-label{color:#4a9eda}
+body.mode-snow .key-text b{color:#4a9eda}
+
+/* Must block themed */
+body.mode-asphalt .must{background:#fff8ed;border-color:#f5a623}
+body.mode-asphalt .must-title{color:#8a6520}
+body.mode-asphalt .must-title::before{background:#f5a623}
+
+/* Big3 themed */
+body.mode-asphalt .big3{background:#3d3530}
+body.mode-asphalt .big3-toggle{background:#3d3530;color:#f5a623}
+body.mode-asphalt .big3-title{color:#f5a623}
+body.mode-asphalt .big3-cb{border-color:#f5a623}
+body.mode-asphalt .big3-expand{color:#f5a623}
+body.mode-asphalt .big3-fill{background:#f5a623}
+body.mode-asphalt .big3-count{color:#f5a623}
+body.mode-snow .big3{background:#1a3a5c}
+body.mode-snow .big3-toggle{background:#1a3a5c;color:#4a9eda}
+body.mode-snow .big3-title{color:#4a9eda}
+body.mode-snow .big3-cb{border-color:#4a9eda}
+body.mode-snow .big3-expand{color:#4a9eda}
+body.mode-snow .big3-fill{background:#4a9eda}
+body.mode-snow .big3-count{color:#4a9eda}
+
+/* Choice dots themed */
+body.mode-asphalt .choice:hover{border-color:#e8911a}
+body.mode-snow .choice:hover{border-color:#2d7fc4}
+
+/* CR result block themed */
+body.mode-asphalt .cr{background:#3d3530}
+body.mode-snow .cr{background:#1a3a5c}
 
 /* Nav */
 .nav{display:flex;background:#fff;border-bottom:2px solid #e5e5e5;overflow-x:auto;position:sticky;top:52px;z-index:99}
@@ -151,10 +216,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <body>
 
 <div class="hdr">
-<div><h1>ТРАНСКОМ <span class="pf-badge" id="pf-hdr-badge" onclick="tab('planfix')"></span></h1><div class="hdr-sub">Помощник МОП &middot; Вывоз снега &middot; с 2014 года</div></div>
-<div style="display:flex;gap:6px">
+<div><h1>ТРАНСКОМ <span class="pf-badge" id="pf-hdr-badge" onclick="tab('planfix')"></span></h1><div class="hdr-sub" id="hdr-sub-text">Помощник МОП &middot; Вывоз снега &middot; с 2014 года</div></div>
+<div style="display:flex;gap:10px;align-items:center">
+<div class="svc-toggle">
+<button class="svc-btn" id="b-svc-snow" onclick="setSvc('snow')">&#10052; СНЕГ</button>
+<button class="svc-btn on-asphalt" id="b-svc-asph" onclick="setSvc('asphalt')">&#9632; АСФАЛЬТ</button>
+</div>
+<div id="snow-tariff-toggle" style="display:none;gap:4px">
 <div class="tb on" id="b-st" onclick="setT('storm')">&#9679; Снегопад</div>
 <div class="tb" id="b-af" onclick="setT('after')">&#9675; После</div>
+</div>
 </div>
 </div>
 
@@ -184,6 +255,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="cf" style="margin-top:8px"><label>Высота снега (см)</label><input type="number" id="c-snow" placeholder="необязательно" oninput="calcA()"></div>
 <div id="ah" class="tip" style="display:none;margin-top:10px"><span id="at"></span></div>
 <div class="cr"><div style="font-size:12px;opacity:.7">Стоимость для клиента</div><div class="cr-a" id="ct">—</div><div class="cr-d" id="cd"></div><div class="cr-b" id="ccb"></div></div>
+</div></div>
+</div>
+
+<!-- CALC ASPHALT -->
+<div class="tc" id="tab-calc-a">
+<div class="card"><div class="card-h">&#128178; Ориентировочный расчёт — Асфальтирование</div><div class="card-b">
+<div class="cg">
+<div class="cf"><label>Тип работ</label><select id="ca-type" onchange="calcA2()"><option value="asphalt">Асфальтирование</option><option value="curb">Бордюрные работы</option><option value="patch">Ямочный ремонт</option><option value="complex">Комплексное благоустройство</option></select></div>
+<div class="cf"><label>Площадь (м²) / Длина (пог.м)</label><input type="number" id="ca-area" value="500" min="1" oninput="calcA2()"></div>
+<div class="cf"><label>Текущее основание</label><select id="ca-base" onchange="calcA2()"><option value="ground">Грунт (с нуля)</option><option value="old">Старый асфальт</option><option value="gravel">Щебень/подготовка есть</option></select></div>
+<div class="cf"><label>Планируемые нагрузки</label><select id="ca-load" onchange="calcA2()"><option value="ped">Пешеходная зона</option><option value="light">Легковой транспорт</option><option value="heavy">Грузовой транспорт</option></select></div>
+</div>
+<div class="cf" style="margin-top:12px"><label>Оплата</label><select id="ca-pay" onchange="calcA2()"><option value="bn">Б/Н с НДС</option><option value="cash">Наличные</option><option value="ip">На ИП</option></select></div>
+<div class="cr" id="ca-result">
+<div style="font-size:12px;opacity:.7">Ориентировочная стоимость</div>
+<div class="cr-a" id="ca-total">—</div>
+<div class="cr-d" id="ca-detail"></div>
+<div class="cr-b" id="ca-breakdown"></div>
+</div>
+<div class="tip" style="margin-top:12px"><b>Важно:</b> Это предварительная оценка. Точная стоимость — после выезда специалиста и составления сметы. Бесплатный выезд на замеры!</div>
 </div></div>
 </div>
 
@@ -255,7 +346,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="card"><div class="card-h">&#128269; Привязка к сделке</div><div class="card-b">
 <div class="tip" style="margin-bottom:12px">Перед звонком найди сделку клиента — чекбоксы будут автоматически записываться в PlanFix.</div>
 <div class="cf" style="margin-bottom:10px"><label>Имя клиента / номер сделки</label>
-<div style="display:flex;gap:8px"><input type="text" id="pf-search" placeholder="Номер задачи из PlanFix или название" onkeydown="if(event.key==='Enter')searchPfTask()"><button onclick="searchPfTask()" style="padding:10px 16px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Найти</button></div>
+<div style="display:flex;gap:8px"><input type="text" id="pf-search" placeholder="Введите имя или номер..." onkeydown="if(event.key==='Enter')searchPfTask()"><button onclick="searchPfTask()" style="padding:10px 16px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Найти</button></div>
 </div>
 <div id="pf-results" style="display:none"></div>
 <div id="pf-linked" style="display:none;background:#f0fff0;border:2px solid #22c55e;border-radius:10px;padding:14px;margin-top:10px">
@@ -864,15 +955,11 @@ async function pfFetch(endpoint,method,body){
   const s=getPfSettings();
   const base=pfApiUrl();
   if(!base)throw new Error('PlanFix не настроен');
-  const m=method||'POST';
   const opts={
-    method:m,
-    headers:{'Authorization':'Bearer '+s.token,'Accept':'application/json'},
+    method:method||'POST',
+    headers:{'Authorization':'Bearer '+s.token,'Content-Type':'application/json','Accept':'application/json'},
   };
-  if(m==='POST'||m==='PUT'){
-    opts.headers['Content-Type']='application/json';
-    if(body)opts.body=JSON.stringify(body);
-  }
+  if(body)opts.body=JSON.stringify(body);
   const resp=await fetch(base+endpoint,opts);
   if(!resp.ok){
     let errText='';try{errText=await resp.text();}catch(e){}
@@ -897,35 +984,26 @@ async function searchPfTask(){
   const res=document.getElementById('pf-results');
   res.style.display='block';res.innerHTML='<div style="color:#999;font-size:13px">Ищу...</div>';
   try{
-    // If input is a number — fetch task directly by ID
-    if(/^\d+$/.test(q)){
-      try{
-        const task=await pfFetch('task/'+q,'GET');
-        if(task&&task.id){renderPfResults([task]);return;}
-      }catch(e){
-        res.innerHTML='<div style="color:#ef4444;font-size:13px;padding:8px">Задача #'+q+' не найдена. '+e.message+'</div>';
+    // Search by task title / contact name
+    const data=await pfFetch('task/list','POST',{
+      offset:0,pageSize:10,
+      fields:'id,title,status,counterparty',
+      filters:[{type:1,operator:'equal',value:q,field:1}]
+    });
+    if(!data.tasks||!data.tasks.length){
+      // Try broader search — by text content
+      const data2=await pfFetch('task/list','POST',{
+        offset:0,pageSize:10,
+        fields:'id,title,status,counterparty',
+        filters:[{type:3,operator:'equal',value:q}]
+      });
+      if(!data2.tasks||!data2.tasks.length){
+        res.innerHTML='<div style="color:#999;font-size:13px;padding:8px">Ничего не найдено. Попробуйте другой запрос.</div>';
         return;
       }
-    }
-    // Search by task name (type:8)
-    const body={offset:0,pageSize:10,filters:[{type:8,operator:'equal',value:q}]};
-    const data=await pfFetch('task/list','POST',body);
-    const tasks=data.tasks||data.result||[];
-    if(tasks.length){
-      renderPfResults(tasks);
+      renderPfResults(data2.tasks);
     }else{
-      // Try search by counterparty (type:7)
-      try{
-        const data2=await pfFetch('contact/list','POST',{offset:0,pageSize:5,fields:'id,name',filters:[{type:3001,operator:'equal',value:q}]});
-        const contacts=data2.contacts||data2.result||[];
-        if(contacts.length){
-          const cid=contacts[0].id;
-          const data3=await pfFetch('task/list','POST',{offset:0,pageSize:10,filters:[{type:7,operator:'equal',value:cid}]});
-          const tasks3=data3.tasks||data3.result||[];
-          if(tasks3.length){renderPfResults(tasks3);return;}
-        }
-      }catch(e2){}
-      res.innerHTML='<div style="color:#999;font-size:13px;padding:8px">Ничего не найдено. Попробуйте номер задачи из PlanFix (число).</div>';
+      renderPfResults(data.tasks);
     }
   }catch(e){
     res.innerHTML='<div style="color:#ef4444;font-size:13px;padding:8px">Ошибка: '+e.message+'</div>';
@@ -936,7 +1014,7 @@ function renderPfResults(tasks){
   const res=document.getElementById('pf-results');
   let h='';
   tasks.forEach(t=>{
-    const name=t.name||t.title||'Без названия';
+    const name=t.title||'Без названия';
     const cp=t.counterparty?(' — '+(t.counterparty.name||'')):'';
     const st=t.status?(' ['+t.status.name+']'):'';
     h+=`<div onclick="linkPfTask(${t.id},'${name.replace(/'/g,"\\'")}${cp.replace(/'/g,"\\'")}')" style="padding:10px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;font-size:13px;transition:.1s" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='#fff'">
@@ -1028,23 +1106,745 @@ function autoLinkFromUrl(){
   }
 }
 
-// ===== INIT =====
-renderTree('start','tree-render',history);
-renderTree('cb_start','cbtree-render',cbHistory);
-renderObj();calc();loadPfSettings();autoLinkFromUrl();
-// First-run: remind to enter token
-(function(){
-  const s=getPfSettings();
-  if(!s.token){
-    setTimeout(()=>{
-      const bar=document.createElement('div');
-      bar.id='pf-token-remind';
-      bar.style.cssText='position:fixed;top:0;left:0;right:0;background:#fff3cd;color:#856404;padding:10px 16px;font-size:13px;text-align:center;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,.1)';
-      bar.innerHTML='Для работы с PlanFix введите API-токен → <b style="cursor:pointer;text-decoration:underline" onclick="tab(\'planfix\');document.getElementById(\'pf-token-remind\').remove()">Настройки PlanFix</b> <span style="float:right;cursor:pointer;font-size:16px" onclick="this.parentElement.remove()">✕</span>';
-      document.body.prepend(bar);
-    },800);
+// ===== ASPHALT TREE =====
+const TA={
+a_start:{stage:'Старт',title:'Приветствие',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Добрый день, <b>[Имя]</b>! Компания Транском — дорожное строительство и благоустройство <b>полного цикла с 2014 года</b>. Задам пару вопросов, чтобы подготовить точный расчёт?»'},
+    {t:'must',title:'Обязательно на этом шаге',checks:['Представился: имя + Транском + с 2014 года','Обозначил полный цикл работ']}
+  ],
+  choices:[
+    {text:'Клиент слушает, готов говорить',hint:'Отвечает на вопросы',dot:'g',go:'a_qualify'},
+    {text:'«Сколько стоит?»',hint:'Сразу спрашивает цену',dot:'y',go:'a_price_ask'},
+    {text:'«Пришлите на почту»',hint:'Хочет КП без разговора',dot:'b',go:'a_wants_kp'},
+    {text:'Секретарь не пускает',hint:'Блокирует',dot:'r',go:'a_secretary'}
+  ]
+},
+
+a_secretary:{stage:'Секретарь',title:'Обход секретаря',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Мне нужно уточнить параметры участка для расчёта — кто отвечает за благоустройство территории? Буквально пара вопросов.»'},
+    {t:'say',label:'Если не пускает',text:'«Подскажите имя и прямой номер ответственного — перезвоню напрямую.»'}
+  ],
+  choices:[
+    {text:'Переключили на ЛПР',hint:'Соединили',dot:'g',go:'a_qualify'},
+    {text:'Дали контакт',hint:'Email или номер',dot:'b',go:'a_got_contact'},
+    {text:'Отказали',hint:'Наглухо',dot:'r',go:'a_hard_no'}
+  ]
+},
+
+a_price_ask:{stage:'Цена',title:'Клиент сразу спрашивает цену',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Цену считаем <b>индивидуально под объект</b> — зависит от площади, основания, нагрузок. Ориентир назвать могу, но сначала пара вопросов — какая <b>площадь участка</b> и что сейчас на нём?»'},
+    {t:'tip',text:'Не называй «среднюю цену»! Задай 2–3 вопроса — перехватишь инициативу и покажешь экспертизу.'}
+  ],
+  choices:[
+    {text:'Отвечает на вопросы',hint:'Начал рассказывать',dot:'g',go:'a_qualify'},
+    {text:'«Просто скажите цену!»',hint:'Настаивает',dot:'y',go:'a_forced_price'}
+  ]
+},
+
+a_forced_price:{stage:'Цена',title:'Даём ориентир по цене',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Ориентир: асфальтирование — <b>от 1 800 ₽/м²</b> (тротуар) до <b>4 500 ₽/м²</b> (дорога под грузовой). Зависит от «пирога» и основания. <b>Выезд на замеры бесплатный</b> — после него точная смета.»'},
+    {t:'must',title:'Обязательно',checks:['Взял имя + телефон/Telegram','Занёс в ПланФикс']}
+  ],
+  choices:[
+    {text:'Согласился на выезд',hint:'«Приезжайте»',dot:'g',go:'a_send_kp'},
+    {text:'«Дорого»',hint:'Не устраивает',dot:'y',go:'a_obj_expensive'},
+    {text:'«Не надо»',hint:'Отказ',dot:'r',go:'a_soft_no'}
+  ]
+},
+
+a_wants_kp:{stage:'КП',title:'Хочет КП без разговора',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Конечно! Чтобы расчёт был точным — какая <b>площадь</b>, что сейчас на участке и что должно получиться в итоге? Подберу оптимальное решение.»'},
+    {t:'tip',text:'Не отправляй типовое КП! Задай вопросы → персональный расчёт = выше конверсия.'}
+  ],
+  choices:[
+    {text:'Ответил на вопросы',hint:'Дал информацию',dot:'g',go:'a_qualify'},
+    {text:'«Просто стандартное пришлите»',hint:'Не хочет говорить',dot:'b',go:'a_forced_price'}
+  ]
+},
+
+a_qualify:{stage:'Квалификация',title:'Сбор информации',
+  blocks:[
+    {t:'must',title:'Узнай и запиши ВСЁ',checks:['Имя клиента','Адрес объекта','Площадь участка (м²)','Что нужно сделать (асфальт, бордюры, колодцы, разметка, благоустройство)','Какое сейчас основание (грунт, старый асфальт, щебень, бетон)','Планируемые нагрузки (пешеходная, легковой, грузовой)','Что должно получиться в итоге (дорога, парковка, тротуар, двор)','Желаемые сроки','Форма оплаты (безнал/наличные)','Telegram или почта']},
+    {t:'key',label:'Критично!',text:'ЗАНЕСИ В ПЛАНФИКС <b>ПРЯМО СЕЙЧАС</b> — до обсуждения цены! Клиент в базе.'}
+  ],
+  choices:[
+    {text:'Всё узнал — презентация',hint:'Информация собрана',dot:'g',go:'a_presentation'}
+  ]
+},
+
+a_presentation:{stage:'Презентация',title:'Блок доверия — ДО цены!',
+  blocks:[
+    {t:'key',label:'Презентация — говори уверенно!',text:'«Пока готовлю расчёт — буквально минута о нас, чтобы понимали с кем работаете.<br><br>Транском на рынке <b>с 2014 года</b> — полный цикл дорожных работ и благоустройства: от геодезии до финальной разметки.<br><br>В штате <b>5 бригад разной квалификации</b>, штатный <b>проектировщик и геодезист</b>. Все бригадиры <b>оформлены официально</b>, с допусками и квалификационными удостоверениями.<br><br>Работаем с <b>государственными заказчиками</b> — полный пакет исполнительной документации. <b>Чистый НДС</b>, договор, акты, сметы.<br><br>Асфальт берём только у <b>проверенных заводов</b> — каждая партия с паспортом качества. За каждым проектом — <b>персональный менеджер</b>, который контролирует сроки и качество.»'},
+    {t:'key',label:'Портфолио — покажи объекты!',text:'«Из недавних объектов: <b>КП «Западная Долина» — 20 000 м²</b> полного цикла: дороги, парковки, тротуары, бордюры, ливнёвка, разметка.<br><br><b>ЖК «Московские»</b> — асфальтирование дворов, пешеходные зоны, установка бордюров, благоустройство.<br><br><b>Микояновский мясокомбинат</b> — промышленная площадка под тяжёлый грузовой транспорт, усиленный дорожный «пирог».<br><br>Работаем с <b>коттеджными посёлками, ЖК, бизнес-центрами, промзонами, частными клиентами и госучреждениями</b>.»'},
+    {t:'say',label:'Как работаем — покажи простоту',text:'«Процесс для вас максимально простой:<br><br><b>1.</b> Оставляете заявку — <b>выезжаем на замеры бесплатно</b>. На объект приезжает <b>замерщик или бригадир</b> — проконсультирует на месте и точно рассчитает.<br><b>2.</b> Составляем <b>детальную смету</b> с учётом всех особенностей.<br><b>3.</b> Заключаем <b>договор с фиксированной ценой</b> и сроками.<br><b>4.</b> Выполняем работы <b>под контролем прораба</b> — фотоотчёты на каждом этапе.<br><b>5.</b> Сдаём объект с <b>полным пакетом документации</b> и гарантией.<br><br>По сути — вы просто звоните, а мы делаем всё под ключ.»'},
+    {t:'tip',text:'Не читай как робот! Говори как эксперт, который знает своё дело. Упоминай объекты — это вызывает доверие.'}
+  ],
+  choices:[
+    {text:'Предлагаю выезд/расчёт',hint:'Презентация + выезд',dot:'g',go:'a_quote_price'},
+    {text:'Клиент спрашивает про процесс работы',hint:'Хочет детали',dot:'b',go:'a_show_process'}
+  ]
+},
+
+a_show_process:{stage:'Экспертиза',title:'Покажи как мы работаем — детали!',
+  blocks:[
+    {t:'key',label:'Ямочный ремонт — пошагово',text:'«Если у вас <b>ямы и трещины</b> — вот как мы делаем:<br><br><b>1.</b> <b>Алмазная нарезка</b> контура ямы — чёткие ровные края, не рвём покрытие.<br><b>2.</b> <b>Демонтаж</b> разрушенного покрытия трактором с гидромолотом или компрессором.<br><b>3.</b> <b>Обработка краёв битумной эмульсией</b> — для сцепления нового слоя со старым.<br><b>4.</b> <b>Укладка горячей асфальтобетонной смеси</b> вручную или асфальтоукладчиком.<br><b>5.</b> <b>Уплотнение виброкатком</b> в несколько проходов до нормативной плотности.<br><b>6.</b> <b>Вывоз строительного мусора</b> — получаете готовое идеальное покрытие.»'},
+    {t:'key',label:'Асфальтирование «под ключ» — полный цикл',text:'«Если делаем <b>с нуля</b>:<br><br><b>1.</b> <b>Геодезия</b> — съёмка участка, вынос отметок, определение уклонов для водоотведения.<br><b>2.</b> <b>Земляные работы</b> — выемка грунта на проектную глубину, планировка основания, уплотнение.<br><b>3.</b> <b>Песчаная подушка</b> — устройство слоя 15–30 см с послойным уплотнением.<br><b>4.</b> <b>Щебёночное основание</b> — укладка щебня фракции 20–40 мм, расклинцовка, уплотнение.<br><b>5.</b> <b>Асфальтобетон</b> — укладка 1–3 слоёв в зависимости от нагрузок (5–15 см).<br><b>6.</b> <b>Сдача</b> — уплотнение катком, бордюры, разметка, исполнительная документация.»'},
+    {t:'key',label:'Бордюры и колодцы',text:'«<b>Бордюрные работы:</b> вынос линии по проекту → траншея → бетонная подушка М-100 → монтаж бортового камня по нитке → заделка швов раствором.<br><br><b>Колодцы и ливнёвка:</b> расчёт точек приёма воды по уклонам → котлован → установка ж/б колец или пластиковых колодцев → прокладка труб с уклоном, герметизация → обратная засыпка, решётки и крышки.»'},
+    {t:'tip',text:'Детали показывают экспертность! Клиент представляет процесс и понимает — вы не шабашники, а профессионалы.'}
+  ],
+  choices:[
+    {text:'Предлагаю выезд/расчёт',hint:'Назад к закрытию',dot:'g',go:'a_quote_price'}
+  ]
+},
+
+a_quote_price:{stage:'КП',title:'Предлагаю выезд и расчёт',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Сейчас подготовлю <b>предварительный расчёт</b> и скину в Telegram. Но для точной сметы нужен <b>выезд специалиста</b> — это бесплатно.»'},
+    {t:'key',label:'Закрывай — давай начнём!',text:'«<b>[Имя]</b>, давайте так — <b>отправлю расчёт</b> и <b>запишу на замеры</b>. Геодезист выедет, всё промерит, и через день-два будет <b>точная смета</b>. Без обязательств — не подойдёт, просто скажете.»'}
+  ],
+  choices:[
+    {text:'«Хорошо, приезжайте!»',hint:'Готов',dot:'g',go:'a_send_kp'},
+    {text:'«Дорого»',hint:'Возражение по цене',dot:'y',go:'a_obj_expensive'},
+    {text:'«Надо подумать»',hint:'Не готов',dot:'y',go:'a_obj_think'},
+    {text:'«У нас есть подрядчик»',hint:'Конкурент',dot:'r',go:'a_obj_competitor'},
+    {text:'«Не сейчас»',hint:'Нет потребности',dot:'b',go:'a_obj_not_now'}
+  ]
+},
+
+a_obj_expensive:{stage:'Возражение',title:'«Дорого»',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Понимаю. А что входит в цену у них? <b>Полный «пирог»</b> с основанием? Гарантия? Исполнительная документация? Часто дешевле — экономят на <b>толщине слоёв</b>, через год-два ямы и трещины.»'},
+    {t:'say',label:'Усилить',text:'«У нас всё по <b>ГОСТ</b>, проверенные материалы, <b>гарантия по договору</b>. Бригады в штате с допусками — не шабашники. <b>Переделка</b> обойдётся дороже.»'},
+    {t:'key',label:'Призыв',text:'«<b>Давайте начнём с выезда</b> — посмотрим объект, дадим точную смету. <b>Выезд бесплатный</b>, без обязательств.»'}
+  ],
+  choices:[
+    {text:'Смягчился',hint:'«Ладно, приезжайте»',dot:'g',go:'a_send_kp'},
+    {text:'Всё равно нет',hint:'Твёрдый отказ',dot:'r',go:'a_soft_no'}
+  ]
+},
+
+a_obj_think:{stage:'Возражение',title:'«Надо подумать»',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Конечно. Единственное — <b>сезон короткий</b>, бригады расписывают быстро. Кто раньше — тот в графике. <b>Выезд бесплатный</b> и ни к чему не обязывает.»'},
+    {t:'key',label:'Призыв',text:'«Скину <b>предварительный расчёт</b> — если устроит, <b>запишу на замеры</b>. Перезвоню <b>завтра в [время]</b>.»'},
+    {t:'must',title:'Обязательно',checks:['Назначил конкретное время перезвона','Отправил предварительный расчёт']}
+  ],
+  choices:[
+    {text:'Согласился',hint:'«Запишите на замеры»',dot:'g',go:'a_send_kp'},
+    {text:'Отказ',hint:'«Нет, спасибо»',dot:'r',go:'a_soft_no'}
+  ]
+},
+
+a_obj_competitor:{stage:'Возражение',title:'«У нас есть подрядчик»',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Отлично, значит в теме. У них <b>бригады в штате с допусками</b>? <b>Проектировщик</b> есть? <b>Гарантия</b> по договору? Мы часто работаем <b>параллельно</b> — основной не вывозит объём, а мы подхватываем.»'},
+    {t:'say',label:'Усилить',text:'«У нас <b>5 бригад</b>, штатный <b>геодезист и проектировщик</b>. Работаем с <b>госзаказчиками</b> — документация безупречная.»'},
+    {t:'key',label:'Призыв',text:'«Давайте скину наши <b>условия и расценки</b> — если подведут, у вас всё готово.»'}
+  ],
+  choices:[
+    {text:'Заинтересовался',hint:'«Пришлите условия»',dot:'g',go:'a_send_kp'},
+    {text:'«Нет, хватает»',hint:'Доволен',dot:'r',go:'a_soft_no'}
+  ]
+},
+
+a_obj_not_now:{stage:'Возражение',title:'«Не сейчас»',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Понял. <b>Сезон стартует в апреле</b> — кто раньше заявку, тот раньше в графике. Скину <b>расчёт заранее</b> — будет под рукой.»'},
+    {t:'key',label:'Зацепка',text:'«Зафиксировать условия <b>до начала сезона</b> — выгоднее. В разгар лета цены выше и очередь на бригады.»'}
+  ],
+  choices:[
+    {text:'Согласился на расчёт',hint:'«Пришлите»',dot:'g',go:'a_send_kp'},
+    {text:'«Не надо»',hint:'Отказ',dot:'r',go:'a_soft_no'}
+  ]
+},
+
+a_send_kp:{stage:'КП + Выезд',title:'Отправка расчёта и запись на замеры',
+  blocks:[
+    {t:'key',label:'Главное — запиши на выезд!',text:'«Скидываю <b>предварительный расчёт в Telegram</b>. Записываю на замеры — выедет <b>замерщик или бригадир</b>, <b>[дата]</b>. Он <b>проконсультирует прямо на объекте</b> и точно всё рассчитает. После замеров — <b>точная смета за 1–2 дня</b>.»'},
+    {t:'say',label:'Объясни ценность выезда',text:'«На объект выезжает <b>опытный замерщик или бригадир</b>. Он может:<br>— Проконсультировать по всем видам работ<br>— Оценить текущее состояние основания<br>— Предложить оптимальное решение<br>— Точно рассчитать объёмы и стоимость<br>— Ответить на любые технические вопросы<br><br><b>Выезд бесплатный</b> и ни к чему не обязывает.»'},
+    {t:'say',label:'Фиксация',text:'«Перезвоню <b>[дата/время]</b> с результатами замеров и точной сметой.»'},
+    {t:'must',title:'Обязательно на этом шаге',checks:['Отправил предварительный расчёт','Записал на выезд / замеры','Попросил реквизиты / карточку компании','Назначил конкретное время перезвона','Занёс в ПланФикс: сделка + подзадача на перезвон']}
+  ],
+  choices:[
+    {text:'Клиент подтвердил заказ!',hint:'«Оформляем!»',dot:'g',go:'a_close_deal'},
+    {text:'Замеры прошли → перезванивай',hint:'Замерщик был на объекте',dot:'b',go:'a_after_survey'},
+    {text:'Жду перезвона',hint:'Расчёт отправлен',dot:'b',go:'a_followup'}
+  ]
+},
+
+a_after_survey:{stage:'После замера',title:'Звонок после выезда замерщика',
+  blocks:[
+    {t:'key',label:'Важно! Выезд ≠ сделка — работай!',text:'Выезд замерщика <b>не гарантирует закрытие сделки</b>. Клиент может думать, сравнивать, сомневаться. Твоя задача — <b>узнать что волнует</b> и <b>попробовать закрыть</b>.'},
+    {t:'say',label:'Открывающий звонок',text:'«<b>[Имя]</b>, добрый день! Транском. Наш специалист был у вас на объекте — <b>смета готова</b>. Скидываю?»'},
+    {t:'must',title:'Узнай что волнует — ДО обсуждения цены!',checks:['Как прошёл выезд? Всё ли понятно?','Какие впечатления от специалиста?','Остались ли технические вопросы?','Есть ли другие предложения / с кем сравниваете?','Что важнее: цена, сроки, гарантия, качество?','Когда планируете начать работы?']},
+    {t:'say',label:'Если клиент «думает»',text:'«Понимаю. Скажите — что именно смущает? <b>Цена, сроки, или нужно согласовать</b> с кем-то? Может, скорректируем смету?»'},
+    {t:'key',label:'Закрывай на конкретику!',text:'«<b>[Имя]</b>, давайте так — подписываем <b>договор с фиксированной ценой</b>, ставлю бригаду в график на <b>[дата]</b>. Передумаете — просто скажете.»<br><br>«<b>Сезон короткий</b> — бригады расписывают быстро. Кто раньше подписал, тот раньше в графике!»'},
+    {t:'tip',text:'Если клиент сравнивает с конкурентом — спроси: «У них бригады в штате? Допуски? Гарантия по договору? Исполнительная документация?» Обычно у шабашников этого нет.'}
+  ],
+  choices:[
+    {text:'Готов заказать!',hint:'«Давайте!»',dot:'g',go:'a_close_deal'},
+    {text:'«Дорого»',hint:'Возражение по цене',dot:'y',go:'a_obj_expensive'},
+    {text:'«Ещё думаю»',hint:'Сравнивает',dot:'y',go:'a_obj_think'},
+    {text:'«У конкурента дешевле»',hint:'Сравнение',dot:'r',go:'a_obj_competitor'},
+    {text:'Не берёт трубку',hint:'',dot:'r',go:'a_no_answer'}
+  ]
+},
+
+a_followup:{stage:'Перезвон',title:'Перезвон по расчёту',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«<b>[Имя]</b>, добрый день! Транском. Отправлял расчёт по благоустройству — посмотрели? Есть вопросы по смете?»'},
+    {t:'key',label:'Призыв',text:'«Давайте <b>запишу на замеры</b> — после них точная смета и <b>договор с фиксированной ценой</b>. Выезд бесплатный!»'}
+  ],
+  choices:[
+    {text:'Готов заказать!',hint:'«Давайте!»',dot:'g',go:'a_close_deal'},
+    {text:'«Дорого»',hint:'Возражение',dot:'y',go:'a_obj_expensive'},
+    {text:'«Ещё думаю»',hint:'Не готов',dot:'y',go:'a_obj_think'},
+    {text:'Не берёт трубку',hint:'Не дозвонился',dot:'r',go:'a_no_answer'}
+  ]
+},
+
+a_no_answer:{stage:'Перезвон',title:'Не дозвонился',
+  blocks:[
+    {t:'tip',text:'Повторить завтра в другое время. После 3 попыток — Telegram:'},
+    {t:'say',label:'Напиши',text:'«<b>[Имя]</b>, добрый день! Транском. Пытался дозвониться — <b>расчёт у вас</b>. Удобно созвониться? Готовы выехать на замеры.»'},
+    {t:'must',title:'Обязательно',checks:['Подзадача в ПланФиксе на перезвон']}
+  ],
+  choices:[
+    {text:'Дозвонился!',hint:'Со 2-3 попытки',dot:'g',go:'a_followup'},
+    {text:'Следующий звонок',hint:'',dot:'b',go:'a_referral_ask'}
+  ]
+},
+
+a_close_deal:{stage:'Сделка!',title:'Закрытие сделки',
+  blocks:[
+    {t:'key',label:'Поздравляю! Скажи:',text:'«Всё, <b>[Имя]</b>, записал! <b>Геодезист</b> выезжает <b>[дата]</b>, после замеров — <b>точная смета и договор</b>. Начало работ — <b>[дата]</b>. Менеджер проекта будет на связи!»'},
+    {t:'must',title:'Чеклист закрытия — ВСЁ должно быть сделано',checks:['Предварительный расчёт отправлен','Выезд на замеры назначен','Договор подготовлен / отправлен','Аванс согласован','Дата начала работ определена','Менеджер проекта назначен','Сделка обновлена в ПланФиксе']}
+  ],
+  choices:[
+    {text:'Оформлено → После сдачи объекта',hint:'Обратная связь + реферал',dot:'g',go:'a_after_work'}
+  ]
+},
+
+a_after_work:{stage:'После сдачи',title:'Обратная связь + реферал',
+  blocks:[
+    {t:'say',label:'Позвони после сдачи',text:'«<b>[Имя]</b>, объект сдали — всё в порядке? Устроило качество?»'},
+    {t:'key',label:'Реферал — спроси обязательно!',text:'«Кому из знакомых нужно асфальтирование или благоустройство? Управляющие, предприятия, ТСЖ? Если порекомендуете и закажут — <b>скидка 5% на следующий проект</b>.»'},
+    {t:'say',label:'Регулярка',text:'«Можем на <b>обслуживание</b> — ямочный ремонт, обновление разметки, уборка. Один подрядчик на всё.»'},
+    {t:'must',title:'Чеклист после сдачи',checks:['Позвонил, спросил ОС','Спросил реферал','Предложил обслуживание','Зафиксировал в ПланФиксе']}
+  ],
+  choices:[
+    {text:'Дал контакт реферала!',hint:'Звоню сегодня',dot:'g',go:'a_referral_call'},
+    {text:'Новый звонок',hint:'Начать сначала',dot:'b',go:'a_start'}
+  ]
+},
+
+a_referral_ask:{stage:'Реферал',title:'Спроси реферал (ВСЕГДА!)',
+  blocks:[
+    {t:'key',label:'Даже если отказал — спроси!',text:'«Может, кому-то из знакомых нужно асфальтирование или благоустройство? Если порекомендуете и закажут — <b>скидка 5%</b> на ваш проект.»'},
+    {t:'must',title:'',checks:['Спросил реферал']}
+  ],
+  choices:[
+    {text:'Дал контакт!',hint:'Записал',dot:'g',go:'a_referral_call'},
+    {text:'Не дал — следующий',hint:'',dot:'b',go:'a_start'}
+  ]
+},
+
+a_referral_call:{stage:'Реферал',title:'Звонок рефералу',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Добрый день! Ваш контакт дал <b>[Имя]</b> — мы делали им асфальтирование. Компания Транском, <b>с 2014 года</b>. Минуту уделите?»'},
+    {t:'must',title:'',checks:['Отметил в ПланФиксе — от кого реферал']}
+  ],
+  choices:[
+    {text:'Начать скрипт',hint:'',dot:'g',go:'a_qualify'},
+    {text:'Следующий звонок',hint:'',dot:'b',go:'a_start'}
+  ]
+},
+
+a_got_contact:{stage:'Контакт',title:'Получил контакт ЛПР',
+  blocks:[
+    {t:'must',title:'Сделай сейчас',checks:['Занёс контакт в ПланФикс','Подготовил предварительный расчёт','Перезвоню ЛПР сегодня/завтра']}
+  ],
+  choices:[{text:'Звоню ЛПР',hint:'Начинаю сначала',dot:'g',go:'a_start'}]
+},
+
+a_soft_no:{stage:'Отказ',title:'Мягкий отказ',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Понял. Отправлю контакты и условия — если понадобится, будем рады помочь. Хорошего дня!»'},
+    {t:'key',label:'Реферал — даже при отказе!',text:'«И последний вопрос — может, кому-то из знакомых нужно благоустройство? Если закажут — <b>скидка 5%</b>.»'},
+    {t:'must',title:'В ПланФиксе',checks:['Записал причину отказа','Подзадача: перезвон через месяц','Спросил реферал']}
+  ],
+  choices:[
+    {text:'Дал реферала!',hint:'',dot:'g',go:'a_referral_call'},
+    {text:'Следующий звонок',hint:'',dot:'b',go:'a_start'}
+  ]
+},
+
+a_hard_no:{stage:'Отказ',title:'Жёсткий отказ',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Спасибо за время. Транском — если нужно благоустройство, мы на связи.»'},
+    {t:'must',title:'',checks:['ПланФикс: отказ + перезвон через 2 месяца']}
+  ],
+  choices:[{text:'Следующий звонок',hint:'',dot:'b',go:'a_start'}]
+},
+
+// ===== ASPHALT CALLBACK TREE =====
+a_cb_start:{stage:'Прозвон базы',title:'Звонок клиенту из базы',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«<b>[Имя]</b>, добрый день! <b>[Имя менеджера]</b> из Транском. Вы обращались по благоустройству — как ситуация? Актуально?»'}
+  ],
+  choices:[
+    {text:'«Да, нужно» / «Думаем»',hint:'Есть потребность',dot:'g',go:'a_cb_need'},
+    {text:'«Не нужно» / «Отложили»',hint:'Сейчас нет',dot:'y',go:'a_cb_warm'},
+    {text:'«Заказали у других»',hint:'Конкурент',dot:'r',go:'a_cb_competitor'},
+    {text:'Не дозвонился',hint:'',dot:'b',go:'a_cb_noans'}
+  ]
+},
+
+a_cb_need:{stage:'Продажа',title:'Нужно — продаём!',
+  blocks:[
+    {t:'say',label:'Зацепи',text:'«Отлично! Сейчас <b>формируем график бригад</b> на сезон — кто раньше, тот в приоритете. Давайте пересчитаю?»'},
+    {t:'key',label:'Презентация (коротко!)',text:'«Напомню — Транском <b>с 2014 года</b>, <b>5 бригад</b> в штате с допусками, штатный <b>геодезист и проектировщик</b>. Работаем с <b>госзаказчиками</b>, <b>чистый НДС</b>, полный пакет документов. Асфальт только от <b>проверенных заводов</b>.»'},
+    {t:'key',label:'Закрывай!',text:'«<b>[Имя]</b>, давайте запишу на <b>бесплатный выезд</b> — геодезист промерит, и будет <b>точная смета с фиксированной ценой</b>!»'},
+    {t:'must',title:'Обязательно',checks:['Уточнил объём, сроки, тип работ','Предложил выезд на замеры']}
+  ],
+  choices:[
+    {text:'Готов!',hint:'',dot:'g',go:'a_close_deal'},
+    {text:'Хочет расчёт',hint:'',dot:'b',go:'a_send_kp'},
+    {text:'«Дорого»',hint:'',dot:'y',go:'a_obj_expensive'},
+    {text:'«Подумаю»',hint:'',dot:'y',go:'a_obj_think'}
+  ]
+},
+
+a_cb_warm:{stage:'Догрев',title:'Не нужно — греем',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Понял. Сезон скоро — <b>бригады расписывают быстро</b>. Скину расчёт заранее — будет под рукой.»'},
+    {t:'must',title:'Обязательно',checks:['Отправил предварительный расчёт','Подзадача: перезвон через 2–3 недели / перед сезоном']}
+  ],
+  choices:[
+    {text:'Реферал',hint:'Спрашиваем всегда!',dot:'g',go:'a_referral_ask'}
+  ]
+},
+
+a_cb_competitor:{stage:'Конкурент',title:'У других — стань запасным',
+  blocks:[
+    {t:'say',label:'Скажи',text:'«Понял. Если не справятся или нужен параллельный подрядчик — имейте нас в виду. <b>5 бригад</b>, <b>с 2014 года</b>, госзаказчики.»'},
+    {t:'say',label:'Сомнение',text:'«У них <b>бригады в штате с допусками</b>? Гарантия? Исполнительная документация? Мы всё делаем <b>по ГОСТ</b>.»'},
+    {t:'must',title:'',checks:['ПланФикс: «у конкурента» + перезвон через месяц']}
+  ],
+  choices:[
+    {text:'Реферал',hint:'Даже если у конкурента!',dot:'g',go:'a_referral_ask'}
+  ]
+},
+
+a_cb_noans:{stage:'Не дозвон',title:'Не дозвонился',
+  blocks:[
+    {t:'say',label:'Telegram (после 3 попыток)',text:'«<b>[Имя]</b>, Транском. Готовим график на сезон — есть выгодные условия. Удобно созвониться?»'},
+    {t:'must',title:'',checks:['Подзадача: повторить завтра, другое время']}
+  ],
+  choices:[{text:'Следующий звонок',hint:'',dot:'b',go:'a_cb_start'}]
+}
+};
+
+// ===== ASPHALT OBJECTIONS =====
+const OBJ_A=[
+{q:'«Дорого / дешевле у других»',tags:'цена дорого',a:'<div class="say"><div class="say-label">Ответ</div>«У них полный «пирог» с основанием? Гарантия по договору? <b>Исполнительная документация</b>? Часто дешевле — экономят на <b>толщине слоёв</b>, через год ямы. У нас <b>с 2014 года</b>, всё по ГОСТ.»</div><div class="say"><div class="say-label">Усилить</div>«Переделка обойдётся <b>в 2 раза дороже</b>. У нас гарантия, проверенные заводы, бригады в штате.»</div>'},
+{q:'«Есть подрядчик»',tags:'подрядчик',a:'<div class="say"><div class="say-label">Ответ</div>«У них бригады <b>в штате с допусками</b>? Проектировщик? Геодезист? Мы часто как <b>параллельный подрядчик</b> — когда основной не вывозит объём. <b>5 бригад, с 2014 года</b>.»</div>'},
+{q:'«Надо подумать»',tags:'подумать',a:'<div class="say"><div class="say-label">Ответ</div>«<b>Выезд бесплатный</b> и ни к чему не обязывает. Геодезист промерит, дадим <b>точную смету</b>. Не подойдёт — просто скажете.»</div>'},
+{q:'«Не сейчас / не сезон»',tags:'не сейчас сезон',a:'<div class="say"><div class="say-label">Ответ</div>«Сезон стартует в <b>апреле</b> — кто раньше заявку, тот в графике. Зафиксировать условия <b>заранее выгоднее</b>.»</div>'},
+{q:'«Какая гарантия?»',tags:'гарантия',a:'<div class="say"><div class="say-label">Ответ</div>«<b>Гарантия по договору</b>. Все работы с актами скрытых работ, <b>исполнительной документацией</b>, паспортами качества материалов.»</div>'},
+{q:'«Сделаете быстро?»',tags:'сроки быстро',a:'<div class="say"><div class="say-label">Ответ</div>«Сроки зависят от объёма. Двор <b>500 м² — 3–5 дней</b>. Парковка 2000 м² — <b>7–10 дней</b>. Точнее после замеров. <b>5 бригад</b> — можем параллелить.»</div>'},
+{q:'«Пришлите КП»',tags:'кп коммерческое',a:'<div class="say"><div class="say-label">Ответ</div>«Скину <b>предварительный расчёт</b> и сразу запишу на <b>бесплатный выезд</b>. Наберу <b>[дата]</b>.»</div>'},
+{q:'«Откуда асфальт?»',tags:'асфальт завод материалы',a:'<div class="say"><div class="say-label">Ответ</div>«Только <b>проверенные заводы</b> — каждая партия с <b>паспортом качества и сертификатом</b>. Контроль температуры укладки, уплотнения, толщины слоёв.»</div>'},
+{q:'«Работаете с госзаказчиками?»',tags:'гос бюджет тендер',a:'<div class="say"><div class="say-label">Ответ</div>«Да, работаем. <b>Чистый НДС</b>, полный пакет: договор, акты, сметы, <b>исполнительная документация</b>. Все бригадиры с допусками.»</div>'}
+];
+
+// ===== ASPHALT CALCULATOR =====
+function calcA2(){
+  const type=document.getElementById('ca-type').value;
+  const area=Math.max(1,+document.getElementById('ca-area').value||500);
+  const base=document.getElementById('ca-base').value;
+  const load=document.getElementById('ca-load').value;
+  const pay=document.getElementById('ca-pay').value;
+
+  let priceMin=0,priceMax=0,unit='м²',breakdown=[];
+
+  if(type==='asphalt'){
+    // Base prep cost
+    let baseMin=0,baseMax=0;
+    if(base==='ground'){baseMin=600;baseMax=1200;breakdown.push({n:'Подготовка основания (с нуля)',min:600,max:1200});}
+    else if(base==='old'){baseMin=200;baseMax=500;breakdown.push({n:'Фрезерование + подготовка',min:200,max:500});}
+    else{baseMin=100;baseMax=200;breakdown.push({n:'Доп. подготовка',min:100,max:200});}
+    // Layers by load
+    let layerMin=0,layerMax=0;
+    if(load==='ped'){layerMin=800;layerMax=1400;breakdown.push({n:'Асфальт (пешеходная, 1–2 слоя)',min:800,max:1400});}
+    else if(load==='light'){layerMin=1200;layerMax=2200;breakdown.push({n:'Асфальт (легковой, 2–3 слоя)',min:1200,max:2200});}
+    else{layerMin=1800;layerMax=3200;breakdown.push({n:'Асфальт (грузовой, полный пирог)',min:1800,max:3200});}
+    priceMin=baseMin+layerMin;priceMax=baseMax+layerMax;
+  }else if(type==='curb'){
+    unit='пог.м';priceMin=800;priceMax=1500;
+    breakdown.push({n:'Бордюрный камень + установка',min:800,max:1500});
+  }else if(type==='patch'){
+    priceMin=800;priceMax=1500;
+    breakdown.push({n:'Ямочный ремонт (вырубка + укладка)',min:800,max:1500});
+  }else{
+    if(base==='ground'){priceMin=2500;priceMax=5500;}
+    else if(base==='old'){priceMin=1800;priceMax=4000;}
+    else{priceMin=1500;priceMax=3500;}
+    breakdown.push({n:'Комплекс: основание + асфальт + бордюры + разметка',min:priceMin,max:priceMax});
   }
-})();
+
+  // Payment adjustment
+  let payLabel='';
+  if(pay==='cash'){priceMin=Math.round(priceMin*0.9);priceMax=Math.round(priceMax*0.9);payLabel=' (наличные −10%)';}
+  else if(pay==='ip'){priceMin=Math.round(priceMin*0.95);priceMax=Math.round(priceMax*0.95);payLabel=' (ИП −5%)';}
+
+  const totalMin=priceMin*area,totalMax=priceMax*area;
+  document.getElementById('ca-total').textContent=totalMin.toLocaleString('ru')+' — '+totalMax.toLocaleString('ru')+' ₽';
+  document.getElementById('ca-detail').textContent=area+' '+unit+' × '+priceMin.toLocaleString('ru')+'–'+priceMax.toLocaleString('ru')+' ₽/'+unit+payLabel;
+
+  let bh='';
+  breakdown.forEach(r=>{
+    const rMin=r.min*area,rMax=r.max*area;
+    bh+='<div class="cr-r"><span>'+r.n+'</span><span>'+rMin.toLocaleString('ru')+'–'+rMax.toLocaleString('ru')+' ₽</span></div>';
+  });
+  bh+='<div class="cr-r" style="font-weight:700;border-top:1px solid rgba(255,255,255,.15);padding-top:5px;margin-top:3px"><span>ОРИЕНТИР'+payLabel+'</span><span>'+totalMin.toLocaleString('ru')+'–'+totalMax.toLocaleString('ru')+' ₽</span></div>';
+  document.getElementById('ca-breakdown').innerHTML=bh;
+}
+
+// ===== SERVICE MODE SWITCHING =====
+let serviceMode='asphalt';
+let aHistory=[],aCbHistory=[];
+
+function setSvc(mode){
+  serviceMode=mode;
+  var snowBtn=document.getElementById('b-svc-snow'),asphBtn=document.getElementById('b-svc-asph');
+  snowBtn.className='svc-btn'+(mode==='snow'?' on-snow':'');
+  asphBtn.className='svc-btn'+(mode==='asphalt'?' on-asphalt':'');
+  document.getElementById('snow-tariff-toggle').style.display=mode==='snow'?'flex':'none';
+  document.getElementById('hdr-sub-text').textContent=mode==='snow'?'Помощник МОП · Вывоз снега · с 2014 года':'Помощник МОП · Асфальтирование и благоустройство · с 2014 года';
+  document.body.classList.remove('mode-snow','mode-asphalt');
+  document.body.classList.add(mode==='snow'?'mode-snow':'mode-asphalt');
+
+  // Switch tree
+  if(mode==='snow'){
+    renderTree('start','tree-render',history);
+    renderTree('cb_start','cbtree-render',cbHistory);
+  }else{
+    renderTree('a_start','tree-render',aHistory,TA);
+    renderTree('a_cb_start','cbtree-render',aCbHistory,TA);
+  }
+
+  // Switch calc visibility
+  document.getElementById('tab-calc').style.display=mode==='snow'?'':'none';
+  document.getElementById('tab-calc-a').style.display=mode==='asphalt'?'':'none';
+  if(mode==='asphalt'){calcA2();}else{calc();}
+
+  // Switch objections
+  if(mode==='snow'){renderObj();}else{renderObjA();}
+
+  // Switch cheat sheet
+  renderCheat(mode);
+
+  // Switch big3
+  renderBig3(mode);
+
+  // If currently on calc tab, show correct one
+  const activeTab=document.querySelector('.tc.act');
+  if(activeTab&&(activeTab.id==='tab-calc'||activeTab.id==='tab-calc-a')){
+    document.getElementById('tab-calc').classList.toggle('act',mode==='snow');
+    document.getElementById('tab-calc-a').classList.toggle('act',mode==='asphalt');
+  }
+
+  tab(document.querySelector('.nav-i.act')?.dataset?.tab||'tree');
+}
+
+function renderObjA(){
+  document.getElementById('obj-c').innerHTML=OBJ_A.map((o,i)=>'<div class="obj" id="ob-'+i+'" data-tags="'+o.tags+'"><div class="obj-q" onclick="document.getElementById(\'ob-'+i+'\').classList.toggle(\'op\')">'+o.q+'<span class="ar">▾</span></div><div class="obj-a">'+o.a+'</div></div>').join('');
+}
+
+// ===== DYNAMIC CHEAT SHEET =====
+function renderCheat(mode){
+  const el=document.getElementById('tab-cheat');
+  if(mode==='snow'){
+    el.innerHTML=CHEAT_SNOW;
+  }else{
+    el.innerHTML=CHEAT_ASPHALT;
+  }
+}
+
+const CHEAT_SNOW=`
+<div class="card"><div class="card-h">&#127908; Презентация — говори как факт, уверенно!</div><div class="card-b">
+<div class="key-block"><div class="key-label">Блок доверия — проговори ДО цены</div><div class="key-text">
+«Транском на рынке <b>с 2014 года</b> — за это время ни разу не подвели клиента.<br><br>
+У нас <b>прямой договор с Мосводоканалом</b> — вывозим только на официальные сухие свалки, <b>талоны предоставляем</b>. Вам не придётся переживать за штрафы.<br><br>
+Среди наших клиентов — <b>Мосгордума</b>, госучреждения, крупные УК. <b>Чистый НДС</b>, полный пакет закрывающих — договор, акт, счёт-фактура.<br><br>
+<b>Большой парк техники</b> — даже в пиковый снегопад у нас есть машины. Многие клиенты с нами <b>не первый сезон</b>.»
+</div></div>
+<div class="tip"><b>Лайфхак:</b> Не перечисляй как список — говори как будто рассказываешь другу. Уверенный тон = доверие клиента.</div>
+</div></div>
+<div class="card"><div class="card-h">&#128666; Как мы работаем — покажи простоту</div><div class="card-b">
+<div class="key-block"><div class="key-label">Процесс — клиент должен понять: ему ничего не надо делать</div><div class="key-text">
+«Сам процесс максимально простой для вас:<br><br>
+<b>1.</b> Оставляете заявку — техника у вас <b>на следующий день</b>.<br>
+<b>2.</b> Приезжает <b>самосвал 25 м³ + экскаватор-погрузчик JCB</b>. Узкие проезды? Ставим <b>мини-погрузчик</b> — он везде пройдёт.<br>
+<b>3.</b> Всё загружаем, вывозим, <b>фото до/после</b> скидываем вам в Telegram.<br>
+<b>4.</b> За вами <b>личный диспетчер</b> — любой вопрос решаете с ним напрямую.<br><br>
+По сути — вы просто звоните, а мы делаем всё остальное.»
+</div></div>
+</div></div>
+<div class="card"><div class="card-h">&#128176; Призыв + Счёт — два главных действия!</div><div class="card-b">
+<div class="key-block"><div class="key-label">Закрывай на действие + ВСЕГДА скидывай счёт</div><div class="key-text">
+&#10004; «<b>[Имя]</b>, давайте так — <b>ставлю вас в график</b>, скидываю КП и счёт. Без обязательств — передумаете, просто скажете.»<br><br>
+&#10004; «Скину <b>счёт прямо сейчас</b> — оплатите когда удобно, техника <b>завтра</b> у вас.»<br><br>
+&#10004; «Даже если думаете — пусть <b>счёт будет под рукой</b>. Решите — просто оплатите, и всё.»
+</div></div>
+<div class="tip"><b>Важно:</b> Счёт на предоплату — мощнейший инструмент. Клиенту остаётся просто нажать «оплатить». Скидывай ВСЕГДА, даже если клиент «думает».</div>
+</div></div>
+<div class="card"><div class="card-h">&#128179; Формы оплаты</div><div class="card-b" style="padding:0">
+<div class="chi"><div class="chl">Б/Н с НДС</div>Юрлица, бюджет, крупные. Чистый НДС, полный пакет.</div>
+<div class="chi"><div class="chl">Наличные</div>Минимальная цена: −10% вывоз, −2000 погрузка.</div>
+<div class="chi"><div class="chl">ИП без НДС</div>УСН, ИП. Упрощённый документооборот.</div>
+</div></div>
+<div class="card"><div class="card-h">&#128142; Реферал</div><div class="card-b">
+<div class="say"><div class="say-label">Спрашивай у каждого</div>
+«Кому из знакомых нужен вывоз? Если порекомендуете и закажут — <b>следующий рейс бесплатно</b>.»</div>
+</div></div>`;
+
+const CHEAT_ASPHALT=`
+<div class="card"><div class="card-h">&#127908; Презентация — говори как эксперт!</div><div class="card-b">
+<div class="key-block"><div class="key-label">Блок доверия — проговори ДО цены</div><div class="key-text">
+«Транском на рынке <b>с 2014 года</b> — полный цикл дорожных работ и благоустройства.<br><br>
+В штате <b>5 бригад разной квалификации</b>, штатный <b>проектировщик и геодезист</b>. Все бригадиры <b>оформлены официально</b> с допусками и квалификационными удостоверениями.<br><br>
+Работаем с <b>государственными заказчиками</b> — полный пакет исполнительной документации. <b>Чистый НДС</b>, договор, акты, сметы.<br><br>
+Асфальт только от <b>проверенных заводов</b> с паспортами качества. За каждым проектом — <b>персональный менеджер</b>.»
+</div></div>
+<div class="tip"><b>Лайфхак:</b> Говори уверенно, как эксперт. Клиент должен почувствовать — вы профессионалы, а не шабашники.</div>
+</div></div>
+<div class="card"><div class="card-h">&#127942; Портфолио — наши объекты</div><div class="card-b">
+<div class="key-block"><div class="key-label">Упоминай объекты — это вызывает доверие!</div><div class="key-text">
+&#9632; <b>КП «Западная Долина» — 20 000 м²</b>: полный цикл — дороги, парковки, тротуары, бордюры, ливнёвка, разметка<br>
+&#9632; <b>ЖК «Московские»</b>: асфальтирование дворов, пешеходные зоны, бордюры, благоустройство территории<br>
+&#9632; <b>Микояновский мясокомбинат</b>: промышленная площадка под тяжёлый грузовой транспорт, усиленный «пирог»
+</div></div>
+<div class="tip"><b>Кого обслуживаем:</b> коттеджные посёлки, ЖК, бизнес-центры, промзоны, парковки, частные клиенты, госучреждения.</div>
+</div></div>
+<div class="card"><div class="card-h">&#128736; Наши услуги — полный цикл</div><div class="card-b">
+<div class="key-block"><div class="key-label">Что мы делаем</div><div class="key-text">
+&#9632; <b>Асфальтирование</b> любой сложности — парковки, БЦ, промзоны, дворы, дороги<br>
+&#9632; Полный <b>дорожный «пирог»</b> — песок, щебень, основание, покрытие<br>
+&#9632; <b>Бордюрные работы</b> — бортовые камни, поворотные, садовые<br>
+&#9632; <b>Колодцы и дренаж</b> — дождеприёмники, ливнёвка<br>
+&#9632; <b>Дорожная разметка</b> — горизонтальная, вертикальная, знаки<br>
+&#9632; <b>Фрезерование</b> — снятие старого покрытия<br>
+&#9632; <b>Земляные работы</b> — выемка, планировка<br>
+&#9632; <b>Благоустройство</b> — плитка, озеленение, МАФ
+</div></div>
+</div></div>
+<div class="card"><div class="card-h">&#128295; Ямочный ремонт — пошагово</div><div class="card-b">
+<div class="key-block"><div class="key-label">Расскажи клиенту — покажи экспертность!</div><div class="key-text">
+<b>1. Нарезка</b> — алмазная нарезка контура ямы с ровными краями<br>
+<b>2. Демонтаж</b> — удаление разрушенного покрытия трактором с г/м или компрессором<br>
+<b>3. Обработка</b> — края и дно обрабатываем битумной эмульсией для сцепления<br>
+<b>4. Укладка</b> — горячая асфальтобетонная смесь вручную или укладчиком<br>
+<b>5. Уплотнение</b> — виброкаток в несколько проходов до нормативной плотности<br>
+<b>6. Вывоз мусора</b> — получаете готовое идеальное покрытие
+</div></div>
+</div></div>
+<div class="card"><div class="card-h">&#128679; Асфальтирование «под ключ» — полный цикл</div><div class="card-b">
+<div class="key-block"><div class="key-label">От грунта до готовой дороги</div><div class="key-text">
+<b>1. Геодезия</b> — съёмка участка, вынос отметок, уклоны для водоотведения<br>
+<b>2. Земляные работы</b> — выемка грунта, планировка основания, уплотнение<br>
+<b>3. Песчаная подушка</b> — слой 15–30 см с послойным уплотнением<br>
+<b>4. Щебёночное основание</b> — щебень фракции 20–40 мм, расклинцовка<br>
+<b>5. Асфальтобетон</b> — 1–3 слоя в зависимости от нагрузок (5–15 см)<br>
+<b>6. Сдача</b> — уплотнение катком, бордюры, разметка, документация
+</div></div>
+</div></div>
+<div class="card"><div class="card-h">&#9878; Бордюры и колодцы — детально</div><div class="card-b">
+<div class="key-block"><div class="key-label">Бордюрные работы</div><div class="key-text">
+<b>1.</b> Вынос линии бордюра по проекту с учётом уклонов<br>
+<b>2.</b> Выемка грунта по линии установки, трамбовка основания<br>
+<b>3.</b> Устройство бетонной подушки М-100 для фиксации камня<br>
+<b>4.</b> Установка бортового камня по нитке с выравниванием<br>
+<b>5.</b> Заделка швов раствором, присыпка грунтом, уплотнение
+</div></div>
+<div class="key-block"><div class="key-label">Колодцы и ливнёвка</div><div class="key-text">
+<b>1.</b> Расчёт точек приёма воды по уклонам территории<br>
+<b>2.</b> Выемка грунта под колодцы и траншеи под трубы<br>
+<b>3.</b> Установка ж/б колец или пластиковых колодцев<br>
+<b>4.</b> Прокладка труб с уклоном, стыковка, герметизация<br>
+<b>5.</b> Обратная засыпка, уплотнение, установка решёток и крышек
+</div></div>
+</div></div>
+<div class="card"><div class="card-h">&#128666; Замерщик / бригадир — выезд на объект</div><div class="card-b">
+<div class="key-block"><div class="key-label">Что делает на объекте</div><div class="key-text">
+На объект выезжает <b>опытный замерщик или бригадир</b>, который может:<br><br>
+&#10004; Проконсультировать по всем видам работ<br>
+&#10004; Оценить текущее состояние основания<br>
+&#10004; Предложить оптимальное решение<br>
+&#10004; Точно рассчитать объёмы и стоимость<br>
+&#10004; Ответить на любые технические вопросы<br><br>
+<b>Выезд бесплатный</b> и ни к чему не обязывает.
+</div></div>
+<div class="key-block"><div class="key-label">&#9888; После замера — работай над закрытием!</div><div class="key-text">
+Выезд замерщика <b>НЕ гарантирует</b> закрытие сделки! Клиент думает, сравнивает. Твоя задача:<br><br>
+<b>1.</b> Перезвони сразу после замера — «Смета готова, скидываю?»<br>
+<b>2.</b> Узнай что волнует: цена? сроки? гарантия? другие предложения?<br>
+<b>3.</b> Если «думает» — спроси конкретно: «Что именно смущает?»<br>
+<b>4.</b> Закрывай на конкретику: «Подписываем договор, ставлю бригаду в график на [дата]»<br>
+<b>5.</b> Создай срочность: «Сезон короткий — бригады расписывают быстро!»
+</div></div>
+</div></div>
+<div class="card"><div class="card-h">&#128176; Призыв — закрывай на выезд!</div><div class="card-b">
+<div class="key-block"><div class="key-label">Главное действие — запиши на бесплатный выезд</div><div class="key-text">
+&#10004; «<b>[Имя]</b>, давайте <b>запишу на бесплатный выезд</b> — замерщик промерит, через пару дней <b>точная смета</b>. Без обязательств.»<br><br>
+&#10004; «Скину <b>предварительный расчёт</b> — а для точной цены нужны замеры. <b>Выезд бесплатный</b>!»<br><br>
+&#10004; «<b>Сезон короткий</b> — кто раньше заявку, тот раньше в графике. Давайте зафиксирую!»
+</div></div>
+</div></div>
+<div class="card"><div class="card-h">&#128179; Формы оплаты</div><div class="card-b" style="padding:0">
+<div class="chi"><div class="chl">Б/Н с НДС</div>Юрлица, бюджет, госзаказчики. Чистый НДС, полный пакет.</div>
+<div class="chi"><div class="chl">Наличные</div>Выгоднее: скидка до 10%.</div>
+<div class="chi"><div class="chl">ИП без НДС</div>УСН. Упрощённый документооборот.</div>
+</div></div>
+<div class="card"><div class="card-h">&#128142; Реферал</div><div class="card-b">
+<div class="say"><div class="say-label">Спрашивай у каждого</div>
+«Кому из знакомых нужно асфальтирование или благоустройство? Если порекомендуете и закажут — <b>скидка 5% на ваш следующий проект</b>.»</div>
+</div></div>
+<div class="card"><div class="card-h">&#128203; Вопросы клиенту — собери ВСЁ</div><div class="card-b">
+<div class="must"><div class="must-title">Чеклист квалификации</div>
+<div class="chk"><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"><span>Адрес объекта</span></div>
+<div class="chk"><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"><span>Площадь (м²)</span></div>
+<div class="chk"><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"><span>Что нужно сделать</span></div>
+<div class="chk"><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"><span>Текущее основание (грунт/асфальт/щебень/бетон)</span></div>
+<div class="chk"><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"><span>Планируемые нагрузки</span></div>
+<div class="chk"><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"><span>Финальный результат</span></div>
+<div class="chk"><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"><span>Сроки</span></div>
+<div class="chk"><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"><span>Форма оплаты</span></div>
+</div>
+</div></div>`;
+
+// ===== DYNAMIC BIG 3 =====
+const B3_SNOW=['Рассказал как работаем','Проговорил презентацию','Предложил вывоз','Счёт скинул'];
+const B3_SNOW_HINTS=['Заявка → техника → фото → диспетчер','2014, Мосводоканал, НДС, Мосгордума','«Давайте вывозить!» + призыв','КП + счёт на предоплату в Telegram'];
+const B3_SNOW_DETAILS=['Заявка за сутки → самосвал + экскаватор-погрузчик (JCB). Если не проезжает — мини-погрузчик. Фото отправляем. Талоны с сухих свалок. Личный диспетчер на связи.','«С 2014 года. Договор с Мосводоканалом — талоны с сухих свалок. Мосгордума, госклиенты. Чистый НДС, полный пакет. Не подводим в снегопад.»','«Давайте вывозить — ставлю в график!» Попросил реквизиты/карточку. Создал срочность: «технику разбирают».','Скинул КП + счёт на предоплату в Telegram. Даже если клиент думает — счёт должен быть у него.'];
+
+const B3_ASPHALT=['Собрал информацию','Проговорил презентацию + портфолио','Предложил выезд замерщика','Отправил КП + назначил перезвон'];
+const B3_ASPHALT_HINTS=['Адрес, площадь, основание, нагрузки, результат','2014, 5 бригад, объекты, процесс работ','«Замерщик/бригадир приедет бесплатно!»','Расчёт + дата перезвона после замера'];
+const B3_ASPHALT_DETAILS=['Собрал: адрес, площадь, что делать, основание, нагрузки, результат, сроки, оплата. Всё в ПланФиксе.','«С 2014 года. 5 бригад. Западная Долина 20к м², ЖК Московские, Микояновский комбинат. Госзаказчики. НДС. Проверенные заводы. Показал процесс работ.»','«Выезд бесплатный — замерщик или бригадир проконсультирует на месте и точно рассчитает. Без обязательств.»','Отправил расчёт + записал на выезд. Назначил перезвон после замера. Узнаю что волнует → закрываю.'];
+
+function renderBig3(mode){
+  const labels=mode==='snow'?B3_SNOW:B3_ASPHALT;
+  const hints=mode==='snow'?B3_SNOW_HINTS:B3_ASPHALT_HINTS;
+  const details=mode==='snow'?B3_SNOW_DETAILS:B3_ASPHALT_DETAILS;
+
+  const items=document.querySelectorAll('.big3-item');
+  items.forEach((el,i)=>{
+    el.querySelector('.big3-label').textContent=labels[i];
+    el.querySelector('.big3-hint').textContent=hints[i];
+    el.querySelector('.big3-detail').textContent=details[i];
+  });
+  resetBig3();
+}
+
+// ===== OVERRIDE RENDER TREE TO SUPPORT BOTH TREES =====
+const origRenderTree=renderTree;
+renderTree=function(nodeId,cId,hist,treeData){
+  const tree=treeData||(serviceMode==='asphalt'?TA:T);
+  const n=tree[nodeId];if(!n)return;
+  const c=document.getElementById(cId);
+  let h='<div class="tree-card">';
+  if(hist.length>0){
+    h+='<div class="crumbs" style="padding:12px 20px 0">';
+    hist.forEach(function(x,i){h+='<span onclick="goNode(\''+x.id+'\',\''+cId+'\','+i+')">'+x.t+'</span><span class="sep"> › </span>';});
+    h+='<span style="color:#1a1a1a;font-weight:600">'+n.title+'</span></div>';
+  }
+  h+='<div class="tree-top"><div><div class="tree-stage">'+n.stage+'</div><div class="tree-title">'+n.title+'</div></div></div>';
+  h+='<div class="tree-body">';
+  n.blocks.forEach(function(b){
+    if(b.t==='say'){
+      h+='<div class="say"><button class="cp" onclick="cpy(this)">Скопировать</button><div class="say-label">'+(b.label||'Скажи')+'</div>'+b.text+'</div>';
+    }else if(b.t==='key'){
+      h+='<div class="key-block"><div class="key-label">'+b.label+'</div><div class="key-text">'+b.text+'</div></div>';
+    }else if(b.t==='must'){
+      h+='<div class="must"><div class="must-title">'+(b.title||'Обязательно сделай')+'</div>';
+      (b.checks||[]).forEach(function(ch){h+='<div class="chk"><input type="checkbox" onchange="this.parentElement.classList.toggle(\'done\',this.checked)"><span>'+ch+'</span></div>';});
+      h+='</div>';
+    }else if(b.t==='tip'){
+      h+='<div class="tip">'+b.text+'</div>';
+    }
+  });
+  if(n.choices&&n.choices.length>0){
+    h+='<div class="choices"><div class="choices-label">Что говорит клиент?</div>';
+    n.choices.forEach(function(ch){
+      h+='<div class="choice" onclick="pick(\''+ch.go+'\',\''+cId+'\',\''+nodeId+'\',\''+n.title.replace(/'/g,"\\'")+'\')">';
+      h+='<div class="choice-dot '+ch.dot+'"></div>';
+      h+='<div class="choice-text"><div class="choice-main">'+ch.text+'</div>'+(ch.hint?'<div class="choice-hint">'+ch.hint+'</div>':'')+'</div>';
+      h+='<div class="choice-arrow">›</div></div>';
+    });
+    h+='</div>';
+  }
+  if(hist.length>0)h+='<button class="back-btn" onclick="goBack(\''+cId+'\')">← Назад</button>';
+  h+='</div></div>';
+  c.innerHTML=h;
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+// Override pick to handle both modes
+const origPick=pick;
+pick=function(go,cId,fromId,fromT){
+  let h;
+  if(serviceMode==='snow'){
+    h=cId==='tree-render'?history:cbHistory;
+    if(go==='start'||go==='cb_start'){h.length=0;resetBig3();}
+  }else{
+    h=cId==='tree-render'?aHistory:aCbHistory;
+    if(go==='a_start'||go==='a_cb_start'){h.length=0;resetBig3();}
+  }
+  h.push({id:fromId,t:fromT});
+  renderTree(go,cId,h);
+};
+
+// Override goBack
+goBack=function(cId){
+  let h;
+  if(serviceMode==='snow'){h=cId==='tree-render'?history:cbHistory;}
+  else{h=cId==='tree-render'?aHistory:aCbHistory;}
+  if(!h.length)return;const p=h.pop();renderTree(p.id,cId,h);
+};
+
+goNode=function(id,cId,i){
+  let h;
+  if(serviceMode==='snow'){h=cId==='tree-render'?history:cbHistory;}
+  else{h=cId==='tree-render'?aHistory:aCbHistory;}
+  h.splice(i);renderTree(id,cId,h);
+};
+
+// Override tab to handle calc switching
+const origTab=tab;
+tab=function(t){
+  document.querySelectorAll('.tc').forEach(function(e){e.classList.remove('act');});
+  document.querySelectorAll('.nav-i').forEach(function(e){e.classList.remove('act');});
+  if(t==='calc'){
+    if(serviceMode==='snow'){document.getElementById('tab-calc').classList.add('act');}
+    else{document.getElementById('tab-calc-a').classList.add('act');}
+  }else{
+    var el=document.getElementById('tab-'+t);
+    if(el)el.classList.add('act');
+  }
+  var n=document.querySelector('.nav-i[data-tab="'+t+'"]');
+  if(n)n.classList.add('act');
+};
+
+// ===== INIT =====
+// Default to asphalt mode
+setSvc('asphalt');
+loadPfSettings();autoLinkFromUrl();
 </script>
 </body>
 </html>
