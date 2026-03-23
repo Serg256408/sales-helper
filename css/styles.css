@@ -419,3 +419,323 @@ body.mode-snow .ks-item-snippet mark{background:#deeeff}
   .ks-modal{padding:20px 10px}
   .ks-inner{max-height:85vh}
 }
+
+/* ===== GAMIFICATION: Профиль в хедере ===== */
+.gf-profile-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:5px 14px;color:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;transition:.2s;white-space:nowrap}
+.gf-profile-btn:hover{background:rgba(255,255,255,.22)}
+.gf-level-icon{font-size:16px}
+.gf-xp{opacity:.7;font-size:11px}
+
+/* ===== GAMIFICATION: XP Toast ===== */
+.gf-xp-toast{position:fixed;top:70px;right:20px;background:linear-gradient(135deg,#4caf50,#2e7d32);color:#fff;padding:10px 20px;border-radius:12px;font-size:16px;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,.25);z-index:10000;transform:translateX(120%);transition:transform .3s ease;display:flex;align-items:center;gap:8px}
+.gf-xp-toast.show{transform:translateX(0)}
+.gf-toast-reason{font-size:12px;font-weight:400;opacity:.85}
+
+/* ===== GAMIFICATION: Badge Toast ===== */
+.gf-badge-toast{position:fixed;top:130px;right:20px;background:linear-gradient(135deg,#ff9800,#f57c00);color:#fff;padding:14px 20px;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.3);z-index:10000;transform:translateX(120%);transition:transform .4s ease;display:flex;align-items:center;gap:12px;max-width:320px}
+.gf-badge-toast.show{transform:translateX(0)}
+.gf-bt-icon{font-size:36px}
+.gf-bt-title{font-size:11px;text-transform:uppercase;letter-spacing:.8px;opacity:.8}
+.gf-bt-name{font-size:16px;font-weight:700}
+.gf-bt-desc{font-size:12px;opacity:.85;margin-top:2px}
+
+/* ===== GAMIFICATION: Модалка профиля ===== */
+.gf-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;animation:fi .2s}
+.gf-modal{background:#fff;border-radius:16px;width:90%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.gf-modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #eee;font-size:16px;font-weight:700}
+.gf-modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:0 4px}
+.gf-modal-close:hover{color:#333}
+.gf-modal-content{padding:20px}
+
+/* Профиль внутри модалки */
+.gf-modal-profile{display:flex;gap:16px;align-items:center;margin-bottom:20px}
+.gf-modal-avatar{font-size:48px}
+.gf-modal-name{font-size:18px;font-weight:700;cursor:pointer}
+.gf-modal-name:hover{color:#1a73e8}
+.gf-modal-name i{font-weight:400;color:#999}
+.gf-modal-level{font-size:14px;color:#666;margin-top:2px}
+.gf-modal-xp{font-size:12px;color:#888;margin-top:4px}
+.gf-modal-bar-wrap{height:8px;background:#eee;border-radius:4px;margin-top:8px;overflow:hidden}
+.gf-modal-bar-fill{height:100%;background:linear-gradient(90deg,#4caf50,#8bc34a);border-radius:4px;transition:width .5s}
+
+/* Статистика */
+.gf-modal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.gf-stat{text-align:center;background:#f8f8f8;border-radius:10px;padding:10px 6px}
+.gf-stat-val{display:block;font-size:20px;font-weight:700;color:#1a1a1a}
+.gf-stat-label{display:block;font-size:10px;color:#888;margin-top:2px}
+
+/* Бейджи */
+.gf-badges-title{font-size:14px;font-weight:700;margin-bottom:10px}
+.gf-badges-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.gf-badge{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:#f8f8f8;font-size:12px}
+.gf-badge.earned{background:#e8f5e9;border:1px solid #a5d6a7}
+.gf-badge.locked{opacity:.5;filter:grayscale(1)}
+.gf-badge-icon{font-size:20px}
+.gf-badge-name{font-weight:600}
+
+/* ===== GAMIFICATION: Вопрос дня ===== */
+.gf-daily-modal{max-width:440px}
+.gf-dq-streak{text-align:center;font-size:12px;color:#888;margin-bottom:8px}
+.gf-dq-question{font-size:16px;font-weight:700;margin-bottom:16px;line-height:1.4}
+.gf-dq-options{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.gf-dq-option{display:flex;align-items:center;gap:10px;padding:10px 14px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;transition:.2s;font-size:13px}
+.gf-dq-option:hover{border-color:#90caf9;background:#f0f7ff}
+.gf-dq-option input{accent-color:#1a73e8}
+.gf-dq-option.correct{border-color:#4caf50;background:#e8f5e9}
+.gf-dq-option.wrong{border-color:#f44336;background:#fce4ec}
+.gf-dq-submit{width:100%;padding:10px;background:#1a73e8;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer}
+.gf-dq-submit:hover{background:#1565c0}
+.gf-dq-result{padding:12px;border-radius:10px;font-size:14px;font-weight:600;text-align:center;margin-top:10px}
+.gf-dq-correct{background:#e8f5e9;color:#2e7d32}
+.gf-dq-wrong{background:#fce4ec;color:#c62828}
+
+/* ===== ТРЕНАЖЁР: общее ===== */
+.trainer-mode-toggle{display:flex;gap:0;margin-bottom:16px;border-radius:10px;overflow:hidden;border:2px solid #e0e0e0}
+.trainer-mode-btn{flex:1;padding:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:#f5f5f5;color:#888;transition:.2s}
+.trainer-mode-btn:hover{background:#eee}
+.trainer-mode-btn.active{background:#1a73e8;color:#fff}
+body.mode-asphalt .trainer-mode-btn.active{background:#e8911a}
+
+/* Список сценариев */
+.tr-list-title{font-size:14px;font-weight:600;margin-bottom:12px;color:#666}
+.tr-scenario-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border:2px solid #e8e8e8;border-radius:12px;cursor:pointer;transition:.2s;margin-bottom:8px}
+.tr-scenario-card:hover{border-color:#90caf9;background:#f0f7ff;transform:translateY(-1px)}
+body.mode-asphalt .tr-scenario-card:hover{border-color:#f5a623;background:#fef8ef}
+.tr-scenario-card.tr-done{border-color:#a5d6a7;background:#f1f8e9}
+.tr-sc-icon{font-size:32px}
+.tr-sc-name{font-size:15px;font-weight:700}
+.tr-sc-check{color:#4caf50;margin-left:6px}
+.tr-sc-desc{font-size:12px;color:#888;margin-top:2px}
+.tr-sc-steps{font-size:11px;color:#aaa;margin-top:4px}
+
+/* Игровая область */
+.tr-play-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.tr-back-btn{background:none;border:1px solid #ddd;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;color:#666}
+.tr-back-btn:hover{background:#f5f5f5}
+.tr-play-title{font-size:15px;font-weight:700}
+.tr-play-step{font-size:12px;color:#888}
+.tr-progress-bar{height:6px;background:#e8e8e8;border-radius:3px;margin-bottom:16px;overflow:hidden}
+.tr-progress-fill{height:100%;background:linear-gradient(90deg,#4caf50,#8bc34a);border-radius:3px;transition:width .4s}
+
+/* Клиент */
+.tr-client-msg{background:#f0f4ff;border-radius:12px;padding:16px;margin-bottom:16px;border-left:4px solid #5c6bc0}
+body.mode-asphalt .tr-client-msg{background:#fef5e8;border-left-color:#f5a623}
+.tr-client-label{font-size:11px;font-weight:700;text-transform:uppercase;color:#5c6bc0;margin-bottom:4px}
+body.mode-asphalt .tr-client-label{color:#e8911a}
+.tr-client-text{font-size:15px;line-height:1.5}
+
+/* Варианты ответа */
+.tr-options{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.tr-option{padding:12px 16px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;transition:.2s;font-size:13px;line-height:1.45}
+.tr-option:hover{border-color:#90caf9;background:#f0f7ff}
+.tr-option.tr-correct{border-color:#4caf50;background:#e8f5e9}
+.tr-option.tr-wrong{border-color:#f44336;background:#fce4ec}
+
+/* Обратная связь */
+.tr-feedback{padding:14px;border-radius:10px;font-size:13px;line-height:1.5;margin-bottom:12px}
+.tr-fb-correct{background:#e8f5e9;color:#2e7d32}
+.tr-fb-wrong{background:#fff3e0;color:#e65100}
+.tr-next-btn{display:block;margin-top:10px;padding:8px 20px;background:#1a73e8;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.tr-next-btn:hover{background:#1565c0}
+.tr-score{font-size:12px;color:#888;text-align:right}
+
+/* Результат сценария */
+.tr-result{text-align:center;padding:30px 20px}
+.tr-result-icon{font-size:60px;margin-bottom:10px}
+.tr-result-title{font-size:22px;font-weight:800;margin-bottom:8px}
+.tr-result-score{font-size:16px;color:#666;margin-bottom:6px}
+.tr-result-msg{font-size:14px;color:#888;margin-bottom:20px}
+.tr-result-actions{display:flex;gap:10px;justify-content:center}
+.tr-btn{padding:10px 24px;background:#1a73e8;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer}
+.tr-btn:hover{background:#1565c0}
+.tr-btn-outline{background:transparent;color:#1a73e8;border:2px solid #1a73e8}
+.tr-btn-outline:hover{background:#f0f7ff}
+
+/* ===== AI-ТРЕНАЖЁР ===== */
+.ait-config{margin-bottom:16px}
+.ait-key-row{display:flex;gap:8px;align-items:center;margin-bottom:4px}
+.ait-key-row label{font-size:13px;font-weight:600;white-space:nowrap}
+.ait-key-input{flex:1;padding:7px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px}
+.ait-key-save{padding:7px 16px;background:#4caf50;color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer}
+.ait-key-hint{font-size:11px;color:#999;margin-bottom:12px}
+.ait-key-hint a{color:#1a73e8}
+.ait-difficulty{margin-bottom:12px}
+.ait-difficulty label{font-size:13px;font-weight:600;display:block;margin-bottom:6px}
+.ait-diff-btns{display:flex;gap:6px}
+.ait-diff-btn{padding:7px 14px;border:2px solid #e0e0e0;border-radius:8px;background:#fff;font-size:13px;cursor:pointer;transition:.2s}
+.ait-diff-btn:hover{border-color:#90caf9}
+.ait-diff-btn.active{border-color:#1a73e8;background:#e3f2fd;font-weight:600}
+.ait-start-btn{padding:10px 24px;background:#1a73e8;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;width:100%}
+.ait-start-btn:hover{background:#1565c0}
+
+/* Чат AI */
+.ait-messages{min-height:200px;max-height:400px;overflow-y:auto;margin-bottom:10px;padding:10px;background:#f8f8f8;border-radius:12px}
+.ait-msg{padding:8px 12px;margin-bottom:8px;border-radius:10px;max-width:85%;animation:fi .2s}
+.ait-msg-manager{background:#e3f2fd;margin-left:auto;text-align:right}
+.ait-msg-client{background:#fff;border:1px solid #e8e8e8}
+.ait-msg-system{background:#fff3e0;text-align:center;max-width:100%;font-size:12px;color:#888}
+.ait-msg-label{font-size:10px;font-weight:700;text-transform:uppercase;color:#888;margin-bottom:2px}
+.ait-msg-text{font-size:13px;line-height:1.5}
+.ait-typing{opacity:.6;font-style:italic}
+
+.ait-input-row{display:flex;gap:8px;margin-bottom:8px}
+.ait-msg-input{flex:1;padding:10px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px}
+.ait-msg-input:focus{border-color:#1a73e8;outline:none}
+.ait-send-btn{padding:10px 20px;background:#1a73e8;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer}
+.ait-controls{justify-content:center;margin-bottom:10px}
+.ait-end-btn{padding:8px 20px;background:#f44336;color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer}
+.ait-end-btn:hover{background:#d32f2f}
+
+/* Оценка AI */
+.ait-eval-title{font-size:16px;font-weight:700;margin-bottom:10px}
+.ait-eval-desc{font-size:13px;color:#888;margin-bottom:10px}
+.ait-eval-loading{text-align:center;padding:20px;color:#888}
+.ait-eval-score{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.ait-eval-number{font-size:28px;font-weight:800;color:#1a73e8}
+.ait-eval-checklist-count{font-size:13px;color:#666}
+.ait-eval-checklist{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.ait-check-item{padding:6px 10px;border-radius:6px;font-size:13px}
+.ait-check-yes{background:#e8f5e9}
+.ait-check-no{background:#fce4ec}
+.ait-eval-advice{padding:10px;background:#fff3e0;border-radius:8px;font-size:13px;line-height:1.5}
+.ait-manual-check{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;cursor:pointer}
+
+/* ===== Responsive: тренажёр и геймификация ===== */
+@media(max-width:600px){
+  .gf-profile-btn{padding:4px 10px;font-size:11px}
+  .gf-name{display:none}
+  .gf-modal-stats{grid-template-columns:repeat(2,1fr)}
+  .gf-badges-grid{grid-template-columns:1fr}
+  .trainer-mode-btn{font-size:12px;padding:8px}
+  .tr-scenario-card{padding:10px 12px}
+  .tr-sc-icon{font-size:24px}
+  .ait-key-row{flex-wrap:wrap}
+  .ait-diff-btns{flex-wrap:wrap}
+  .vt-config-grid{grid-template-columns:1fr}
+  .vt-result-stats{flex-wrap:wrap}
+}
+
+/* ===== ГОЛОСОВОЙ ТРЕНАЖЁР ===== */
+.vt-setup{padding:4px 0}
+.vt-key-row{display:flex;gap:8px;align-items:center;margin-bottom:4px}
+.vt-key-row label{font-size:13px;font-weight:600;white-space:nowrap}
+.vt-key-input{flex:1;padding:7px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px}
+.vt-key-save{padding:7px 16px;background:#4caf50;color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer}
+.vt-key-hint{font-size:11px;color:#999;margin-bottom:14px}
+.vt-key-hint a{color:#1a73e8}
+
+.vt-config-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.vt-config-item label{font-size:13px;font-weight:600;display:block;margin-bottom:6px}
+.vt-diff-btns{display:flex;gap:6px;flex-wrap:wrap}
+.vt-diff-btn{padding:6px 12px;border:2px solid #e0e0e0;border-radius:8px;background:#fff;font-size:12px;cursor:pointer;transition:.2s}
+.vt-diff-btn:hover{border-color:#90caf9}
+.vt-diff-btn.active{border-color:#1a73e8;background:#e3f2fd;font-weight:600}
+.vt-voice-select{padding:7px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;width:100%}
+
+/* Кнопка звонка */
+.vt-call-btn{width:100%;padding:14px;background:linear-gradient(135deg,#4caf50,#2e7d32);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+.vt-call-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(76,175,80,.35)}
+.vt-call-icon{font-size:20px}
+
+/* Экран звонка */
+.vt-call-header{display:flex;align-items:center;justify-content:space-between;padding:10px 0;margin-bottom:10px;border-bottom:1px solid #eee}
+.vt-call-status{font-size:14px;font-weight:600}
+.vt-call-timer{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:#1a73e8}
+
+/* Визуализация */
+.vt-visualizer{text-align:center;padding:20px 0}
+.vt-avatar{position:relative;display:inline-block;width:100px;height:100px;margin-bottom:8px}
+.vt-avatar-icon{font-size:60px;position:relative;z-index:1;line-height:100px}
+.vt-avatar-pulse{position:absolute;inset:-8px;border-radius:50%;border:3px solid #e0e0e0;transition:.3s}
+.vt-avatar-pulse.speaking{border-color:#4caf50;box-shadow:0 0 0 8px rgba(76,175,80,.15);animation:vtPulse 1s ease-in-out infinite}
+@keyframes vtPulse{0%,100%{box-shadow:0 0 0 4px rgba(76,175,80,.15)}50%{box-shadow:0 0 0 12px rgba(76,175,80,.08)}}
+.vt-avatar-name{font-size:16px;font-weight:700;margin-bottom:2px}
+.vt-difficulty-label{font-size:12px;color:#888}
+
+/* Индикатор микрофона */
+.vt-mic-indicator{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#f8f8f8;border-radius:12px;margin-bottom:14px}
+.vt-mic-indicator.active{background:#e8f5e9}
+.vt-mic-icon{font-size:24px}
+.vt-mic-level{flex:1;height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden}
+.vt-mic-bar{height:100%;width:0%;background:linear-gradient(90deg,#4caf50,#8bc34a);border-radius:4px;transition:width .1s}
+.vt-mic-text{font-size:12px;color:#888;white-space:nowrap}
+
+/* Кнопки звонка */
+.vt-call-actions{text-align:center;margin-bottom:14px}
+.vt-hangup-btn{padding:12px 30px;background:linear-gradient(135deg,#f44336,#c62828);color:#fff;border:none;border-radius:30px;font-size:15px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.2s}
+.vt-hangup-btn:hover{transform:scale(1.03);box-shadow:0 4px 16px rgba(244,67,54,.35)}
+
+/* Транскрипт */
+.vt-transcript{background:#f8f8f8;border-radius:12px;padding:12px;max-height:200px;overflow-y:auto}
+.vt-transcript-title{font-size:12px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:8px}
+.vt-tr-entry{padding:4px 0;font-size:13px;line-height:1.4;border-bottom:1px solid #f0f0f0}
+.vt-tr-entry:last-child{border-bottom:none}
+.vt-tr-role{font-weight:700;font-size:11px}
+.vt-tr-manager .vt-tr-role{color:#1a73e8}
+.vt-tr-client .vt-tr-role{color:#e65100}
+.vt-tr-system .vt-tr-role{color:#888}
+
+/* Результат звонка */
+.vt-result-card{text-align:center;padding:20px}
+.vt-result-icon{font-size:48px;margin-bottom:8px}
+.vt-result-title{font-size:20px;font-weight:800;margin-bottom:6px}
+.vt-result-duration{font-size:14px;color:#666;margin-bottom:14px}
+.vt-result-stats{display:flex;gap:16px;justify-content:center;margin-bottom:14px}
+.vt-result-stat{text-align:center}
+.vt-result-stat span{display:block;font-size:22px;font-weight:800;color:#1a73e8}
+.vt-result-hint{font-size:12px;color:#888;margin-bottom:12px}
+.vt-result-actions{display:flex;gap:10px;justify-content:center}
+.vt-back-btn{padding:10px 20px;background:transparent;color:#666;border:2px solid #ddd;border-radius:10px;font-size:14px;cursor:pointer}
+.vt-back-btn:hover{background:#f5f5f5}
+
+/* Кнопка «Говорить» */
+.vt-talk-btn{padding:12px 24px;background:linear-gradient(135deg,#1a73e8,#1565c0);color:#fff;border:none;border-radius:30px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s}
+.vt-talk-btn:hover{transform:scale(1.03)}
+.vt-talk-btn.active{background:linear-gradient(135deg,#f44336,#c62828);animation:vtBlink 1s ease-in-out infinite}
+@keyframes vtBlink{0%,100%{opacity:1}50%{opacity:.7}}
+.vt-call-actions{display:flex;gap:12px;justify-content:center;margin-bottom:14px}
+.vt-mic-status{font-size:13px;color:#666;flex:1}
+.vt-info-banner{background:#e3f2fd;border-radius:10px;padding:10px 14px;font-size:12px;line-height:1.5;margin-bottom:14px;color:#1565c0}
+.vt-error{background:#fce4ec;border-radius:10px;padding:16px;text-align:center;color:#c62828;font-size:14px}
+
+/* Индикатор состояния */
+.vt-state-indicator{text-align:center;padding:16px;margin:10px 0;border-radius:14px;background:#f5f5f5;transition:.3s}
+.vt-state-icon{font-size:36px;margin-bottom:4px}
+.vt-state-text{font-size:14px;font-weight:600;color:#666}
+.vt-st-listening{background:#e8f5e9;animation:vtListenPulse 2s ease-in-out infinite}
+.vt-st-listening .vt-state-text{color:#2e7d32}
+@keyframes vtListenPulse{0%,100%{box-shadow:0 0 0 0 rgba(76,175,80,.2)}50%{box-shadow:0 0 0 12px rgba(76,175,80,0)}}
+.vt-st-thinking{background:#fff3e0}
+.vt-st-thinking .vt-state-text{color:#e65100}
+.vt-st-thinking .vt-state-icon{animation:vtSpin 1.5s linear infinite}
+@keyframes vtSpin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+.vt-st-speaking{background:#e3f2fd}
+.vt-st-speaking .vt-state-text{color:#1565c0}
+.vt-live-text{text-align:center;font-size:14px;color:#888;min-height:20px;padding:4px;font-style:italic}
+.vt-big-btn-wrap{text-align:center;margin:10px 0}
+.vt-record-btn{padding:16px 32px;border-radius:30px;border:3px solid #e0e0e0;background:#fff;cursor:pointer;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:10px;transition:.2s}
+.vt-record-btn:hover{border-color:#90caf9;background:#f0f7ff}
+.vt-rec-active{border-color:#f44336;background:#fce4ec;animation:vtBlink 1s ease-in-out infinite}
+.vt-rec-disabled{opacity:.5;cursor:not-allowed}
+.vt-rec-icon{font-size:24px}
+.vt-rec-text{font-size:14px}
+
+/* Отчёт тренажёра */
+.vt-report{margin:16px 0;text-align:left}
+.vt-report-loading{text-align:center;padding:16px;color:#888;font-size:14px}
+.vt-report-empty{text-align:center;padding:12px;color:#999;font-size:13px}
+.vt-report-title{font-size:16px;font-weight:700;margin-bottom:12px}
+.vt-report-score{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+.vt-report-score-num{font-size:32px;font-weight:800}
+.vt-report-score-label{font-size:13px;color:#888}
+.vt-report-checklist{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.vt-rp-item{padding:6px 10px;border-radius:6px;font-size:13px}
+.vt-rp-yes{background:#e8f5e9}
+.vt-rp-no{background:#fce4ec}
+.vt-report-advice{background:#fff3e0;border-radius:8px;padding:10px 14px;font-size:13px;line-height:1.5;margin-bottom:12px}
+.vt-report-details{margin-bottom:12px}
+.vt-report-details summary{cursor:pointer;font-size:13px;font-weight:600;color:#1a73e8;padding:6px 0}
+.vt-report-transcript{font-size:12px;line-height:1.6;color:#555;padding:8px;background:#f8f8f8;border-radius:6px;max-height:200px;overflow-y:auto}
+.vt-report-actions{display:flex;gap:8px;justify-content:center}
+.vt-btn-report{padding:8px 18px;background:#1a73e8;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.vt-btn-report:hover{background:#1565c0}

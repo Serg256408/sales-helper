@@ -5,6 +5,7 @@ import {
   isArticleUnlocked, getArticleStatus, getCategoryProgress,
   getOverallProgress, getReport, resetProgress
 } from './learn-progress.js';
+import { addXP } from './gamification.js';
 
 // Определить articleId по quizId (маппинг из реальных onclick в HTML)
 function _quizToArticle(quizId) {
@@ -155,10 +156,14 @@ function _showResult(el, score, total, quizId) {
   }
 
   if (passed) {
+    // Начислить XP за тест
+    const xpAmount = pct === 100 ? 20 : 10;
+    addXP(xpAmount, pct === 100 ? 'Тест на 100%!' : 'Тест сдан');
+
     // Сдал — показать результат
     el.style.display = 'block';
     el.className = 'quiz-result good';
-    el.innerHTML = '&#127942; Результат: <strong>' + score + ' из ' + total + '</strong> (' + pct + '%) — Тест сдан! Следующая статья разблокирована.';
+    el.innerHTML = '&#127942; Результат: <strong>' + score + ' из ' + total + '</strong> (' + pct + '%) — Тест сдан! +' + xpAmount + ' XP';
   } else {
     // Не сдал — показать результат, через 2 сек сбросить и скролл к началу статьи
     el.style.display = 'block';

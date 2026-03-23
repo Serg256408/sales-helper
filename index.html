@@ -12,6 +12,7 @@
 <div class="hdr">
 <div><h1>ТРАНСКОМ <span class="pf-badge" id="pf-hdr-badge" onclick="tab('planfix')"></span></h1><div class="hdr-sub" id="hdr-sub-text">Помощник МОП &middot; Вывоз снега &middot; с 2014 года</div></div>
 <div style="display:flex;gap:10px;align-items:center">
+<button class="gf-profile-btn" id="gf-profile-btn" onclick="showProfileModal()" title="Профиль менеджера"><span class="gf-level-icon">🟢</span> <span class="gf-name">Менеджер</span> <span class="gf-xp">0 XP</span></button>
 <button class="search-btn" onclick="openKnowledgeSearch()" title="Поиск по базе знаний">&#128269;</button>
 <div class="svc-toggle">
 <button class="svc-btn" id="b-svc-snow" onclick="setSvc('snow')">&#10052; СНЕГ</button>
@@ -33,6 +34,7 @@
 <div class="nav-i" data-tab="cheat" onclick="tab('cheat')">&#9889; Шпаргалка</div>
 <div class="nav-i" data-tab="planfix" onclick="tab('planfix')" style="color:#1a73e8">&#9881; PlanFix</div>
 <div class="nav-i" data-tab="learn" onclick="tab('learn')">&#127891; Обучение</div>
+<div class="nav-i" data-tab="trainer" onclick="tab('trainer')">&#127918; Тренажёр</div>
 </div>
 
 <!-- ===== MAIN CONTENT ===== -->
@@ -6942,6 +6944,29 @@
 
 </div><!-- /tab-learn -->
 
+<!-- Тренажёр -->
+<div class="tc" id="tab-trainer">
+<div class="card">
+<div class="card-h">&#127918; Тренажёр продаж</div>
+<div class="card-b">
+<div class="trainer-mode-toggle">
+<button class="trainer-mode-btn active" id="trainer-mode-scenarios" onclick="switchTrainerMode('scenarios')">&#127919; Сценарии</button>
+<button class="trainer-mode-btn" id="trainer-mode-ai" onclick="switchTrainerMode('ai')">&#129302; AI-текст</button>
+<button class="trainer-mode-btn" id="trainer-mode-voice" onclick="switchTrainerMode('voice')">&#127908; Голосовой AI</button>
+</div>
+<div id="trainer-scenarios-wrap">
+<div class="trainer-scenarios-list" id="trainer-scenarios-list"></div>
+<div class="trainer-play-area" id="trainer-play-area" style="display:none"></div>
+</div>
+<div id="trainer-ai-wrap" style="display:none">
+<div class="ai-trainer-settings" id="ai-trainer-settings"></div>
+<div class="ai-trainer-chat" id="ai-trainer-chat"></div>
+</div>
+<div id="trainer-voice-wrap" style="display:none"></div>
+</div>
+</div>
+</div><!-- /tab-trainer -->
+
 <!-- ===== BIG 3 STICKY MODULE ===== -->
 <div class="big3" id="big3mod">
 <button class="big3-toggle" onclick="toggleBig3()">▲ ИТОГ ЗВОНКА</button>
@@ -7015,6 +7040,28 @@
 <div class="ks-results" id="ks-results">
 <div class="ks-hint">Введите запрос — например: «битум», «толщина», «расход», «бордюр»</div>
 </div>
+</div>
+</div>
+
+<!-- ===== GAMIFICATION: Модалка профиля ===== -->
+<div class="gf-modal-overlay" id="gf-profile-modal" style="display:none" onclick="if(event.target===this)closeProfileModal()">
+<div class="gf-modal">
+<div class="gf-modal-header">
+<span>Профиль менеджера</span>
+<button class="gf-modal-close" onclick="closeProfileModal()">&times;</button>
+</div>
+<div class="gf-modal-content" id="gf-modal-body"></div>
+</div>
+</div>
+
+<!-- ===== GAMIFICATION: Вопрос дня ===== -->
+<div class="gf-modal-overlay" id="gf-daily-modal" style="display:none" onclick="if(event.target===this)closeDailyModal()">
+<div class="gf-modal gf-daily-modal">
+<div class="gf-modal-header">
+<span>&#9728;&#65039; Вопрос дня</span>
+<button class="gf-modal-close" onclick="closeDailyModal()">&times;</button>
+</div>
+<div class="gf-modal-content" id="gf-daily-body"></div>
 </div>
 </div>
 

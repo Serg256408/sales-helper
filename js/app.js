@@ -9,6 +9,10 @@ import './modules/calculator.js';
 import './modules/objections.js';
 import { updateLearnUI } from './modules/learn.js';
 import './modules/knowledge-search.js';
+import { initGamification } from './modules/gamification.js';
+import { initTrainer } from './modules/trainer.js';
+import './modules/ai-trainer.js';
+import './modules/voice-trainer.js';
 
 // Запуск: режим по умолчанию — асфальт
 setSvc('asphalt');
@@ -17,3 +21,7 @@ autoLinkFromUrl();
 
 // Инициализация системы прогресса обучения
 updateLearnUI();
+
+// Инициализация геймификации и тренажёра
+initGamification();
+initTrainer();
