@@ -42,6 +42,25 @@ export function cpy(btn) {
   });
 }
 
+// Лайтбокс — увеличение фото по клику
+document.addEventListener('click', e => {
+  const img = e.target.closest('.la-img img');
+  if (img) {
+    const box = document.createElement('div');
+    box.className = 'img-lightbox';
+    box.innerHTML = '<img src="' + img.src + '">';
+    box.onclick = () => box.remove();
+    document.addEventListener('keydown', function esc(ev) {
+      if (ev.key === 'Escape') { box.remove(); document.removeEventListener('keydown', esc); }
+    });
+    document.body.appendChild(box);
+  }
+  // Закрытие лайтбокса по клику
+  if (e.target.closest('.img-lightbox')) {
+    e.target.closest('.img-lightbox').remove();
+  }
+});
+
 // Глобальные функции для onclick
 window.tab = tab;
 window.cpy = cpy;

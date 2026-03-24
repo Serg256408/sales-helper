@@ -35,7 +35,9 @@ function _quizToArticle(quizId) {
     'drain': 'soil-drainage',
     'machinery': 'road-machinery',
     'stone': 'crushed-stone',
-    'quiz-pf': 'planfix-guide'
+    'pf-intro': 'planfix-intro',
+    'quiz-pf': 'planfix-guide',
+    'base-call': 'base-calling'
   };
   return map[quizId] || null;
 }

@@ -336,12 +336,20 @@
 <div class="learn-cat" onclick="toggleLearnCat(this)">
 <span class="learn-cat-arrow">&#9654;</span>
 <span>&#9881; Инструменты</span>
-<span class="learn-cat-count">1</span>
+<span class="learn-cat-count">3</span>
 </div>
 <div class="learn-cat-items" style="display:none">
+<div class="learn-list-item" onclick="showArticle('planfix-intro')">
+<span class="ll-icon">&#128218;</span>
+<span class="ll-text">Начало работы в PlanFix</span>
+</div>
 <div class="learn-list-item" onclick="showArticle('planfix-guide')">
 <span class="ll-icon">&#9881;</span>
-<span class="ll-text">Работа в PlanFix</span>
+<span class="ll-text">Виджеты и панели сделки</span>
+</div>
+<div class="learn-list-item" onclick="showArticle('base-calling')">
+<span class="ll-icon">&#127909;</span>
+<span class="ll-text">Обзвон базы — видеоурок</span>
 </div>
 </div>
 
@@ -3694,6 +3702,104 @@
 </div>
 </div>
 
+<!-- ===== СТАТЬЯ: НАЧАЛО РАБОТЫ В PLANFIX ===== -->
+<div class="learn-article" id="article-planfix-intro" style="display:none">
+
+<div class="la-hero">
+<img src="img/learn_pf_intro_1.jpg" alt="PlanFix CRM — начало работы">
+<div class="la-hero-overlay">
+<div class="la-hero-title">Начало работы в PlanFix</div>
+<div class="la-hero-meta">&#128337; ~10 мин &middot; 3 раздела &middot; Тест из 3 вопросов</div>
+</div>
+</div>
+
+<div class="la-body">
+
+<!-- 1. Введение -->
+<div class="la-section">
+<div class="la-section-title"><span class="la-section-num">1</span> Что такое PlanFix</div>
+<div class="la-text">
+<p><strong>PlanFix</strong> — это CRM-система, в которой ведётся вся работа менеджеров Транском: сделки, задачи, контакты клиентов, история общения. Это ваш главный рабочий инструмент на каждый день.</p>
+<p>Прежде чем приступить к работе, нужно пройти базовое обучение по платформе. Ниже — два обязательных ресурса для ознакомления.</p>
+</div>
+<div class="la-highlight">
+<strong>Важно:</strong> В Транском используется <strong>доработанная конфигурация</strong> PlanFix — у нас настроены свои типы сделок, поля и автоматизации. Поэтому сначала изучите общие принципы платформы, а затем — нашу конфигурацию. Подробные уроки по работе именно в нашей системе будут в следующих статьях.
+</div>
+</div>
+
+<!-- 2. Академия PlanFix -->
+<div class="la-section">
+<div class="la-section-title"><span class="la-section-num">2</span> Академия PlanFix — общее обучение</div>
+<div class="la-text">
+<p>Начните с <strong>Академии PlanFix</strong> — это официальная обучающая платформа от разработчиков. Здесь вы узнаете:</p>
+<ul>
+<li>Как устроен интерфейс PlanFix</li>
+<li>Что такое задачи, проекты, контакты</li>
+<li>Как работать с фильтрами и планировщиками</li>
+<li>Базовые принципы навигации и настройки</li>
+</ul>
+</div>
+<div class="la-info">
+<div class="la-info-title">&#127891; Ссылка на обучение</div>
+<a href="https://academy.planfix.ru/members/signup/group/tuhqbflzr3bil3z-akademia-planfiksa" target="_blank" rel="noopener" style="color:#1a73e8;font-weight:700;font-size:16px;text-decoration:underline;">
+&#128279; Академия PlanFix — зарегистрироваться и начать обучение
+</a>
+<br><br>
+Пройдите базовый курс, чтобы уверенно ориентироваться в системе. Это займёт около 1–2 часов.
+</div>
+</div>
+
+<!-- 3. Сделка 3.0 -->
+<div class="la-section">
+<div class="la-section-title"><span class="la-section-num">3</span> Сделка 3.0 — наша конфигурация</div>
+<div class="la-text">
+<p>После изучения основ платформы посмотрите видео о конфигурации <strong>«Сделка 3.0»</strong>. Это базовый шаблон, на основе которого построена наша система в Транском.</p>
+</div>
+<div class="la-info">
+<div class="la-info-title">&#127909; Видео: Сделка 3.0</div>
+<a href="https://vkvideo.ru/video-60567986_456239410" target="_blank" rel="noopener" style="color:#1a73e8;font-weight:700;font-size:16px;text-decoration:underline;">
+&#128279; Смотреть видео «Сделка 3.0» на VK Видео
+</a>
+<br><br>
+В видео разбирается стандартная конфигурация сделки. Наша версия — <strong>доработана под задачи Транском</strong> (свои этапы воронки, поля, автоматизации), но базовая логика та же.
+</div>
+<div class="la-highlight">
+<strong>Что дальше:</strong> В следующих уроках этого раздела вы подробно разберёте именно нашу конфигурацию — виджеты сделки, панели, чек-листы и всё, с чем работаете каждый день.
+</div>
+</div>
+
+<!-- Тест -->
+<div class="la-quiz" id="quiz-pf-intro">
+<div class="la-section-title"><span class="la-section-num">&#10004;</span> Проверьте себя</div>
+
+<div class="la-question">
+<p><strong>1.</strong> Что такое PlanFix в контексте работы менеджера Транском?</p>
+<label><input type="radio" name="pfi1" value="a"> Мессенджер для общения с клиентами</label>
+<label><input type="radio" name="pfi1" value="b"> CRM-система для ведения сделок и задач</label>
+<label><input type="radio" name="pfi1" value="c"> Программа для расчёта стоимости услуг</label>
+</div>
+
+<div class="la-question">
+<p><strong>2.</strong> Почему после общего обучения нужно изучать конфигурацию Транском отдельно?</p>
+<label><input type="radio" name="pfi2" value="a"> Общее обучение устарело</label>
+<label><input type="radio" name="pfi2" value="b"> У Транском доработанная конфигурация со своими полями и автоматизациями</label>
+<label><input type="radio" name="pfi2" value="c"> Общее обучение только на английском языке</label>
+</div>
+
+<div class="la-question">
+<p><strong>3.</strong> На какой конфигурации основана система Транском?</p>
+<label><input type="radio" name="pfi3" value="a"> Задача 2.0</label>
+<label><input type="radio" name="pfi3" value="b"> Сделка 3.0</label>
+<label><input type="radio" name="pfi3" value="c"> Проект 1.0</label>
+</div>
+
+<button class="la-quiz-btn" onclick="checkQuiz('pf-intro',{pfi1:'b',pfi2:'b',pfi3:'b'})">Проверить ответы</button>
+<div id="quiz-pf-intro-result" class="quiz-result" style="display:none"></div>
+</div>
+
+</div>
+</div>
+
 <!-- ===== СТАТЬЯ 15: РАБОТА В PLANFIX ===== -->
 <div class="learn-article" id="article-planfix-guide" style="display:none">
 
@@ -3722,8 +3828,8 @@
 <div class="la-section">
 <div class="la-section-title"><span class="la-section-num">2</span> Панель «Детали»</div>
 <div class="la-img">
-<img src="img/learn_pf_2.jpg" alt="CRM интерфейс">
-<div class="la-img-caption">Панель «Детали» — вся ключевая информация о сделке в одном месте</div>
+<img src="img/Детали.jpg" alt="Панель Детали в PlanFix">
+<div class="la-img-caption">Панель «Детали» — контрагент, адрес объекта, что нужно сделать, карта</div>
 </div>
 
 <div class="la-info">
@@ -3742,6 +3848,10 @@
 <!-- 3. Подзадачи -->
 <div class="la-section">
 <div class="la-section-title"><span class="la-section-num">3</span> Панель «Подзадачи»</div>
+<div class="la-img">
+<img src="img/Подзадачи.jpg" alt="Панель Подзадачи в PlanFix">
+<div class="la-img-caption">Панель «Подзадачи» — список задач по сделке: вывозы, подтверждения, закрывающие документы</div>
+</div>
 
 <div class="la-info">
 <div class="la-info-title">&#128221; Что здесь</div>
@@ -3777,6 +3887,10 @@
 <!-- 5. Документы -->
 <div class="la-section">
 <div class="la-section-title"><span class="la-section-num">5</span> Панель «Документы»</div>
+<div class="la-img">
+<img src="img/Документы.jpg" alt="Панель Документы в PlanFix">
+<div class="la-img-caption">Панель «Документы» — КП, записи звонков, фото, договоры</div>
+</div>
 
 <div class="la-info">
 <div class="la-info-title">&#128196; Что здесь</div>
@@ -3801,6 +3915,10 @@
 <!-- 6. Напоминания -->
 <div class="la-section">
 <div class="la-section-title"><span class="la-section-num">6</span> Панель «Напоминания»</div>
+<div class="la-img">
+<img src="img/Напоминания.jpg" alt="Панель Напоминания в PlanFix">
+<div class="la-img-caption">Панель «Напоминания» — запланированные и отправленные уведомления</div>
+</div>
 
 <div class="la-info">
 <div class="la-info-title">&#128276; Что здесь</div>
@@ -3819,8 +3937,8 @@
 <div class="la-section">
 <div class="la-section-title"><span class="la-section-num">7</span> Лог, Права, Контакты</div>
 <div class="la-img">
-<img src="img/learn_pf_3.jpg" alt="Панели PlanFix">
-<div class="la-img-caption">Лог, контакты и аналитика — полная картина по сделке</div>
+<img src="img/контакты.jpg" alt="Контакты в PlanFix">
+<div class="la-img-caption">Панель контактов и прав доступа к сделке</div>
 </div>
 
 <div class="la-info">
@@ -3842,6 +3960,10 @@
 <!-- 8. Отчёты и аналитика -->
 <div class="la-section">
 <div class="la-section-title"><span class="la-section-num">8</span> Отчёты, Уведомления, Аналитика</div>
+<div class="la-img">
+<img src="img/аналитика.jpg" alt="Аналитика в PlanFix">
+<div class="la-img-caption">Панель «Аналитика» — здесь формируется КП и смета для клиента</div>
+</div>
 
 <div class="la-info">
 <div class="la-info-title">&#128202; Отчёты</div>
@@ -3860,6 +3982,10 @@
 <div class="la-info-title">&#128200; Аналитика</div>
 Список всех аналитик сделки. Можно <strong>добавить</strong> новую аналитику, <strong>отредактировать</strong>, скопировать или удалить существующую запись.
 </div>
+
+<div class="la-highlight">
+<strong>Важно!</strong> Именно в панели <strong>«Аналитика»</strong> формируется <strong>КП (коммерческое предложение)</strong> и <strong>смета</strong> по сделке. Когда вы заполняете аналитику — система автоматически генерирует документ КП, который можно отправить клиенту. Здесь же можно посмотреть итоговую смету и проверить все позиции перед отправкой.
+</div>
 </div>
 
 <!-- 9. Чеклист менеджера -->
@@ -3872,7 +3998,8 @@
 <strong>2.</strong> <strong>Подзадачи</strong> → создай задачу на следующее действие (перезвон, КП, выезд)<br>
 <strong>3.</strong> <strong>Документы</strong> → прикрепи КП, счёт, фото<br>
 <strong>4.</strong> <strong>Напоминания</strong> → поставь на дату перезвона<br>
-<strong>5.</strong> В комментарии → <strong>запиши итог звонка</strong> (что обсудили, что решили)<br><br>
+<strong>5.</strong> <strong>Аналитика</strong> → заполни для формирования КП/сметы<br>
+<strong>6.</strong> В комментарии → <strong>запиши итог звонка</strong> (что обсудили, что решили)<br><br>
 <strong>Это займёт 2 минуты</strong>, но сэкономит часы потом.
 </div>
 </div>
@@ -3886,6 +4013,7 @@
 <li><strong>Подзадачи</strong> — конкретные действия, создавай после каждого звонка</li>
 <li><strong>Документы</strong> — КП, счета, фото, договоры</li>
 <li><strong>Напоминания</strong> — не забывай перезвонить</li>
+<li><strong>Аналитика</strong> — формирование КП/сметы для клиента</li>
 <li><strong>Лог</strong> — полная история, всё записано</li>
 </ul>
 </div>
@@ -3951,6 +4079,64 @@
 
 <button class="quiz-btn" onclick="checkQuiz('quiz-pf')">&#10004; Проверить ответы</button>
 <div class="quiz-result" id="quiz-pf-result" style="display:none"></div>
+</div>
+
+</div>
+</div>
+
+<!-- ===== ВИДЕОУРОК: ОБЗВОН БАЗЫ ===== -->
+<div class="learn-article" id="article-base-calling" style="display:none">
+
+<div class="la-hero">
+<div class="la-hero-overlay" style="position:relative;background:#1a1a2e;">
+<div class="la-hero-title">Обзвон существующей базы — видеоурок</div>
+<div class="la-hero-meta">&#127909; Видеоурок &middot; 1 раздел &middot; Тест из 3 вопросов</div>
+</div>
+</div>
+
+<div class="la-body">
+
+<!-- 1. Видеоурок -->
+<div class="la-section">
+<div class="la-section-title"><span class="la-section-num">1</span> Видеоурок: обзвон существующей базы</div>
+<div class="la-text">
+<p>В этом видео показан <strong>реальный процесс обзвона существующей базы клиентов</strong> — от подготовки до завершения звонка. Посмотрите внимательно, как строится разговор, на что обращать внимание и какие ошибки не допускать.</p>
+</div>
+<div style="position:relative;width:100%;padding-top:56.25%;margin:16px 0;border-radius:12px;overflow:hidden;background:#000;">
+<iframe src="https://vk.com/video_ext.php?oid=-185789230&id=456239022&hd=2" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+</div>
+<div class="la-highlight">
+<strong>Совет:</strong> Посмотрите видео 2 раза: первый — целиком для общего понимания, второй — с паузами, чтобы записать ключевые фразы и приёмы.
+</div>
+</div>
+
+<!-- Тест -->
+<div class="la-quiz" id="quiz-base-call">
+<div class="la-section-title"><span class="la-section-num">&#10004;</span> Проверьте себя</div>
+
+<div class="la-question">
+<p><strong>1.</strong> Какая главная цель обзвона существующей базы?</p>
+<label><input type="radio" name="bc1" value="a"> Продать услугу с первого звонка</label>
+<label><input type="radio" name="bc1" value="b"> Актуализировать потребность и назначить следующий шаг</label>
+<label><input type="radio" name="bc1" value="c"> Просто напомнить о компании</label>
+</div>
+
+<div class="la-question">
+<p><strong>2.</strong> Что важно сделать перед звонком клиенту из базы?</p>
+<label><input type="radio" name="bc2" value="a"> Подготовить скидку</label>
+<label><input type="radio" name="bc2" value="b"> Посмотреть историю взаимодействия в CRM</label>
+<label><input type="radio" name="bc2" value="c"> Отправить коммерческое предложение</label>
+</div>
+
+<div class="la-question">
+<p><strong>3.</strong> Что делать после завершения звонка?</p>
+<label><input type="radio" name="bc3" value="a"> Ничего, ждать пока клиент сам перезвонит</label>
+<label><input type="radio" name="bc3" value="b"> Зафиксировать результат в CRM и поставить задачу на следующий шаг</label>
+<label><input type="radio" name="bc3" value="c"> Удалить клиента из базы, если не купил</label>
+</div>
+
+<button class="la-quiz-btn" onclick="checkQuiz('base-call',{bc1:'b',bc2:'b',bc3:'b'})">Проверить ответы</button>
+<div id="quiz-base-call-result" class="quiz-result" style="display:none"></div>
 </div>
 
 </div>

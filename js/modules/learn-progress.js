@@ -11,7 +11,7 @@ export const LEARN_MAP = [
   { id: 'tech', name: 'Технологии работ', articles: ['asphalt-laying','pothole-repair','crack-sealing','geomaterials','road-marking','asphalt-calc'] },
   { id: 'landscaping', name: 'Благоустройство', articles: ['curbs','paving-tiles','storm-trays','concrete-wells','lawns'] },
   { id: 'raw', name: 'Сырьё и техника', articles: ['road-sand','soil-drainage','road-machinery','crushed-stone'] },
-  { id: 'tools', name: 'Инструменты', articles: ['planfix-guide'] }
+  { id: 'tools', name: 'Инструменты', articles: ['planfix-intro','planfix-guide','base-calling'] }
 ];
 
 // Чтение/запись прогресса
@@ -40,6 +40,8 @@ export function isArticleUnlocked(articleId) {
   for (const cat of LEARN_MAP) {
     const idx = cat.articles.indexOf(articleId);
     if (idx === -1) continue;
+    // Категория «Инструменты» — без блокировки, всё доступно сразу
+    if (cat.id === 'tools') return true;
     // Первая статья в категории всегда открыта
     if (idx === 0) return true;
     // Остальные — только если предыдущая сдана
