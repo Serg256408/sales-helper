@@ -650,7 +650,7 @@ function _renderReport(el, evalData, transcript, min, sec, managerReplies) {
     </div>`;
 }
 
-// Скачать отчёт как HTML-файл (наглядный)
+// Скачать отчёт как Word-документ (.doc)
 export function downloadVoiceReport() {
   const r = window._lastVoiceReport;
   if (!r) return;
@@ -659,93 +659,82 @@ export function downloadVoiceReport() {
   const total = r.checklist.length;
   const pct = Math.round(doneCount / total * 100);
   const scoreColor = r.score >= 7 ? '#2e7d32' : r.score >= 4 ? '#e65100' : '#c62828';
-  const barColor = r.score >= 7 ? '#4caf50' : r.score >= 4 ? '#ff9800' : '#f44336';
 
-  const checklistHTML = r.checklist.map(c => `
+  // Чек-лист в таблице
+  const checklistRows = r.checklist.map(c => `
     <tr>
-      <td style="width:40px;text-align:center;font-size:20px">${c.done ? '✅' : '❌'}</td>
-      <td style="padding:8px;${c.done ? '' : 'color:#c62828;font-weight:600'}">${c.label}</td>
+      <td style="width:30px;text-align:center;padding:6px;border:1px solid #ddd">${c.done ? '+' : '-'}</td>
+      <td style="padding:6px 10px;border:1px solid #ddd;${c.done ? 'color:#2e7d32' : 'color:#c62828;font-weight:bold'}">${c.label}</td>
     </tr>`).join('');
 
-  // Разбить транскрипт по ролям
-  const transcriptHTML = r.transcript.split('\n').map(line => {
+  // Транскрипт — каждая реплика отдельной строкой
+  const transcriptRows = r.transcript.split('\n').map(line => {
     if (line.startsWith('МЕНЕДЖЕР:')) {
-      return `<div style="background:#e3f2fd;padding:8px 12px;border-radius:8px;margin:4px 0;margin-left:40px"><b style="color:#1565c0">Менеджер:</b> ${line.replace('МЕНЕДЖЕР: ', '')}</div>`;
+      return `<p style="margin:4px 0;padding:6px 10px;background:#e3f2fd"><b>Менеджер:</b> ${line.replace('МЕНЕДЖЕР: ', '')}</p>`;
     } else if (line.startsWith('КЛИЕНТ:')) {
-      return `<div style="background:#f5f5f5;padding:8px 12px;border-radius:8px;margin:4px 0;margin-right:40px"><b style="color:#e65100">Клиент:</b> ${line.replace('КЛИЕНТ: ', '')}</div>`;
+      return `<p style="margin:4px 0;padding:6px 10px;background:#f5f5f5"><b>Клиент:</b> ${line.replace('КЛИЕНТ: ', '')}</p>`;
     }
     return '';
   }).join('');
 
-  const html = `<!DOCTYPE html>
-<html lang="ru">
+  // Word-совместимый HTML с правильными заголовками
+  const doc = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
 <head>
 <meta charset="UTF-8">
-<title>Отчёт тренажёра — Транском</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View></w:WordDocument></xml><![endif]-->
 <style>
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:700px;margin:0 auto;padding:20px;color:#1a1a1a;background:#fff}
-  .header{text-align:center;padding:20px 0;border-bottom:3px solid #1a1a1a}
-  .header h1{font-size:22px;margin:0}
-  .header .sub{color:#888;font-size:13px;margin-top:4px}
-  .meta{display:flex;justify-content:space-around;padding:16px 0;border-bottom:1px solid #eee}
-  .meta-item{text-align:center}
-  .meta-val{font-size:24px;font-weight:800}
-  .meta-label{font-size:11px;color:#888}
-  .score-block{text-align:center;padding:20px 0}
-  .score-num{font-size:56px;font-weight:900;color:${scoreColor}}
-  .score-label{font-size:14px;color:#666}
-  .bar-wrap{height:12px;background:#eee;border-radius:6px;margin:10px 0;overflow:hidden}
-  .bar-fill{height:100%;background:${barColor};border-radius:6px;width:${pct}%}
-  .section{margin:20px 0}
-  .section h2{font-size:16px;border-bottom:2px solid #eee;padding-bottom:6px;margin-bottom:12px}
-  table{width:100%;border-collapse:collapse}
-  tr{border-bottom:1px solid #f0f0f0}
-  .advice{background:#fff3e0;border-radius:10px;padding:14px;font-size:14px;line-height:1.6}
-  .transcript{margin-top:12px}
-  .footer{text-align:center;color:#bbb;font-size:11px;margin-top:30px;padding-top:10px;border-top:1px solid #eee}
-  @media print{body{padding:0}.bar-fill{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  body { font-family: 'Calibri', 'Segoe UI', sans-serif; font-size: 12pt; color: #1a1a1a; margin: 40px; }
+  h1 { font-size: 18pt; text-align: center; margin-bottom: 4px; }
+  h2 { font-size: 14pt; border-bottom: 2px solid #333; padding-bottom: 4px; margin-top: 20px; }
+  .date { text-align: center; color: #888; font-size: 10pt; margin-bottom: 20px; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  .meta-table td { text-align: center; padding: 10px; border: 1px solid #ddd; }
+  .meta-val { font-size: 16pt; font-weight: bold; }
+  .meta-label { font-size: 9pt; color: #888; }
+  .score { text-align: center; font-size: 36pt; font-weight: bold; color: ${scoreColor}; margin: 10px 0; }
+  .score-sub { text-align: center; font-size: 11pt; color: #666; margin-bottom: 10px; }
+  .progress { text-align: center; font-size: 10pt; color: #666; margin-bottom: 16px; }
+  .advice { background: #fff3e0; padding: 12px; border-left: 4px solid #ff9800; margin: 10px 0; font-size: 11pt; line-height: 1.6; }
+  .footer { text-align: center; color: #bbb; font-size: 9pt; margin-top: 30px; border-top: 1px solid #eee; padding-top: 8px; }
+  @page { size: A4; margin: 2cm; }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>ТРАНСКОМ — Отчёт тренажёра продаж</h1>
-  <div class="sub">${r.date}</div>
-</div>
+<h1>ТРАНСКОМ — Отчёт тренажёра продаж</h1>
+<div class="date">${r.date}</div>
 
-<div class="meta">
-  <div class="meta-item"><div class="meta-val">${r.duration}</div><div class="meta-label">Длительность</div></div>
-  <div class="meta-item"><div class="meta-val">${r.replies}</div><div class="meta-label">Реплик менеджера</div></div>
-  <div class="meta-item"><div class="meta-val">${doneCount}/${total}</div><div class="meta-label">Пунктов скрипта</div></div>
-</div>
+<table class="meta-table">
+  <tr>
+    <td><div class="meta-val">${r.duration}</div><div class="meta-label">Длительность</div></td>
+    <td><div class="meta-val">${r.replies}</div><div class="meta-label">Реплик менеджера</div></td>
+    <td><div class="meta-val">${doneCount}/${total}</div><div class="meta-label">Пунктов скрипта</div></td>
+  </tr>
+</table>
 
-<div class="score-block">
-  <div class="score-num">${r.score}/10</div>
-  <div class="score-label">Общая оценка</div>
-  <div class="bar-wrap"><div class="bar-fill"></div></div>
-</div>
+<div class="score">${r.score}/10</div>
+<div class="score-sub">Общая оценка</div>
+<div class="progress">Выполнено ${pct}% скрипта продаж</div>
 
-<div class="section">
-  <h2>📋 Соблюдение скрипта продаж</h2>
-  <table>${checklistHTML}</table>
-</div>
+<h2>Соблюдение скрипта продаж</h2>
+<table>${checklistRows}</table>
 
-${r.advice ? `<div class="section"><h2>💡 Рекомендации</h2><div class="advice">${r.advice}</div></div>` : ''}
+${r.advice ? `<h2>Рекомендации</h2><div class="advice">${r.advice}</div>` : ''}
 
-<div class="section">
-  <h2>💬 Транскрипт разговора</h2>
-  <div class="transcript">${transcriptHTML}</div>
-</div>
+<h2>Транскрипт разговора</h2>
+${transcriptRows}
 
-<div class="footer">Сгенерировано тренажёром ТРАНСКОМ • ${r.date}</div>
+<div class="footer">Сгенерировано тренажёром ТРАНСКОМ | ${r.date}</div>
 
 </body></html>`;
 
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  // Скачиваем как .doc (Word открывает HTML с правильным MIME)
+  const blob = new Blob(['\ufeff' + doc], { type: 'application/msword' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `transkom-otchet-${new Date().toISOString().slice(0, 10)}.html`;
+  a.download = `Транском_отчёт_${new Date().toISOString().slice(0, 10)}.doc`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
