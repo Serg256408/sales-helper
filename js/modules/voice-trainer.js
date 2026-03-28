@@ -10,7 +10,7 @@ const POLZA_KEY_STORAGE = 'transkom_polza_api_key';
 const POLZA_API = 'https://api.polza.ai/api/v1';
 const CHAT_MODEL = 'google/gemini-2.5-flash-lite'; // для диалога — быстрая
 const EVAL_MODEL = 'google/gemini-2.5-flash';      // для анализа — умная
-const TTS_MODEL = 'elevenlabs/text-to-speech-turbo-2-5';
+const TTS_MODEL = 'openai/tts-1';
 
 const DIFFICULTY = [
   { id: 'friendly', name: 'Дружелюбный', emoji: '😊' },
@@ -19,8 +19,12 @@ const DIFFICULTY = [
 ];
 
 const VOICES = [
-  'Roger', 'George', 'Charlie', 'Liam', 'Daniel', 'Brian',
-  'Rachel', 'Aria', 'Sarah', 'Laura', 'Charlotte', 'Alice', 'Jessica', 'Lily'
+  { id: 'onyx', name: 'Onyx (мужской, низкий)' },
+  { id: 'echo', name: 'Echo (мужской)' },
+  { id: 'fable', name: 'Fable (мужской, мягкий)' },
+  { id: 'alloy', name: 'Alloy (нейтральный)' },
+  { id: 'nova', name: 'Nova (женский)' },
+  { id: 'shimmer', name: 'Shimmer (женский, мягкий)' }
 ];
 
 // Состояния
@@ -30,7 +34,7 @@ let chatHistory = [];
 let callDuration = 0;
 let callTimer = null;
 let currentDifficulty = 'friendly';
-let currentVoice = 'Roger';
+let currentVoice = 'onyx';
 let currentAudio = null;
 let isCallActive = false;
 let currentScenario = null; // фиксируется при старте звонка
@@ -158,8 +162,8 @@ export function initVoiceTrainer() {
         </div>
         <div class="vt-config-item">
           <label>Голос:</label>
-          <select class="vt-voice-select" id="vt-voice-select" onchange="currentVoice=this.value">
-            ${VOICES.map(v => `<option value="${v}" ${v === currentVoice ? 'selected' : ''}>${v}</option>`).join('')}
+          <select class="vt-voice-select" id="vt-voice-select" onchange="setVoiceSelection(this.value)">
+            ${VOICES.map(v => `<option value="${v.id}" ${v.id === currentVoice ? 'selected' : ''}>${v.name}</option>`).join('')}
           </select>
         </div>
       </div>
@@ -391,7 +395,8 @@ async function _processUserSpeech(text) {
   try {
     await _speakTTS(aiText, apiKey);
   } catch (err) {
-    console.error('[Voice] TTS error:', err);
+    console.error('[Voice] TTS error, пробую браузерный голос:', err);
+    await _speakBrowser(aiText);
   }
 
   // 3. Сразу слушаем
@@ -399,36 +404,39 @@ async function _processUserSpeech(text) {
   if (isCallActive) _startListening();
 }
 
-// Вызвать TTS через Polza.ai и проиграть результат
-// Идентичная логика из test-voice.html шаг 4 (который работает)
+// Вызвать TTS через Polza.ai (OpenAI-совместимый формат)
 async function _speakTTS(text, apiKey) {
   console.log('[TTS] Запрос:', text, 'voice:', currentVoice);
 
   const resp = await fetch(`${POLZA_API}/audio/speech`, {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: TTS_MODEL, input: text, voice: currentVoice, response_format: 'mp3', language_code: 'ru' })
+    body: JSON.stringify({ model: TTS_MODEL, input: text, voice: currentVoice, response_format: 'mp3' })
   });
 
   console.log('[TTS] HTTP', resp.status, 'content-type:', resp.headers.get('content-type'));
-  if (!resp.ok) throw new Error('TTS HTTP ' + resp.status);
-
-  // Polza.ai возвращает JSON с base64 аудио в поле "audio"
-  const json = await resp.json();
-  console.log('[TTS] JSON keys:', Object.keys(json));
-
-  if (!json.audio) {
-    console.error('[TTS] Нет поля audio в ответе:', JSON.stringify(json).slice(0, 200));
-    throw new Error('Нет аудио в ответе');
+  if (!resp.ok) {
+    const errText = await resp.text().catch(() => '');
+    throw new Error(`TTS HTTP ${resp.status}: ${errText.slice(0, 200)}`);
   }
 
-  // Декодировать base64 → blob → Audio
-  const binary = atob(json.audio);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-  const blob = new Blob([bytes], { type: 'audio/mp3' });
-  const audioUrl = URL.createObjectURL(blob);
+  const contentType = resp.headers.get('content-type') || '';
+  let blob;
 
+  if (contentType.includes('audio') || contentType.includes('octet-stream')) {
+    // OpenAI формат: бинарный аудио-поток
+    blob = await resp.blob();
+  } else {
+    // ElevenLabs формат: JSON с base64
+    const json = await resp.json();
+    if (!json.audio) throw new Error('Нет аудио в ответе');
+    const binary = atob(json.audio);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    blob = new Blob([bytes], { type: 'audio/mp3' });
+  }
+
+  const audioUrl = URL.createObjectURL(blob);
   console.log('[TTS] Blob:', blob.size, 'bytes, playing...');
 
   return new Promise((resolve) => {
@@ -449,6 +457,31 @@ async function _speakTTS(text, apiKey) {
       console.error('[TTS] play() rejected:', err);
       resolve();
     });
+  });
+}
+
+// Фоллбэк: браузерный синтез речи (если TTS API недоступен)
+function _speakBrowser(text) {
+  return new Promise((resolve) => {
+    if (!('speechSynthesis' in window)) { resolve(); return; }
+
+    // Остановить предыдущее
+    window.speechSynthesis.cancel();
+
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'ru-RU';
+    utt.rate = 1.05;
+    utt.pitch = 1.0;
+
+    // Попробовать найти русский голос
+    const voices = window.speechSynthesis.getVoices();
+    const ruVoice = voices.find(v => v.lang.startsWith('ru'));
+    if (ruVoice) utt.voice = ruVoice;
+
+    utt.onend = () => resolve();
+    utt.onerror = () => resolve();
+
+    window.speechSynthesis.speak(utt);
   });
 }
 
@@ -819,9 +852,14 @@ export function setVoiceDifficulty(level) {
   document.querySelector(`.vt-diff-btn[onclick*="${level}"]`)?.classList.add('active');
 }
 
+export function setVoiceSelection(voice) {
+  currentVoice = voice;
+}
+
 window.initVoiceTrainer = initVoiceTrainer;
 window.saveVoiceKey = saveVoiceKey;
 window.setVoiceDifficulty = setVoiceDifficulty;
+window.setVoiceSelection = setVoiceSelection;
 window.startVoiceCall = startVoiceCall;
 window.endVoiceCall = endVoiceCall;
 window.backToVoiceSetup = backToVoiceSetup;
