@@ -6,9 +6,10 @@ const PASS_THRESHOLD = 80; // 80% для прохождения теста
 
 // Карта категорий и порядок статей (линейное прохождение внутри категории)
 export const LEARN_MAP = [
+  { id: 'mastery', name: 'Мастерство МОП', articles: ['asphalt-main','expert-vocab'] },
   { id: 'materials', name: 'Смеси и материалы', articles: ['bitum-emulsion','asphalt-concrete','asphalt-crumb','special-asphalt','asphalt-sma','asphalt-mixes'] },
   { id: 'construction', name: 'Конструкции дороги', articles: ['road-base','concrete-base','road-pie','road-slabs'] },
-  { id: 'tech', name: 'Технологии работ', articles: ['asphalt-laying','pothole-repair','crack-sealing','geomaterials','road-marking','asphalt-calc'] },
+  { id: 'tech', name: 'Технологии работ', articles: ['asphalt-laying','pothole-repair','resurface','crack-sealing','geomaterials','road-marking','asphalt-calc','equipment-guide'] },
   { id: 'landscaping', name: 'Благоустройство', articles: ['curbs','paving-tiles','storm-trays','concrete-wells','lawns'] },
   { id: 'raw', name: 'Сырьё и техника', articles: ['road-sand','soil-drainage','road-machinery','crushed-stone'] },
   { id: 'tools', name: 'Инструменты', articles: ['app-overview','planfix-intro','planfix-workspace','planfix-guide','planfix-new-deal','planfix-deal-card','planfix-deal-call','base-calling'] }
@@ -35,19 +36,8 @@ export function saveQuizResult(articleId, score, total) {
 }
 
 // Проверить, разблокирована ли статья
+// Все статьи открыты — пусть пользуются без ограничений
 export function isArticleUnlocked(articleId) {
-  const data = getProgress();
-  for (const cat of LEARN_MAP) {
-    const idx = cat.articles.indexOf(articleId);
-    if (idx === -1) continue;
-    // Категория «Инструменты» — без блокировки, всё доступно сразу
-    if (cat.id === 'tools') return true;
-    // Первая статья в категории всегда открыта
-    if (idx === 0) return true;
-    // Остальные — только если предыдущая сдана
-    const prevId = cat.articles[idx - 1];
-    return data[prevId]?.passed === true;
-  }
   return true;
 }
 
