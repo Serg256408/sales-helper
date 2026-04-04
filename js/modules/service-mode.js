@@ -52,6 +52,9 @@ export function setSvc(mode) {
   // Big3 итог звонка
   renderBig3(mode);
 
+  // Ведение сделки — перерендер при смене режима
+  if (typeof window._renderFu === 'function') window._renderFu();
+
   // Если на вкладке калькулятора — показать нужный
   const activeTab = document.querySelector('.tc.act');
   if (activeTab && (activeTab.id === 'tab-calc' || activeTab.id === 'tab-calc-a')) {

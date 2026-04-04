@@ -40,7 +40,8 @@ function _quizToArticle(quizId) {
     'stone': 'crushed-stone',
     'pf-intro': 'planfix-intro',
     'quiz-pf': 'planfix-guide',
-    'base-call': 'base-calling'
+    'base-call': 'base-calling',
+    'quiz-pain-sales': 'pain-sales'
   };
   return map[quizId] || null;
 }

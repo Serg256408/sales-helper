@@ -6,7 +6,7 @@ const PASS_THRESHOLD = 80; // 80% для прохождения теста
 
 // Карта категорий и порядок статей (линейное прохождение внутри категории)
 export const LEARN_MAP = [
-  { id: 'mastery', name: 'Мастерство МОП', articles: ['asphalt-main','expert-vocab'] },
+  { id: 'mastery', name: 'Мастерство МОП', articles: ['asphalt-main','expert-vocab','pain-sales'] },
   { id: 'materials', name: 'Смеси и материалы', articles: ['bitum-emulsion','asphalt-concrete','asphalt-crumb','special-asphalt','asphalt-sma','asphalt-mixes'] },
   { id: 'construction', name: 'Конструкции дороги', articles: ['road-base','concrete-base','road-pie','road-slabs'] },
   { id: 'tech', name: 'Технологии работ', articles: ['asphalt-laying','pothole-repair','resurface','crack-sealing','geomaterials','road-marking','asphalt-calc','equipment-guide'] },

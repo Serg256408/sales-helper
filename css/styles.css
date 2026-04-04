@@ -262,6 +262,11 @@ body.mode-snow .la-section-num{background:#1a3a5c;color:#4a9eda}
 body.mode-asphalt .la-info{background:#faf7f4;border-color:#e8e2dc}
 body.mode-snow .la-info{background:#f0f6ff;border-color:#d6e6f7}
 .la-info-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#999;margin-bottom:6px}
+.la-xref{color:#1a73e8;text-decoration:none;border-bottom:1px dashed #1a73e8;font-weight:500;cursor:pointer;transition:all .2s}
+.la-xref:hover{color:#0d47a1;border-bottom-style:solid;background:rgba(26,115,232,.06);border-radius:2px;padding:0 2px;margin:0 -2px}
+.la-xref::after{content:'↗';font-size:10px;margin-left:2px;opacity:.5}
+body.mode-asphalt .la-xref{color:#e65100;border-bottom-color:#e65100}
+body.mode-asphalt .la-xref:hover{color:#bf360c;background:rgba(230,81,0,.06)}
 .la-highlight{background:#1a1a1a;color:#fff;border-radius:12px;padding:16px 20px;margin:14px 0}
 body.mode-asphalt .la-highlight{background:#3d3530}
 body.mode-snow .la-highlight{background:#1a3a5c}
@@ -744,3 +749,30 @@ body.mode-asphalt .tr-client-label{color:#e8911a}
 .vt-report-actions{display:flex;gap:8px;justify-content:center}
 .vt-btn-report{padding:8px 18px;background:#1a73e8;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
 .vt-btn-report:hover{background:#1565c0}
+
+/* ===== Ведение сделки ===== */
+.fu-wrap{max-width:900px;margin:0 auto;padding:16px}
+.fu-header{margin-bottom:16px}
+.fu-title{font-size:22px;font-weight:700}
+.fu-sub{color:#666;font-size:13px;margin-top:4px}
+.fu-principle{background:#e8f5e9;border-left:4px solid #4caf50;border-radius:8px;padding:14px 16px;margin-bottom:20px;font-size:13px;line-height:1.6}
+body.mode-asphalt .fu-principle{background:#fff3e0;border-left-color:#ff9800}
+.fu-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.fu-card{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s}
+.fu-card:hover{border-color:#1a73e8;box-shadow:0 2px 12px rgba(26,115,232,.15);transform:translateY(-1px)}
+body.mode-asphalt .fu-card:hover{border-color:#e65100;box-shadow:0 2px 12px rgba(230,81,0,.15)}
+.fu-card-icon{font-size:28px;min-width:40px;text-align:center}
+.fu-card-body{flex:1}
+.fu-card-title{font-weight:600;font-size:15px}
+.fu-card-when{font-size:12px;color:#888;margin-top:2px}
+.fu-card-arrow{font-size:24px;color:#ccc;font-weight:300}
+.fu-card:hover .fu-card-arrow{color:#1a73e8}
+body.mode-asphalt .fu-card:hover .fu-card-arrow{color:#e65100}
+.fu-detail-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.fu-detail-icon{font-size:36px}
+.fu-detail-title{font-size:20px;font-weight:700}
+.fu-detail-when{font-size:13px;color:#888}
+.fu-value{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:14px;line-height:1.6}
+body.mode-asphalt .fu-value{background:linear-gradient(135deg,#fff3e0,#ffe0b2)}
+.fu-value-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1565c0;margin-bottom:4px}
+body.mode-asphalt .fu-value-label{color:#e65100}

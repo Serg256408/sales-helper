@@ -13,6 +13,7 @@ import { initGamification } from './modules/gamification.js';
 import { initTrainer } from './modules/trainer.js';
 import './modules/ai-trainer.js';
 import './modules/voice-trainer.js';
+import { renderFollowup } from './modules/deal-followup.js';
 
 // Запуск: режим по умолчанию — асфальт
 setSvc('asphalt');
@@ -25,3 +26,4 @@ updateLearnUI();
 // Инициализация геймификации и тренажёра
 initGamification();
 initTrainer();
+renderFollowup();

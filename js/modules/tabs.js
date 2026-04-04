@@ -22,10 +22,15 @@ export function tab(t) {
   const n = document.querySelector('.nav-i[data-tab="' + t + '"]');
   if (n) n.classList.add('act');
 
+  // Ведение сделки — перерендер при переключении
+  if (t === 'followup' && typeof window._renderFu === 'function') {
+    window._renderFu();
+  }
+
   // Итог звонка — только на вкладках звонков
   const big3 = document.getElementById('big3mod');
   if (big3) {
-    big3.style.display = (t === 'tree' || t === 'cbtree') ? '' : 'none';
+    big3.style.display = (t === 'tree' || t === 'cbtree' || t === 'followup') ? '' : 'none';
   }
 }
 
