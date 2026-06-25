@@ -1,6 +1,6 @@
 // Модуль «Итог звонка» — 4 обязательных чекбокса
 
-import { B3_SNOW_LABELS, B3_SNOW_HINTS, B3_SNOW_DETAILS, B3_ASPHALT_LABELS, B3_ASPHALT_HINTS, B3_ASPHALT_DETAILS, B3_TOTAL } from '../data/big3-data.js';
+import { B3_SNOW_LABELS, B3_SNOW_HINTS, B3_SNOW_DETAILS, B3_ASPHALT_LABELS, B3_ASPHALT_HINTS, B3_ASPHALT_DETAILS, B3_TOTAL } from '../data/big3-data.js?v=mqtc94ef';
 
 let b3state = [false, false, false, false];
 let b3min = false;

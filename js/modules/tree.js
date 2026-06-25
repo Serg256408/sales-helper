@@ -1,9 +1,9 @@
 // Рендер дерева скрипта продаж
 
-import { TREE_SNOW } from '../data/tree-snow.js';
-import { TREE_ASPHALT } from '../data/tree-asphalt.js';
-import { getServiceMode } from './service-mode.js';
-import { resetBig3 } from './big3.js';
+import { TREE_SNOW } from '../data/tree-snow.js?v=mqtc94ef';
+import { TREE_ASPHALT } from '../data/tree-asphalt.js?v=mqtc94ef';
+import { getServiceMode } from './service-mode.js?v=mqtc94ef';
+import { resetBig3 } from './big3.js?v=mqtc94ef';
 
 // История навигации
 let snowHistory = [];

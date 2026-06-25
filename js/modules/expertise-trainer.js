@@ -11,8 +11,8 @@
 // Два режима: тренировка по теме / полный экзамен (случайные вопросы из всех тем).
 // Прогресс мастерства по темам: localStorage transkom_expertise_progress.
 
-import { addXP } from './gamification.js';
-import { EXPERTISE_TOPICS } from '../data/expertise-questions.js';
+import { addXP } from './gamification.js?v=mqtc94ef';
+import { EXPERTISE_TOPICS } from '../data/expertise-questions.js?v=mqtc94ef';
 
 const POLZA_KEY_STORAGE = 'transkom_polza_api_key';
 const PROGRESS_STORAGE = 'transkom_expertise_progress';

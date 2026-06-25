@@ -4,8 +4,8 @@ import {
   LEARN_MAP, PASS_THRESHOLD, getProgress, saveQuizResult,
   isArticleUnlocked, getArticleStatus, getCategoryProgress,
   getOverallProgress, getReport, resetProgress
-} from './learn-progress.js';
-import { addXP } from './gamification.js';
+} from './learn-progress.js?v=mqtc94ef';
+import { addXP } from './gamification.js?v=mqtc94ef';
 
 // Определить articleId по quizId (маппинг из реальных onclick в HTML)
 function _quizToArticle(quizId) {

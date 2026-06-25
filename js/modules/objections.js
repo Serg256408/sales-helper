@@ -1,6 +1,6 @@
 // Рендер и поиск возражений
 
-import { OBJ_SNOW, OBJ_ASPHALT } from '../data/objections.js';
+import { OBJ_SNOW, OBJ_ASPHALT } from '../data/objections.js?v=mqtc94ef';
 
 export function renderObjSnow() {
   document.getElementById('obj-c').innerHTML = OBJ_SNOW.map((o, i) =>

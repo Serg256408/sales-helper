@@ -1,7 +1,7 @@
 // Интеграция с PlanFix CRM
 
-import { PF_B3_LABELS, B3_TOTAL } from '../data/big3-data.js';
-import { getB3State } from './big3.js';
+import { PF_B3_LABELS, B3_TOTAL } from '../data/big3-data.js?v=mqtc94ef';
+import { getB3State } from './big3.js?v=mqtc94ef';
 
 let pfLinkedTask = null;
 const PF_STORAGE_KEY = 'transkom_pf_settings';

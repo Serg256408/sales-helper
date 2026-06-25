@@ -1,6 +1,6 @@
 // Калькуляторы — Снег + Асфальт
 
-import { PRICES } from '../data/prices.js';
+import { PRICES } from '../data/prices.js?v=mqtc94ef';
 
 let tariff = 'storm';
 

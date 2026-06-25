@@ -1,8 +1,8 @@
 // Тренажёр продаж: сценарии с выбором ответа
 // Интеграция с геймификацией (XP, бейджи)
 
-import { TRAINER_SCENARIOS } from '../data/trainer-scenarios.js';
-import { addXP, recordTrainerScenario, getGFData } from './gamification.js';
+import { TRAINER_SCENARIOS } from '../data/trainer-scenarios.js?v=mqtc94ef';
+import { addXP, recordTrainerScenario, getGFData } from './gamification.js?v=mqtc94ef';
 
 let currentScenario = null;
 let currentStep = 0;

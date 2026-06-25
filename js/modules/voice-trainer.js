@@ -4,7 +4,7 @@
 // TTS: ElevenLabs через Polza.ai
 // Цикл: слушаю → пауза → AI думает → AI говорит → снова слушаю
 
-import { addXP } from './gamification.js';
+import { addXP } from './gamification.js?v=mqtc94ef';
 
 const POLZA_KEY_STORAGE = 'transkom_polza_api_key';
 const POLZA_API = 'https://api.polza.ai/api/v1';

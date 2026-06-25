@@ -1,11 +1,11 @@
 // Переключение режимов: Снег / Асфальт
 
-import { initTrees } from './tree.js';
-import { calcSnow, calcAsphalt } from './calculator.js';
-import { renderObjSnow, renderObjAsphalt } from './objections.js';
-import { renderBig3 } from './big3.js';
-import { tab } from './tabs.js';
-import { CHEAT_SNOW, CHEAT_ASPHALT } from '../data/cheat-sheets.js';
+import { initTrees } from './tree.js?v=mqtc94ef';
+import { calcSnow, calcAsphalt } from './calculator.js?v=mqtc94ef';
+import { renderObjSnow, renderObjAsphalt } from './objections.js?v=mqtc94ef';
+import { renderBig3 } from './big3.js?v=mqtc94ef';
+import { tab } from './tabs.js?v=mqtc94ef';
+import { CHEAT_SNOW, CHEAT_ASPHALT } from '../data/cheat-sheets.js?v=mqtc94ef';
 
 let serviceMode = 'asphalt';
 

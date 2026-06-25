@@ -1,5 +1,5 @@
 // Модуль «Ведение сделки» — поводы для звонков с ценностью
-import { FOLLOWUP_REASONS_ASPHALT, FOLLOWUP_REASONS_SNOW } from '../data/deal-followup.js';
+import { FOLLOWUP_REASONS_ASPHALT, FOLLOWUP_REASONS_SNOW } from '../data/deal-followup.js?v=mqtc94ef';
 
 function getReasons() {
   const isSnow = document.body.classList.contains('mode-snow');

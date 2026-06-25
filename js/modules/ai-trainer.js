@@ -1,7 +1,7 @@
 // AI-тренажёр: свободный диалог с AI-клиентом через Claude API
 // Модель: claude-haiku, API-ключ хранится в localStorage
 
-import { addXP, getGFData } from './gamification.js';
+import { addXP, getGFData } from './gamification.js?v=mqtc94ef';
 
 const AI_KEY_STORAGE = 'transkom_ai_api_key';
 const AI_MODEL = 'claude-haiku-4-5-20251001';

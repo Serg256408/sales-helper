@@ -1,7 +1,7 @@
 // Геймификация: XP, уровни, бейджи, профиль, вопрос дня
 // Хранение: localStorage ключ 'transkom_gamification'
 
-import { getProgress, getOverallProgress, LEARN_MAP } from './learn-progress.js';
+import { getProgress, getOverallProgress, LEARN_MAP } from './learn-progress.js?v=mqtc94ef';
 
 const GF_KEY = 'transkom_gamification';
 
@@ -299,7 +299,7 @@ function _showBadgeToast(badge) {
 }
 
 // === Вопрос дня: модалка ===
-import { DAILY_QUESTIONS } from '../data/daily-questions.js';
+import { DAILY_QUESTIONS } from '../data/daily-questions.js?v=mqtc94ef';
 
 export function showDailyQuestion() {
   const data = getGFData();

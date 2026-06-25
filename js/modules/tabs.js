@@ -1,6 +1,6 @@
 // Навигация по вкладкам + утилиты
 
-import { getServiceMode } from './service-mode.js';
+import { getServiceMode } from './service-mode.js?v=mqtc94ef';
 
 // Переключение вкладки
 export function tab(t) {
