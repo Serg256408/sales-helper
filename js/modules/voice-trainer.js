@@ -10,7 +10,9 @@ const POLZA_KEY_STORAGE = 'transkom_polza_api_key';
 const POLZA_API = 'https://api.polza.ai/api/v1';
 const CHAT_MODEL = 'google/gemini-2.5-flash-lite'; // для диалога — быстрая
 const EVAL_MODEL = 'google/gemini-2.5-flash';      // для анализа — умная
-const TTS_MODEL = 'openai/tts-1';
+const TTS_MODEL = 'openai/tts-1';                       // запасная модель TTS (ровный голос)
+const TTS_MODEL_EXPRESSIVE = 'openai/gpt-4o-mini-tts';  // выразительная: принимает инструкцию тона
+let _ttsModel = TTS_MODEL_EXPRESSIVE;                   // авто-откат на tts-1, если выразительная недоступна
 
 const DIFFICULTY = [
   { id: 'friendly', name: 'Дружелюбный', emoji: '😊' },
@@ -126,7 +128,8 @@ function _prompt(diff) {
 - Если менеджер проигнорировал боль и продолжает общие фразы — будь холоднее, теряй интерес
 
 КАК ВЕСТИ СЕБЯ — ты живой человек, а не робот:
-- Говори 1-3 предложения, как реальный человек по телефону
+- Говори коротко — 1-2 предложения, как реальный человек по телефону; иногда совсем коротко («Угу.», «Ага, понятно.», «Так.»)
+- Используй живые связки и междометия: «ну…», «слушайте», «э-э», «да ладно?», «хм» — но в меру, не в каждой реплике
 - Реагируй на КОНКРЕТИКУ: если менеджер назвал цифру/факт — переспроси или прокомментируй («5 бригад? Это прилично», «С 2014? Ну неплохо»)
 - Если менеджер рассказал технологию с деталями (тип Б, марка II, фракция, ГОСТ) — прояви уважение: «О, вижу что разбираетесь», «Звучит профессионально»
 - Если менеджер говорит общие фразы без конкретики («качественно сделаем», «хороший асфальт») — скептически: «Это все говорят, а конкретно?», «Какой именно асфальт? Какая марка?»
@@ -305,7 +308,7 @@ function _startListening() {
           _stopListening();
           _processUserSpeech(text);
         }
-      }, 1500);
+      }, 1100);
     }
   };
 
@@ -404,9 +407,8 @@ async function _processUserSpeech(text) {
   document.getElementById('vt-pulse')?.classList.add('speaking');
 
   try {
-    await _speakTTS(aiText, apiKey);
+    await _speakStream(aiText, apiKey);
   } catch (err) {
-    console.error('[Voice] TTS error, пробую браузерный голос:', err);
     await _speakBrowser(aiText);
   }
 
@@ -415,30 +417,49 @@ async function _processUserSpeech(text) {
   if (isCallActive) _startListening();
 }
 
-// Вызвать TTS через Polza.ai (OpenAI-совместимый формат)
-async function _speakTTS(text, apiKey) {
-  console.log('[TTS] Запрос:', text, 'voice:', currentVoice);
+// Разбить ответ на короткие фразы — чтобы озвучивать и проигрывать их потоком,
+// не дожидаясь генерации озвучки всего ответа целиком (убирает паузу-тишину).
+function _splitSentences(text) {
+  const parts = text.match(/[^.!?…]+[.!?…]+|\S[^.!?…]*$/g) || [text];
+  const out = [];
+  for (const p of parts) {
+    const t = p.trim();
+    if (!t) continue;
+    // слишком короткий кусок приклеиваем к предыдущему, чтобы не дробить на огрызки
+    if (out.length && out[out.length - 1].length < 18) out[out.length - 1] += ' ' + t;
+    else out.push(t);
+  }
+  return out;
+}
+
+// Инструкция тона для выразительной модели — привязана к характеру клиента
+function _voiceInstructions(diff) {
+  const m = {
+    friendly: 'Говори тепло, дружелюбно и спокойно, как довольный клиент по телефону.',
+    hesitant: 'Говори неуверенно, с сомнением и лёгкими паузами, будто колеблешься.',
+    tough: 'Говори резко, нетерпеливо и скептично, как занятой раздражённый человек, которому некогда.'
+  };
+  return m[diff] || '';
+}
+
+// Один запрос к TTS → готовый к воспроизведению объект Audio
+async function _ttsFetch(text, apiKey) {
+  const body = { model: _ttsModel, input: text, voice: currentVoice, response_format: 'mp3' };
+  const instr = _voiceInstructions(currentDifficulty);
+  if (instr && _ttsModel.includes('gpt-4o')) body.instructions = instr;
 
   const resp = await fetch(`${POLZA_API}/audio/speech`, {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: TTS_MODEL, input: text, voice: currentVoice, response_format: 'mp3' })
+    body: JSON.stringify(body)
   });
-
-  console.log('[TTS] HTTP', resp.status, 'content-type:', resp.headers.get('content-type'));
-  if (!resp.ok) {
-    const errText = await resp.text().catch(() => '');
-    throw new Error(`TTS HTTP ${resp.status}: ${errText.slice(0, 200)}`);
-  }
+  if (!resp.ok) throw new Error('TTS HTTP ' + resp.status);
 
   const contentType = resp.headers.get('content-type') || '';
   let blob;
-
   if (contentType.includes('audio') || contentType.includes('octet-stream')) {
-    // OpenAI формат: бинарный аудио-поток
     blob = await resp.blob();
   } else {
-    // ElevenLabs формат: JSON с base64
     const json = await resp.json();
     if (!json.audio) throw new Error('Нет аудио в ответе');
     const binary = atob(json.audio);
@@ -446,29 +467,46 @@ async function _speakTTS(text, apiKey) {
     for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
     blob = new Blob([bytes], { type: 'audio/mp3' });
   }
+  const audio = new Audio(URL.createObjectURL(blob));
+  audio.preload = 'auto';
+  return audio;
+}
 
-  const audioUrl = URL.createObjectURL(blob);
-  console.log('[TTS] Blob:', blob.size, 'bytes, playing...');
+// TTS с авто-откатом: выразительная модель → ровная tts-1 (если первая недоступна)
+async function _ttsToAudio(text, apiKey) {
+  try {
+    return await _ttsFetch(text, apiKey);
+  } catch (err) {
+    if (_ttsModel !== TTS_MODEL) { _ttsModel = TTS_MODEL; return await _ttsFetch(text, apiKey); }
+    throw err;
+  }
+}
 
+// Проиграть готовый Audio до конца
+function _playAudio(audio) {
   return new Promise((resolve) => {
-    currentAudio = new Audio(audioUrl);
-    currentAudio.onended = () => {
-      console.log('[TTS] Finished playing');
-      URL.revokeObjectURL(audioUrl);
-      currentAudio = null;
-      resolve();
-    };
-    currentAudio.onerror = (e) => {
-      console.error('[TTS] Play error:', e);
-      URL.revokeObjectURL(audioUrl);
-      currentAudio = null;
-      resolve();
-    };
-    currentAudio.play().catch((err) => {
-      console.error('[TTS] play() rejected:', err);
-      resolve();
-    });
+    currentAudio = audio;
+    const done = () => { try { URL.revokeObjectURL(audio.src); } catch {} if (currentAudio === audio) currentAudio = null; resolve(); };
+    audio.onended = done;
+    audio.onerror = done;
+    audio.play().catch(() => done());
   });
+}
+
+// Потоковая озвучка: пока играет текущая фраза — заранее готовим следующую.
+// Первый звук появляется почти сразу, между фразами нет пауз.
+async function _speakStream(text, apiKey) {
+  const sentences = _splitSentences(text);
+  if (!sentences.length) return;
+
+  let next = _ttsToAudio(sentences[0], apiKey).catch(() => null);
+  for (let i = 0; i < sentences.length; i++) {
+    const audio = await next;
+    next = (i + 1 < sentences.length) ? _ttsToAudio(sentences[i + 1], apiKey).catch(() => null) : null;
+    if (!isCallActive) { if (audio) { try { URL.revokeObjectURL(audio.src); } catch {} } return; }
+    if (audio) await _playAudio(audio);
+    else await _speakBrowser(sentences[i]);
+  }
 }
 
 // Фоллбэк: браузерный синтез речи (если TTS API недоступен)

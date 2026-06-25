@@ -169,12 +169,14 @@ export function switchTrainerMode(mode) {
   const wraps = {
     scenarios: document.getElementById('trainer-scenarios-wrap'),
     ai: document.getElementById('trainer-ai-wrap'),
-    voice: document.getElementById('trainer-voice-wrap')
+    voice: document.getElementById('trainer-voice-wrap'),
+    expertise: document.getElementById('trainer-expertise-wrap')
   };
   const btns = {
     scenarios: document.getElementById('trainer-mode-scenarios'),
     ai: document.getElementById('trainer-mode-ai'),
-    voice: document.getElementById('trainer-mode-voice')
+    voice: document.getElementById('trainer-mode-voice'),
+    expertise: document.getElementById('trainer-mode-expertise')
   };
 
   // Скрыть все, убрать active
@@ -188,6 +190,7 @@ export function switchTrainerMode(mode) {
   // Инициализация при первом переключении
   if (mode === 'ai' && window.initAITrainer) window.initAITrainer();
   if (mode === 'voice' && window.initVoiceTrainer) window.initVoiceTrainer();
+  if (mode === 'expertise' && window.initExpertiseTrainer) window.initExpertiseTrainer();
 }
 
 // Глобальные функции
