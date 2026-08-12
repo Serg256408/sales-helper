@@ -4,7 +4,7 @@ import {
   LEARN_MAP, PASS_THRESHOLD, getProgress, saveQuizResult,
   isArticleUnlocked, getArticleStatus, getCategoryProgress,
   getOverallProgress, getReport, resetProgress
-} from './learn-progress.js?v=mqtc94ef';
+} from './learn-progress.js?v=planfix-next-step-20260812';
 import { addXP } from './gamification.js?v=mqtc94ef';
 
 // Определить articleId по quizId (маппинг из реальных onclick в HTML)
@@ -40,6 +40,7 @@ function _quizToArticle(quizId) {
     'stone': 'crushed-stone',
     'pf-intro': 'planfix-intro',
     'quiz-pf': 'planfix-guide',
+    'quiz-pf-next-step': 'planfix-next-step',
     'base-call': 'base-calling',
     'quiz-pain-sales': 'pain-sales'
   };

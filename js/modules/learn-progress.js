@@ -12,7 +12,7 @@ export const LEARN_MAP = [
   { id: 'tech', name: 'Технологии работ', articles: ['asphalt-laying','pothole-repair','resurface','crack-sealing','geomaterials','road-marking','asphalt-calc','equipment-guide'] },
   { id: 'landscaping', name: 'Благоустройство', articles: ['curbs','paving-tiles','storm-trays','concrete-wells','lawns'] },
   { id: 'raw', name: 'Сырьё и техника', articles: ['road-sand','soil-drainage','road-machinery','crushed-stone'] },
-  { id: 'tools', name: 'Инструменты', articles: ['app-overview','planfix-intro','planfix-workspace','planfix-guide','planfix-new-deal','planfix-deal-card','planfix-deal-call','base-calling'] }
+  { id: 'tools', name: 'Инструменты', articles: ['app-overview','planfix-intro','planfix-workspace','planfix-guide','planfix-new-deal','planfix-deal-card','planfix-next-step','planfix-deal-call','base-calling'] }
 ];
 
 // Чтение/запись прогресса
