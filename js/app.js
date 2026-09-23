@@ -15,9 +15,10 @@ import './modules/ai-trainer.js?v=mqtc94ef';
 import './modules/voice-trainer.js?v=mqtc94ef';
 import './modules/expertise-trainer.js?v=mqtc94ef';
 import { renderFollowup } from './modules/deal-followup.js?v=mqtc94ef';
+import { renderSnowTraining } from './modules/snow-training.js';
 
-// Запуск: режим по умолчанию — асфальт
-setSvc('asphalt');
+// Прямая ссылка на обучение снегу открывает снеговой режим.
+setSvc(window.location.hash.startsWith('#snow-') ? 'snow' : 'asphalt');
 loadPfSettings();
 autoLinkFromUrl();
 
@@ -28,3 +29,5 @@ updateLearnUI();
 initGamification();
 initTrainer();
 renderFollowup();
+renderSnowTraining();
+if (window.location.hash.startsWith('#snow-')) window.tab('snow-learn');
