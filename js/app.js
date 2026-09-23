@@ -15,7 +15,7 @@ import './modules/ai-trainer.js?v=mqtc94ef';
 import './modules/voice-trainer.js?v=mqtc94ef';
 import './modules/expertise-trainer.js?v=mqtc94ef';
 import { renderFollowup } from './modules/deal-followup.js?v=mqtc94ef';
-import { renderSnowTraining } from './modules/snow-training.js';
+import { renderSnowTraining } from './modules/snow-training.js?v=5';
 
 // Прямая ссылка на обучение снегу открывает снеговой режим.
 setSvc(window.location.hash.startsWith('#snow-') ? 'snow' : 'asphalt');

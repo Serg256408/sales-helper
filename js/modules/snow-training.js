@@ -40,7 +40,7 @@ function offersSection() {
   return `<section class="st-section" id="snow-offers"><div class="st-section-head"><div><span class="st-eyebrow">Готово для отправки клиенту</span><h2>Коммерческие предложения</h2><p>Стоимость самосвала указана за один рейс; число рейсов зависит от объёма снега. Погрузка показана отдельно. Все цены включают НДС 22%.</p></div></div>
     <div class="st-offers">${offers.map((offer, index) => {
       const haul = offer.volume * offer.rate;
-      return `<article class="st-offer"><div class="st-offer-header st-offer-header-${offer.volume}"><span>Вариант ${index + 1} · Погрузка и вывоз снега</span><h3>Самосвал ${offer.volume} м³</h3><p>+ ${offer.loader}</p><small>Иллюстрация техники</small></div><div class="st-offer-breakdown"><div><span>Тариф за 1 м³ вывоза</span><b>${money(offer.rate)}</b></div><div><span>Погрузка отдельно</span><b>${money(offer.loading)}</b></div></div><div class="st-offer-total"><span>Один рейс самосвала</span><strong>${money(haul)}</strong></div><p class="st-offer-formula">Вывоз: число рейсов × ${money(haul)}. Погрузка рассчитывается отдельно. Цены с НДС 22%.</p><div class="st-offer-actions"><a class="st-download-offer" href="output/pdf/transkom-snow-${offer.volume}m3.pdf?v=4" download>Скачать КП · PDF</a><button type="button" class="st-copy-offer" data-offer-index="${index}">Скопировать текст</button></div><details class="st-offer-preview"><summary>Посмотреть текст КП</summary><pre>${offerText(offer)}</pre></details></article>`;
+      return `<article class="st-offer"><div class="st-offer-header st-offer-header-${offer.volume}"><span>Вариант ${index + 1} · Погрузка и вывоз снега</span><h3>Самосвал ${offer.volume} м³</h3><p>+ ${offer.loader}</p><small>Иллюстрация техники</small></div><div class="st-offer-breakdown"><div><span>Тариф за 1 м³ вывоза</span><b>${money(offer.rate)}</b></div><div><span>Погрузка отдельно</span><b>${money(offer.loading)}</b></div></div><div class="st-offer-total"><span>Один рейс самосвала</span><strong>${money(haul)}</strong></div><p class="st-offer-formula">Вывоз: число рейсов × ${money(haul)}. Погрузка рассчитывается отдельно. Цены с НДС 22%.</p><div class="st-offer-actions"><a class="st-download-offer" data-offer-download="${index}" href="output/pdf/transkom-snow-${offer.volume}m3.pdf?v=5" download>Скачать КП · PDF</a><button type="button" class="st-copy-offer-link" data-offer-link="${index}">Скопировать ссылку</button><button type="button" class="st-copy-offer" data-offer-index="${index}">Скопировать текст</button></div><p class="st-download-help">PDF около 4–5 МБ. Во встроенном браузере окно сохранения может не появиться: проверьте папку «Загрузки».</p><p class="st-download-status" role="status" aria-live="polite" hidden></p><details class="st-offer-preview"><summary>Посмотреть текст КП</summary><pre>${offerText(offer)}</pre></details></article>`;
     }).join('')}</div><div class="st-note">Это предложения с тарифами. Адрес объекта, дату, количество рейсов и порядок оплаты согласуйте при оформлении заказа.</div></section>`;
 }
 
@@ -109,6 +109,28 @@ export function renderSnowTraining() {
   </div>`;
 
   root.addEventListener('click', event => {
+    const download = event.target.closest('[data-offer-download]');
+    if (download) {
+      const status = download.closest('.st-offer').querySelector('.st-download-status');
+      status.hidden = false;
+      status.textContent = `Загрузка началась. Подождите немного и проверьте папку «Загрузки»: transkom-snow-${offers[Number(download.dataset.offerDownload)].volume}m3.pdf`;
+      return;
+    }
+    const linkCopy = event.target.closest('[data-offer-link]');
+    if (linkCopy) {
+      const offer = offers[Number(linkCopy.dataset.offerLink)];
+      if (!offer) return;
+      const url = new URL(`output/pdf/transkom-snow-${offer.volume}m3.pdf`, document.baseURI).href;
+      navigator.clipboard.writeText(url).then(() => {
+        linkCopy.textContent = 'Ссылка скопирована';
+        setTimeout(() => { linkCopy.textContent = 'Скопировать ссылку'; }, 2200);
+      }).catch(() => {
+        const status = linkCopy.closest('.st-offer').querySelector('.st-download-status');
+        status.hidden = false;
+        status.textContent = url;
+      });
+      return;
+    }
     const copy = event.target.closest('[data-offer-index]');
     if (copy) {
       const offer = offers[Number(copy.dataset.offerIndex)];

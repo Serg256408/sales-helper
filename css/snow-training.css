@@ -37,12 +37,15 @@
 #tab-snow-learn .st-offer-total{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 18px;padding:14px 0;border-top:1px solid var(--st-border);font-size:13px;font-weight:700}
 #tab-snow-learn .st-offer-total strong{color:#155d81;font-size:22px;font-variant-numeric:tabular-nums}
 #tab-snow-learn .st-offer-formula{margin:0 18px 13px;color:#5a7787;font-size:11px;line-height:1.5}
-#tab-snow-learn .st-offer-actions{display:grid;gap:7px;margin:0 18px 13px}
-#tab-snow-learn .st-download-offer,#tab-snow-learn .st-copy-offer{display:block;width:100%;padding:11px;border:0;border-radius:7px;font:inherit;font-size:12px;font-weight:700;text-align:center;text-decoration:none;cursor:pointer}
+#tab-snow-learn .st-offer-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:0 18px 7px}
+#tab-snow-learn .st-download-offer,#tab-snow-learn .st-copy-offer,#tab-snow-learn .st-copy-offer-link{display:block;width:100%;padding:11px;border:0;border-radius:7px;font:inherit;font-size:12px;font-weight:700;text-align:center;text-decoration:none;cursor:pointer}
+#tab-snow-learn .st-download-offer{grid-column:1/-1}
 #tab-snow-learn .st-download-offer{background:#1b668b;color:#fff}
 #tab-snow-learn .st-download-offer:hover{background:#124b6c}
-#tab-snow-learn .st-copy-offer{background:#e9f3f8;color:#245b79}
-#tab-snow-learn .st-copy-offer:hover{background:#dcecf4}
+#tab-snow-learn .st-copy-offer,#tab-snow-learn .st-copy-offer-link{background:#e9f3f8;color:#245b79}
+#tab-snow-learn .st-copy-offer:hover,#tab-snow-learn .st-copy-offer-link:hover{background:#dcecf4}
+#tab-snow-learn .st-download-help{margin:0 18px 9px;color:#647b88;font-size:11px;line-height:1.45}
+#tab-snow-learn .st-download-status:not([hidden]){margin:0 18px 11px;padding:9px 10px;border-radius:7px;background:#fff4df;color:#5e4326;font-size:11px;line-height:1.45;overflow-wrap:anywhere}
 #tab-snow-learn .st-offer-preview{margin:0 18px 17px;color:#365f75;font-size:12px}
 #tab-snow-learn .st-offer-preview summary{cursor:pointer;font-weight:700}
 #tab-snow-learn .st-offer-preview pre{margin-top:9px;padding:12px;border-radius:6px;background:#f4f8fa;color:#243f4f;font:inherit;font-size:11px;line-height:1.6;white-space:pre-wrap}
